@@ -1,0 +1,28 @@
+<header>
+    <nav class="navbar navbar-dark navbar-expand-lg bg-white portfolio-navbar gradient fixed-top" style="background: linear-gradient(120deg, #8556cc, #03fcca);">
+      <div class="container">
+          <a class="navbar-brand logo" href="#">Portfolium</a>
+          <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarNav">
+            <span class="visually-hidden">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+              <a class="nav-link" [routerLink]="['/']">Home</a>
+            </li>
+            <li class="nav-item" >
+              <a class="nav-link" [routerLink]="['/projects']">Projects</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/curriculum']">CV</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="mailto:work.aldrinronchi@gmail.com?subject=🤝%20Project%20info.%20Let's%20talk" >Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  
