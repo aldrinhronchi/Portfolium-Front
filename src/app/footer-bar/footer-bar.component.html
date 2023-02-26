@@ -1,32 +1,29 @@
 <footer class="footer-menu">
-    <div class="container text-center">
-      <div class="row">
-        <div class="links">
-          <a [routerLink]="['/']">About me</a>
-          <a [routerLink]="['/contact']">Contact me</a>
-          <a [routerLink]="['/projects']" >Projects</a>
-        </div>
+    <div class="container text-center column-gap-3">
+      <div class="row ">
+        <ul class="list-inline links">
+          <li class="list-inline-item"><a class="link-secondary" [routerLink]="['/']">About me</a></li>
+          <li class="list-inline-item"><a class="link-secondary" [routerLink]="['/contact']">Contact me</a></li>
+          <li class="list-inline-item"><a class="link-secondary" [routerLink]="['/projects']" >Projects</a></li>
+        </ul>
       </div>
       <div class="links">
 
-      <div class="social-icons">
-        <a href="https://www.facebook.com/coolisnotschool">
-          <!-- <i class="icon ion-social-facebook"></i> -->
-          <i ></i>
-          <!-- <fa name="cog"></fa> -->
-
-        </a>
-        <a href="https://www.instagram.com/aldrin.ronchi">
-          <i ></i>
-        </a>
-        <a href="https://twitter.com/seithterore">
-          <i ></i>
-        </a>
-        <a href="https://steamcommunity.com/id/coolisnotschool/" >
-          <i ></i>
-        </a>
+      <ul class="list-inline social-icons">
+        <li class="list-inline-item"><a class="link-secondary" href="https://www.linkedin.com/in/aldrin-ronchi-538320172/">
+          <i class="fab fa-linkedin-in"></i>          
+        </a></li>
+        <li class="list-inline-item"><a class="link-secondary" href="https://linktr.ee/sethkaiba">
+          <i class="fas fa-link"></i>
+        </a></li>
+        <li class="list-inline-item"><a class="link-secondary" href="https://github.com/aldrinhronchi" >
+          <i class="fab fa-github"></i>
+        </a></li>
+      </ul>
+      
       </div>
-      </div>
+      <p class="mb-0 text-secondary">Copyright © 2023 Aldrin "Terore" Ronchi</p>
+      <br />
     </div>
   </footer>
   

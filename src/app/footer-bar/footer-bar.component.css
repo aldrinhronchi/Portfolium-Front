@@ -1,3 +1,9 @@
-a .social-icons {
-    background-color: rgb(0,0,0);
+.links a {
+    text-decoration: none;
+    
 }
+.links a:hover, a:active  {
+    color: #663399 !important;
+}
+
+  
