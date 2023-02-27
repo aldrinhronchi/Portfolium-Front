@@ -7,27 +7,41 @@ import { Component, NgModule } from '@angular/core';
   styleUrls: ['./projects.component.css']
 })
 
+
 export class ProjectsComponent {
+
   sector: any;
-  
+
+ projects: string[] = [
+  'crud',
+  'curriculum',
+  'utils',
+  'locadora',
+  'filosofos',
+  'controlefinanceiro',
+  'pokedex',
+  '',
+  ''
+];
+
   ngOnInit() {
   }
   changeModal(index: number) {
     console.log(index);
     switch (index) {
+      case 0:
+      {
+        this.sector = this.projects[index];
+        break;
+      }
       case 1:
       {
-        this.sector = 'crud';
+        this.sector = this.projects[index];
         break;
       }
       case 2:
       {
-        this.sector = 'curriculum';
-        break;
-      }
-      case 3:
-      {
-        this.sector = 'utils';
+        this.sector = this.projects[index];
         break;
       }
       default: {
