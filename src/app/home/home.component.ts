@@ -1,14 +1,11 @@
-import {  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  Renderer2,
-  ViewChild } from '@angular/core';
+import {  AfterViewInit, Component, ElementRef, Input, Renderer2, ViewChild, NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from '../app-routing.module';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css']  
 })
 export class HomeComponent implements AfterViewInit {
   @ViewChild("textElement") textElement!: ElementRef;
@@ -19,8 +16,8 @@ export class HomeComponent implements AfterViewInit {
     'I am a Front Developer.',
     'I am a Back Developer.',
   ];
-  @Input() textColor = "black";
-  @Input() blinkColor = "green";
+  @Input() textColor = "#0A192F";
+  @Input() blinkColor = "#03fcca";
   @Input() fontSize = "20px";
   @Input() blinkWidth = "5px";
   @Input() typingSpeedMilliseconds = 175;
@@ -46,7 +43,16 @@ export class HomeComponent implements AfterViewInit {
       "font-size",
       this.fontSize
     );
-    this.renderer.setStyle(this.textElement.nativeElement, "padding", "0.1em");
+    this.renderer.setStyle(
+      this.textElement.nativeElement, 
+      "padding", 
+      "0.1em"
+    );
+    this.renderer.setStyle(
+      this.textElement.nativeElement, 
+      "font-family", 
+      "SF-Mono"
+    );
 
     this.renderer.setStyle(
       this.blinkElement.nativeElement,

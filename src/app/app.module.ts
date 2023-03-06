@@ -19,7 +19,9 @@ import { ContactComponent } from './contact/contact.component';
     NavBarComponent,
     FooterBarComponent,
     ModalInfoComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    HomeComponent
+  
   ],
   imports: [
     BrowserModule,

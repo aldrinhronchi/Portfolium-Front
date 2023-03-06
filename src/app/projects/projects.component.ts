@@ -27,29 +27,6 @@ export class ProjectsComponent {
   ngOnInit() {
   }
   changeModal(index: number) {
-    console.log(index);
-    switch (index) {
-      case 0:
-      {
         this.sector = this.projects[index];
-        break;
-      }
-      case 1:
-      {
-        this.sector = this.projects[index];
-        break;
-      }
-      case 2:
-      {
-        this.sector = this.projects[index];
-        break;
-      }
-      default: {
-        this.sector = '';
-        break;
-      }
-
-
-    }
 }
 }

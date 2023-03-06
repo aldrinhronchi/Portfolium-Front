@@ -12,13 +12,13 @@
             <a class="nav-link" [routerLink]="['/']">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/projects']">Projects</a>
+            <a class="nav-link" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['/projects']">Projects</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/curriculum']">CV</a>
+            <a class="nav-link" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['/curriculum']">CV</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="mailto:work.aldrinronchi@gmail.com?subject=🤝%20Project%20info.%20Let's%20talk">Contact</a>
+            <a class="nav-link" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['/contact']">Contact</a>
           </li>
         </ul>
       </div>

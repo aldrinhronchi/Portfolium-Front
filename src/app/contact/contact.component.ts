@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent {
+  phoneNumber: string = '49999995816';
+  email: string = 'work.aldrinronchi@gmail.com';
+  location: string = 'Santa Catarina - Brazil'
 
 }

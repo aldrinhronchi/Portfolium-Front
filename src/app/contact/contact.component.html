@@ -1,1 +1,80 @@
-<p>contact works!</p>
+
+<div class="container" >
+    <div class="row">
+        <div class="text-center title">
+          <h2>Contact me</h2>
+        </div>
+      </div>
+    <div class="row d-flex justify-content-center" style="margin-top: 1rem; ">
+        <div class="row border border-secondary rounded">
+            <div class="col-md-6 col-xl-5">
+                <div>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label" for="email">Subject</label><input id="email" class="form-control" type="email" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="email">Email</label><input id="email" class="form-control" type="email" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="message">Message</label><textarea id="message" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-md-6 offset-6 button">
+                                    <button class="btn btn-primary d-block w-100 disabled" type="submit" >Hire Me</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-5 col-xl-5 d-flex justify-content-center justify-content-xl-start" >
+                <div class="row d-flex flex-wrap h-100">
+
+                        <div class="row">
+                        <h5>Whatsapp</h5>
+                        </div>
+                        <a class="link-secondary" href="https://wa.me/55{{phoneNumber}}?text=Ol%C3%A1%2C+vim+pelo+seu+site%2C+gostaria+de+conversar%2C+voc%C3%AA+tem+disponibilidade%3F">
+
+                        <div class="row" >
+                            <div class="col-2 text-center icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div class="col-10">
+                                <h4 >{{phoneNumber}}</h4>
+                            </div>
+                        
+                        </div>
+                    </a>
+                        <div class="row">
+                            <h5>Email</h5>
+                            </div>
+                            <a class="link-secondary" href="mailto:{{email}}?subject=🤝%20Project%20info.%20Let's%20talk">
+                        <div class="row">
+                            <div class="col-2 text-center icon">
+                                <i class="far fa-envelope"></i>
+                            </div>
+                            <div class="col-10">
+                                <h4>{{email}}</h4>
+                            </div>
+                        </div>
+                    </a>
+                        <div class="row">
+                            <h5>Location</h5>
+                            </div>
+                            <a class="link-secondary" href="#">
+                        <div class="row">
+                            <div class="col-2 text-center icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="col-10">
+                                <h4>{{location}}</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>

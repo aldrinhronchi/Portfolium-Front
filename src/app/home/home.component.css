@@ -1,4 +1,4 @@
-.blink {
+  .blink {
     border-right-style: solid;
     animation: 1s blink infinity;
   }
@@ -19,6 +19,18 @@
     margin-bottom: -1.3%;
   }
   
+  .text {
+    font-family: SF Mono;
+  }
+
+  .glitch-wrapper {
+    font-family: Calibri;
+    margin: 0px;
+    font-size: clamp(20px, 8vw, 30px);
+    color:#0A192F;
+  }
+
+
   .glitch {
     position: relative;
     line-height: 1.2;
