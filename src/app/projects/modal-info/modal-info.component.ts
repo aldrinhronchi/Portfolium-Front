@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-modal-info',
-  templateUrl: './modal-info.component.html',
-  styleUrls: ['./modal-info.component.css']
+    selector: 'app-modal-info',
+    templateUrl: './modal-info.component.html',
+    styleUrls: ['./modal-info.component.css'],
+    standalone: false
 })
 export class ModalInfoComponent implements OnInit {
   @Input() item: any;
