@@ -1,6 +1,4 @@
-import {  AfterViewInit, Component, ElementRef, Input, Renderer2, ViewChild, NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { AppRoutingModule } from '../app-routing.module';
+import {  AfterViewInit, Component, ElementRef, Input, Renderer2, ViewChild } from '@angular/core';
 
 @Component({
     selector: 'app-home',

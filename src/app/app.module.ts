@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { FooterBarComponent } from './footer-bar/footer-bar.component';
-import { ModalInfoComponent } from './projects/modal-info/modal-info.component';
-import { HomeComponent } from './home/home.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { CurriculumComponent } from './curriculum/curriculum.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { FooterBarComponent } from './components/footer-bar/footer-bar.component';
+import { HomeComponent } from './pages/home/home.component';
+import { CurriculumComponent } from './pages/curriculum/curriculum.component';
 import { ContactComponent } from './contact/contact.component';
+import { ProjectsComponent } from './pages/projects/projects.component';
+import { ModalInfoComponent } from './pages/projects/modal-info/modal-info.component';
 
 
 @NgModule({
@@ -18,9 +18,11 @@ import { ContactComponent } from './contact/contact.component';
     AppComponent,
     NavBarComponent,
     FooterBarComponent,
-    ModalInfoComponent,
+    HomeComponent,
+    CurriculumComponent,
+    ContactComponent,
     ProjectsComponent,
-    HomeComponent
+    ModalInfoComponent
   
   ],
   imports: [
