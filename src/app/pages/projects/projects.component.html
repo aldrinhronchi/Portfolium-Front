@@ -24,11 +24,11 @@
         <div class="col-md-9">
           <div class="row gx-4 gy-3">
             <div *ngFor="let project of projects; let i = index" class="col-md-6 col-lg-4 project-sidebar-card">
-              <a data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="changeModal(i)">
-                <div class="overlay">         
-                    <img class="img-fluid image project-image" src="/assets/img/nature/image{{i}}.jpg">
-                </div>
-              </a>
+              <img data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="selectProject(project)"
+              (error)="onImageError($event, project)"   [src]="getProjectImage(project)" 
+              [alt]="project.Name">
+             
+              
             </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
-        <app-modal-info [item]="sector"></app-modal-info> 
+        <app-modal-info [project]="selectedProject"></app-modal-info> 
     </div>
   </div>
  

@@ -12,8 +12,8 @@ import { ErrorInfo } from "src/app/models/error-info.model";
 export class ErrorHandlerService implements HttpInterceptor {
   private errors = new Subject<string[]>();
 
-  constructor(private router: Router, private authService: AuthService) {}
-  
+  constructor(private router: Router, private authService: AuthService) { }
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -26,7 +26,7 @@ export class ErrorHandlerService implements HttpInterceptor {
   private handleError = (error: HttpErrorResponse): ErrorInfo => {
     let Icon: SweetAlertIcon = "info";
     let Titulo: String = "Houve um erro!";
-    
+
     switch (error.status) {
       case 400:
         Icon = "warning";
@@ -52,7 +52,7 @@ export class ErrorHandlerService implements HttpInterceptor {
         Icon = "error";
         Titulo = "Erro inesperado";
     }
-    
+
     let info: ErrorInfo = this.createErrorInfo(
       error.error?.Message || error.message || "Erro desconhecido",
       Titulo.toString()
@@ -63,17 +63,9 @@ export class ErrorHandlerService implements HttpInterceptor {
       text: info.Message,
       icon: Icon,
       confirmButtonText: 'ENTENDI',
-      allowOutsideClick: false,
-      customClass: {
-        popup: 'swal2-brutal-popup',
-        title: 'swal2-brutal-title',
-        htmlContainer: 'swal2-brutal-content',
-        confirmButton: 'swal2-brutal-confirm',
-        icon: 'swal2-brutal-icon'
-      },
-      buttonsStyling: false
+
     });
-    
+
     return info;
   };
 

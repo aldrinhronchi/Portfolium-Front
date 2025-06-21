@@ -1,29 +1,28 @@
-{{changeText(item)}}
-
 <div class="modal-header">
-  <h1 class="modal-title fs-5" id="exampleModalLabel">{{title}}</h1>
+  <h1 class="modal-title fs-5" id="exampleModalLabel">{{ project?.Name }}</h1>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-<div class="modal-body" >
+<div class="modal-body">
   <div class="container">
     <div class="container text-center">
       <div class="row">
         <div class="col-12 col-sm-9">
           <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
             <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              <button *ngFor="let image of project?.AdditionalImages; let i = index" 
+                      type="button" 
+                      data-bs-target="#carouselExampleIndicators" 
+                      [attr.data-bs-slide-to]="i" 
+                      [class.active]="i === 0" 
+                      [attr.aria-current]="i === 0 ? 'true' : null"
+                      [attr.aria-label]="'Slide ' + (i + 1)">
+              </button>
             </div>
             <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="{{img1}}" class="d-block w-100" alt="{{altimg1}}">
-              </div>
-              <div class="carousel-item">
-                <img src="{{img2}}" class="d-block w-100" alt="{{altimg2}}">
-              </div>
-              <div class="carousel-item">
-                <img src="{{img3}}" class="d-block w-100" alt="{{altimg3}}">
+              <div *ngFor="let image of project?.AdditionalImages; let i = index" 
+                   class="carousel-item" 
+                   [class.active]="i === 0">
+                <img [src]="image" class="d-block w-100">
               </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -35,31 +34,40 @@
               <span class="visually-hidden">Next</span>
             </button>
           </div>
-
         </div>
         <div class="col-6 col-sm-3">
-          <div class="card" >
+          <div class="card">
             <div class="card-body">
-              <h5 class="card-title">{{item}}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-              <p class="card-text">{{text1}}</p>
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
+              <h5 class="card-title">{{ project?.Name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ project?.Category }}</h6>
+              <p class="card-text">{{ project?.Description }}</p>
+              <div class="mt-3">
+                <h6>Tecnologias:</h6>
+                <div class="d-flex flex-wrap gap-2">
+                  <span *ngFor="let tech of project?.Technologies" class="badge bg-primary">{{ tech }}</span>
+                </div>
+              </div>
+              <div class="mt-3" *ngIf="project?.ProjectUrl">
+                <h6>Links:</h6>
+                <div class="d-flex flex-column gap-2">
+                  <a *ngFor="let link of project?.ProjectUrl" 
+                     [href]="link" 
+                     target="_blank" 
+                     class="btn btn-outline-primary btn-sm">
+                    {{ link }}
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-          <p>Much Texto</p>
         </div>
       </div>
     </div>
-    <div>
-
-    </div>
-
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [routerLink]="['/'+item]" >Acess</button>
-  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+  <a *ngIf="project?.DemoUrl" [href]="project?.DemoUrl" target="_blank" class="btn btn-primary">Ver Demo</a>
 </div>
 
 
