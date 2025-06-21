@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
           return true;
         } else {
           console.log('Não está autenticado');
-          return this.router.createUrlTree(['/home']);
+          return this.router.createUrlTree(['/']);
         }
       })
     );

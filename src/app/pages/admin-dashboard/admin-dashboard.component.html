@@ -1,0 +1,111 @@
+<div class="container mt-4">
+  <h2>Painel Administrativo</h2>
+
+  <div class="alert alert-danger" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="text-center" *ngIf="loading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+  </div>
+
+  <!-- Projetos -->
+  <div class="card mt-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Projetos</h5>
+      <button class="btn btn-primary btn-sm" (click)="onAddProject()">Novo Projeto</button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Descrição</th>
+              <th>Tecnologias</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let project of projects">
+              <td>{{ project.Name }}</td>
+              <td>{{ project.Description }}</td>
+              <td>{{ project.Technologies }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary me-2" (click)="onEditProject(project)">
+                  Editar
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="onDeleteProject(project.GuidID!)">
+                  Excluir
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Currículo -->
+  <div class="card mt-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Currículo</h5>
+      <button class="btn btn-primary btn-sm" (click)="onEditCurriculum()" [disabled]="!curriculum">
+        Editar Currículo
+      </button>
+    </div>
+    <div class="card-body">
+      <div *ngIf="curriculum">
+        <div class="mb-3">
+          <strong>Nome:</strong> {{ curriculum.PersonalInfo.Name }}
+        </div>
+        <div class="mb-3">
+          <strong>Email:</strong> {{ curriculum.PersonalInfo.Email }}
+        </div>
+        <div class="mb-3">
+          <strong>Telefone:</strong> {{ curriculum.PersonalInfo.Phone }}
+        </div>
+        <div class="mb-3">
+          <strong>Resumo:</strong>
+          <p>{{ curriculum.PersonalInfo.Description }}</p>
+        </div>
+      </div>
+      <div *ngIf="!curriculum" class="text-center">
+        <p>Nenhum currículo encontrado.</p>
+        <button class="btn btn-primary" (click)="onAddCurriculum()">Adicionar Currículo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Projeto -->
+<div class="modal" [class.show]="showProjectModal" [style.display]="showProjectModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <app-project-form-modal
+        [project]="selectedProject"
+        (save)="onSaveProject($event)"
+        (cancel)="onCloseProjectModal()">
+      </app-project-form-modal>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Currículo -->
+<div class="modal" [class.show]="showCurriculumModal" [style.display]="showCurriculumModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <app-curriculum-form-modal
+        [curriculum]="curriculum"
+        (save)="onSaveCurriculum($event)"
+        (cancel)="onCloseCurriculumModal()">
+      </app-curriculum-form-modal>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop dos Modais -->
+<div class="modal-backdrop fade show" *ngIf="showProjectModal || showCurriculumModal"></div> 

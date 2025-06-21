@@ -271,87 +271,19 @@ export class CurriculumService {
    * Obter dados completos do currículo
    */
   getCurriculumData(): Observable<RequestViewModel<CurriculumData>> {
-    return new Observable(observer => {
-      let completedRequests = 0;
-      const totalRequests = 6;
-      const curriculumData: CurriculumData = {
-        PersonalInfo: {} as PersonalInfo,
-        Skills: [],
-        Experiences: [],
-        Education: [],
-        Certifications: [],
-        Services: []
-      };
+    return this.apiService.get<RequestViewModel<CurriculumData>>(
+      `${AppConstants.API_ENDPOINTS.CURRICULUM.BASE}/complete`
+    );
+  }
 
-      const checkCompletion = () => {
-        completedRequests++;
-        if (completedRequests === totalRequests) {
-          observer.next({
-            Data: [curriculumData],
-            Type: 'CurriculumData',
-            PageCount: 1,
-            Message: 'Dados do currículo carregados com sucesso'
-          });
-          observer.complete();
-        }
-      };
-
-      // Buscar informações pessoais
-      this.getPersonalInfo().subscribe({
-        next: (response) => {
-          if (response.Data && response.Data.length > 0) {
-            curriculumData.PersonalInfo = response.Data[0];
-          }
-          checkCompletion();
-        },
-        error: () => checkCompletion()
-      });
-
-      // Buscar habilidades
-      this.getSkills().subscribe({
-        next: (response) => {
-          curriculumData.Skills = response.Data || [];
-          checkCompletion();
-        },
-        error: () => checkCompletion()
-      });
-
-      // Buscar experiências
-      this.getExperiences().subscribe({
-        next: (response) => {
-          curriculumData.Experiences = response.Data || [];
-          checkCompletion();
-        },
-        error: () => checkCompletion()
-      });
-
-      // Buscar educação
-      this.getEducation().subscribe({
-        next: (response) => {
-          curriculumData.Education = response.Data || [];
-          checkCompletion();
-        },
-        error: () => checkCompletion()
-      });
-
-      // Buscar certificações
-      this.getCertifications().subscribe({
-        next: (response) => {
-          curriculumData.Certifications = response.Data || [];
-          checkCompletion();
-        },
-        error: () => checkCompletion()
-      });
-
-      // Buscar serviços
-      this.getServices().subscribe({
-        next: (response) => {
-          curriculumData.Services = response.Data || [];
-          checkCompletion();
-        },
-        error: () => checkCompletion()
-      });
-    });
+  /**
+   * Atualizar dados completos do currículo
+   */
+  updateCurriculumData(data: CurriculumData): Observable<RequestViewModel<CurriculumData>> {
+    return this.apiService.put<RequestViewModel<CurriculumData>>(
+      `${AppConstants.API_ENDPOINTS.CURRICULUM.BASE}/complete`,
+      data
+    );
   }
 
   /**

@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -11,7 +13,7 @@ import { CurriculumComponent } from './pages/curriculum/curriculum.component';
 import { ContactComponent } from './contact/contact.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { ModalInfoComponent } from './pages/projects/modal-info/modal-info.component';
-
+import { AdminModule } from './pages/admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -23,11 +25,13 @@ import { ModalInfoComponent } from './pages/projects/modal-info/modal-info.compo
     ContactComponent,
     ProjectsComponent,
     ModalInfoComponent
-  
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AdminModule
   ],
   providers: [],
   bootstrap: [AppComponent]
