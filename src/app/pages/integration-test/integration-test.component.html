@@ -1,0 +1,99 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12 text-center mb-4">
+      <h2>Testes de Integração</h2>
+      <p>Verificando conexão entre Frontend e Backend</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5>Controles</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary" (click)="runTests()" [disabled]="loading">
+              {{ loading ? 'Testando...' : 'Executar Todos os Testes' }}
+            </button>
+            <button class="btn btn-info" (click)="testLogin()">
+              Testar Login
+            </button>
+            <button class="btn btn-warning" (click)="logout()">
+              Logout
+            </button>
+            <button class="btn btn-success" (click)="testInterceptors()">
+              Testar Interceptors
+            </button>
+            <button class="btn btn-secondary" (click)="testSweetAlert()">
+              Testar SweetAlert2
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h5>Informações</h5>
+        </div>
+        <div class="card-body">
+          <h6>Como testar:</h6>
+          <ol>
+            <li>Certifique-se que o backend está rodando na porta 7116</li>
+            <li>Execute "Executar Todos os Testes" para verificar conexões</li>
+            <li>Use "Testar Login" com as credenciais do banco</li>
+            <li>Verifique se não há erros de CORS no console</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5>Resultados</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Teste</th>
+                  <th>Status</th>
+                  <th>Detalhes</th>
+                  <th>Horário</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let result of testResults" 
+                    [class.table-success]="result.status === 'Sucesso'"
+                    [class.table-danger]="result.status === 'Erro'"
+                    [class.table-info]="result.status === 'Autenticado'"
+                    [class.table-warning]="result.status === 'Não Autenticado' || result.status === 'Funcionando'">
+                  <td>{{ result.test }}</td>
+                  <td>
+                    <span class="badge"
+                          [class.bg-success]="result.status === 'Sucesso'"
+                          [class.bg-danger]="result.status === 'Erro'"
+                          [class.bg-info]="result.status === 'Autenticado'"
+                          [class.bg-warning]="result.status === 'Não Autenticado' || result.status === 'Funcionando'">
+                      {{ result.status }}
+                    </span>
+                  </td>
+                  <td>{{ result.details }}</td>
+                  <td>{{ result.timestamp }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="testResults.length === 0" class="text-center p-4">
+            <p class="mb-0">Nenhum teste executado ainda</p>
+            <small class="text-muted">Clique em "Executar Todos os Testes" para começar</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

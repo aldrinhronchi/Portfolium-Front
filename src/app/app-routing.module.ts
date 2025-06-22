@@ -8,6 +8,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { AuthGuard } from './guards/auth.guard';
+import { IntegrationTestComponent } from './pages/integration-test/integration-test.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
     component: AdminDashboardComponent,
     canActivate: [AuthGuard]
   },
+  { path: 'integration-test', component: IntegrationTestComponent },
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '404' }
 ];

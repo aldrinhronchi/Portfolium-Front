@@ -17,6 +17,7 @@ import { AdminModule } from './pages/admin/admin.module';
 import { LoadingInterceptor } from './shared/interceptors/loading-interceptor.service';
 import { TokenInterceptorService } from './shared/interceptors/token-interceptor.service';
 import { ErrorHandlerService } from './shared/interceptors/error-handler.service';
+import { IntegrationTestComponent } from './pages/integration-test/integration-test.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ErrorHandlerService } from './shared/interceptors/error-handler.service
     CurriculumComponent,
     ContactComponent,
     ProjectsComponent,
-    ModalInfoComponent
+    ModalInfoComponent,
+    IntegrationTestComponent
   ],
   imports: [
     BrowserModule,
