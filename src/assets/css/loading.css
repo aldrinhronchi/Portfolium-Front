@@ -1,6 +1,6 @@
 .shapes {
-    width: 88px;
-    height: 76.208px;
+    width: 5.5rem;
+    height: 4.763rem;
     position: relative;
     background: conic-gradient(from 120deg at 50% 64%,#0000, #474bff 1deg 120deg,#0000 121deg);
     transform-origin: 50% 50%;
@@ -41,7 +41,7 @@
     }
  
     30%, 70% {
-       transform: rotate(calc(var(--s,1)*120deg)) translate(calc(var(--s,1)*-8.8px),17.6px);
+       transform: rotate(calc(var(--s,1)*120deg)) translate(calc(var(--s,1)*-0.55rem),1.1rem);
     }
  
     100% {

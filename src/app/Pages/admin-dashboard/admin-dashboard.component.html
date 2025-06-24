@@ -1,0 +1,648 @@
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-0">Dashboard Administrativo</h1>
+    <p class="text-muted">Gerencie seus projetos e currículo</p>
+  </div>
+  <div>
+    <button class="btn btn-outline-danger me-2" (click)="logout()">
+      <i class="fas fa-sign-out-alt me-2"></i>Sair
+    </button>
+  </div>
+</div>
+
+<!-- Navigation Tabs -->
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <button 
+      class="nav-link" 
+      [class.active]="activeTab === 'projects'"
+      (click)="setActiveTab('projects')">
+      <i class="fas fa-folder me-2"></i>Projetos
+    </button>
+  </li>
+  <li class="nav-item">
+    <button 
+      class="nav-link" 
+      [class.active]="activeTab === 'curriculum'"
+      (click)="setActiveTab('curriculum')">
+      <i class="fas fa-user-graduate me-2"></i>Currículo
+    </button>
+  </li>
+</ul>
+
+<!-- Mensagens de Sucesso/Erro -->
+<div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+  <i class="fas fa-check-circle me-2"></i>
+  {{ successMessage }}
+</div>
+
+<div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <i class="fas fa-exclamation-triangle me-2"></i>
+  {{ error }}
+</div>
+
+<!-- PROJECTS TAB -->
+<div *ngIf="activeTab === 'projects'">
+
+<!-- Estatísticas -->
+<div class="row mb-4">
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <i class="fas fa-folder fa-2x text-primary mb-2"></i>
+        <h3 class="mb-0">{{ stats.total }}</h3>
+        <p class="text-muted mb-0">Total de Projetos</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <i class="fas fa-eye fa-2x text-success mb-2"></i>
+        <h3 class="mb-0">{{ stats.active }}</h3>
+        <p class="text-muted mb-0">Projetos Ativo</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <i class="fas fa-star fa-2x text-warning mb-2"></i>
+        <h3 class="mb-0">{{ stats.featured }}</h3>
+        <p class="text-muted mb-0">Em Destaque</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <i class="fas fa-chart-bar fa-2x text-info mb-2"></i>
+        <h3 class="mb-0">{{ getTotalCategories() }}</h3>
+        <p class="text-muted mb-0">Categorias</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filtros e Ações -->
+<div class="card mb-4">
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h5 class="mb-0">Filtros</h5>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-primary" (click)="openCreateModal()">
+          <i class="fas fa-plus me-2"></i>Novo Projeto
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row g-3 align-items-end">
+      <!-- Nome do Projeto -->
+      <div class="col-lg-3 col-md-6">
+        <label class="form-label">Nome</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="filters.Name"
+          (keyup.enter)="applyFilters()"
+          placeholder="Filtrar por nome...">
+      </div>
+      
+      <!-- Categoria -->
+      <div class="col-lg-2 col-md-6">
+        <label class="form-label">Categoria</label>
+        <select class="form-select" [(ngModel)]="filters.Category" (change)="applyFilters()">
+          <option value="">Todas</option>
+          <option *ngFor="let category of projectCategories" [value]="category">
+            {{ category }}
+          </option>
+        </select>
+      </div>
+      
+      <!-- Status -->
+      <div class="col-lg-2 col-md-6">
+        <label class="form-label">Status</label>
+        <select class="form-select" [(ngModel)]="filters.Status" (change)="applyFilters()">
+          <option value="">Todos</option>
+          <option *ngFor="let status of projectStatuses" [value]="status">
+            {{ status }}
+          </option>
+        </select>
+      </div>
+      
+      <!-- Destaque -->
+      <div class="col-lg-2 col-md-6">
+        <label class="form-label">Destaque</label>
+        <select class="form-select" [(ngModel)]="filters.IsFeatured" (change)="applyFilters()">
+          <option value="">Todos</option>
+          <option [value]="true">Sim</option>
+          <option [value]="false">Não</option>
+        </select>
+      </div>
+      
+      <!-- Botões de Ação -->
+      <div class="col-lg-3 col-md-12">
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-primary flex-fill" (click)="applyFilters()">
+            <i class="fas fa-search me-2"></i>Filtrar
+          </button>
+          <button class="btn btn-outline-secondary flex-fill" (click)="clearFilters()">
+            <i class="fas fa-times me-2"></i>Limpar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lista de Projetos -->
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Projetos ({{ filteredProjects.length }})</h5>
+  </div>
+  <div class="card-body">
+    <!-- Tabela de Projetos -->
+    <div *ngIf="filteredProjects.length > 0" class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Destaque</th>
+            <th class="text-center">Ativo</th>
+            <th class="text-center">Criado</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let project of filteredProjects; trackBy: trackByProjectId">
+            <td>
+              <div>
+                <strong>{{ project.Name }}</strong>
+                <br>
+                <small class="text-muted">{{ project.ShortDescription }}</small>
+              </div>
+            </td>
+            <td>
+              <span class="badge bg-secondary">{{ project.Category }}</span>
+            </td>
+            <td class="text-center">
+              <span [class]="getStatusClass(project.Status)">
+                {{ project.Status }}
+              </span>
+            </td>
+            <td class="text-center">
+              <button 
+                class="btn btn-sm"
+                [class.btn-warning]="project.IsFeatured"
+                [class.btn-outline-warning]="!project.IsFeatured"
+                (click)="toggleFeatured(project)"
+                title="Alternar destaque">
+                <i class="fas fa-star"></i>
+              </button>
+            </td>
+            <td class="text-center">
+              <button 
+                class="btn btn-sm"
+                [class.btn-success]="project.IsActive"
+                [class.btn-outline-danger]="!project.IsActive"
+                (click)="toggleStatus(project)"
+                title="Alternar status">
+                <i class="fas" [class.fa-eye]="project.IsActive" [class.fa-eye-slash]="!project.IsActive"></i>
+              </button>
+            </td>
+            <td class="text-center">
+              <small class="text-muted">
+                {{ project.DateCreated | date:'dd/MM/yyyy' }}
+              </small>
+            </td>
+            <td class="text-center">
+              <div class="btn-group" role="group">
+                <button 
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="viewProject(project)"
+                  title="Visualizar">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button 
+                  class="btn btn-sm btn-outline-secondary"
+                  (click)="openEditModal(project)"
+                  title="Editar">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button 
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="confirmDelete(project)"
+                  title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Sem projetos -->
+    <div *ngIf="filteredProjects.length === 0" class="text-center py-4">
+      <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+      <h5 class="text-muted">Nenhum projeto encontrado</h5>
+      <p class="text-muted">Crie seu primeiro projeto ou ajuste os filtros</p>
+    </div>
+
+    <!-- Paginação -->
+    <nav *ngIf="totalPages > 1" class="mt-4">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="filters.Page === 1">
+          <button class="page-link" (click)="changePage(filters.Page! - 1)">Anterior</button>
+        </li>
+        <li *ngFor="let page of [].constructor(totalPages); let i = index" 
+            class="page-item" 
+            [class.active]="i + 1 === filters.Page">
+          <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
+        </li>
+        <li class="page-item" [class.disabled]="filters.Page === totalPages">
+          <button class="page-link" (click)="changePage(filters.Page! + 1)">Próximo</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+</div>
+<!-- END PROJECTS TAB -->
+
+<!-- CURRICULUM TAB -->
+<div *ngIf="activeTab === 'curriculum'">
+
+<!-- Seções do Currículo -->
+<div class="row">
+
+  <!-- Informações Pessoais -->
+  <div class="col-12 mb-4">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="fas fa-user me-2"></i>Informações Pessoais
+        </h5>
+        <button 
+          class="btn btn-sm btn-primary" 
+          (click)="openCurriculumModal('personal', personalInfo)">
+          <i class="fas fa-edit me-2"></i>{{ personalInfo ? 'Editar' : 'Adicionar' }}
+        </button>
+      </div>
+      <div class="card-body">
+        <div *ngIf="personalInfo; else noPersonalInfo">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Nome:</strong> {{ personalInfo.Name }}</p>
+              <p><strong>Título:</strong> {{ personalInfo.Title }}</p>
+              <p><strong>Localização:</strong> {{ personalInfo.Location }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Email:</strong> {{ personalInfo.Email }}</p>
+              <p><strong>Telefone:</strong> {{ personalInfo.Phone }}</p>
+              <div class="row">
+                <div class="col-md-2">
+                  <p><strong>LinkedIn:</strong> 
+                    <a *ngIf="personalInfo.LinkedInUrl" [href]="personalInfo.LinkedInUrl" target="_blank">
+                      Link
+                    </a>
+                    <span *ngIf="!personalInfo.LinkedInUrl">Não informado</span>
+                  </p>
+                </div>
+                <div class="col-md-2">
+                  <p><strong>GitHub:</strong> 
+                    <a *ngIf="personalInfo.GitHubUrl" [href]="personalInfo.GitHubUrl" target="_blank">
+                      Link
+                    </a>
+                    <span *ngIf="!personalInfo.GitHubUrl">Não informado</span>
+                  </p>
+                </div>
+                <div class="col-md-2">
+                  <p><strong>Portfolio:</strong> 
+                    <a *ngIf="personalInfo.PortfolioUrl" [href]="personalInfo.PortfolioUrl" target="_blank">
+                      Link
+                    </a>
+                    <span *ngIf="!personalInfo.PortfolioUrl">Não informado</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <p><strong>Descrição:</strong></p>
+              <p>{{ personalInfo.Description }}</p>
+            </div>
+          </div>
+        </div>
+        <ng-template #noPersonalInfo>
+          <p class="text-muted text-center py-3">
+            <i class="fas fa-user-plus fa-2x mb-2"></i><br>
+            Nenhuma informação pessoal cadastrada
+          </p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Habilidades -->
+  <div class="col-md-6 mb-4">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="fas fa-code me-2"></i>Habilidades ({{ skills.length }})
+        </h5>
+        <button 
+          class="btn btn-sm btn-primary" 
+          (click)="openCurriculumModal('skill')">
+          <i class="fas fa-plus me-2"></i>Adicionar
+        </button>
+      </div>
+      <div class="card-body">
+        <div *ngIf="skills.length > 0; else noSkills">
+          <div class="row">
+            <div *ngFor="let skill of skills" class="col-12 mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span><strong>{{ skill.Name }}</strong></span>
+                <div>
+                  <button 
+                    class="btn btn-sm btn-outline-secondary me-1" 
+                    (click)="openCurriculumModal('skill', skill)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-outline-danger" 
+                    (click)="deleteCurriculumItem('skill', skill)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="progress mb-1">
+                <div class="progress-bar progress-bar-striped " [style.width.%]="skill.Level" role="progressbar">
+                  {{ skill.Level }}%
+                </div>
+              </div>
+              <small class="text-muted">{{ skill.Category }}</small>
+            </div>
+          </div>
+        </div>
+        <ng-template #noSkills>
+          <p class="text-muted text-center py-3">
+            <i class="fas fa-code fa-2x mb-2"></i><br>
+            Nenhuma habilidade cadastrada
+          </p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Experiências -->
+  <div class="col-md-6 mb-4">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="fas fa-briefcase me-2"></i>Experiências ({{ experiences.length }})
+        </h5>
+        <button 
+          class="btn btn-sm btn-primary" 
+          (click)="openCurriculumModal('experience')">
+          <i class="fas fa-plus me-2"></i>Adicionar
+        </button>
+      </div>
+      <div class="card-body">
+        <div *ngIf="experiences.length > 0; else noExperiences">
+          <div *ngFor="let exp of experiences" class="mb-3 border-bottom pb-3">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h6 class="mb-1">{{ exp.Title }}</h6>
+                <p class="mb-1 text-muted">{{ exp.Company }}</p>
+                <small class="text-muted">
+                  {{ exp.StartDate | date:'MM/yyyy' }} - 
+                  {{ exp.EndDate ? (exp.EndDate | date:'MM/yyyy') : 'Atual' }}
+                </small>
+              </div>
+              <div>
+                <button 
+                  class="btn btn-sm btn-outline-secondary me-1" 
+                  (click)="openCurriculumModal('experience', exp)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button 
+                  class="btn btn-sm btn-outline-danger" 
+                  (click)="deleteCurriculumItem('experience', exp)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noExperiences>
+          <p class="text-muted text-center py-3">
+            <i class="fas fa-briefcase fa-2x mb-2"></i><br>
+            Nenhuma experiência cadastrada
+          </p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Educação -->
+  <div class="col-md-6 mb-4">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="fas fa-graduation-cap me-2"></i>Educação ({{ education.length }})
+        </h5>
+        <button 
+          class="btn btn-sm btn-primary" 
+          (click)="openCurriculumModal('education')">
+          <i class="fas fa-plus me-2"></i>Adicionar
+        </button>
+      </div>
+      <div class="card-body">
+        <div *ngIf="education.length > 0; else noEducation">
+          <div *ngFor="let edu of education" class="mb-3 border-bottom pb-3">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h6 class="mb-1">{{ edu.Degree }}</h6>
+                <p class="mb-1 text-muted">{{ edu.Institution }}</p>
+                <small class="text-muted">
+                  {{ edu.StartDate | date:'yyyy' }} - 
+                  {{ edu.EndDate ? (edu.EndDate | date:'yyyy') : 'Em andamento' }}
+                </small>
+              </div>
+              <div>
+                <button 
+                  class="btn btn-sm btn-outline-secondary me-1" 
+                  (click)="openCurriculumModal('education', edu)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button 
+                  class="btn btn-sm btn-outline-danger" 
+                  (click)="deleteCurriculumItem('education', edu)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noEducation>
+          <p class="text-muted text-center py-3">
+            <i class="fas fa-graduation-cap fa-2x mb-2"></i><br>
+            Nenhuma educação cadastrada
+          </p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificações -->
+  <div class="col-md-6 mb-4">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="fas fa-certificate me-2"></i>Certificações ({{ certifications.length }})
+        </h5>
+        <button 
+          class="btn btn-sm btn-primary" 
+          (click)="openCurriculumModal('certification')">
+          <i class="fas fa-plus me-2"></i>Adicionar
+        </button>
+      </div>
+      <div class="card-body">
+        <div *ngIf="certifications.length > 0; else noCertifications">
+          <div *ngFor="let cert of certifications" class="mb-3 border-bottom pb-3">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h6 class="mb-1">{{ cert.Name }}</h6>
+                <p class="mb-1 text-muted">{{ cert.Issuer }}</p>
+                <small class="text-muted">
+                  Emitida em {{ cert.IssueDate | date:'MM/yyyy' }}
+                  <span *ngIf="cert.ExpiryDate"> - Expira em {{ cert.ExpiryDate | date:'MM/yyyy' }}</span>
+                </small>
+              </div>
+              <div>
+                <button 
+                  class="btn btn-sm btn-outline-secondary me-1" 
+                  (click)="openCurriculumModal('certification', cert)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button 
+                  class="btn btn-sm btn-outline-danger" 
+                  (click)="deleteCurriculumItem('certification', cert)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noCertifications>
+          <p class="text-muted text-center py-3">
+            <i class="fas fa-certificate fa-2x mb-2"></i><br>
+            Nenhuma certificação cadastrada
+          </p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Serviços -->
+  <div class="col-12 mb-4">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="fas fa-cogs me-2"></i>Serviços Oferecidos ({{ services.length }})
+        </h5>
+        <button 
+          class="btn btn-sm btn-primary" 
+          (click)="openCurriculumModal('service')">
+          <i class="fas fa-plus me-2"></i>Adicionar
+        </button>
+      </div>
+      <div class="card-body">
+        <div *ngIf="services.length > 0; else noServices">
+          <div class="row">
+            <div *ngFor="let service of services" class="col-md-4 mb-3">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h6 class="card-title">{{ service.Title }}</h6>
+                    <div class="dropdown">
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                              data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <button class="dropdown-item" (click)="openCurriculumModal('service', service)">
+                            <i class="fas fa-edit me-2"></i>Editar
+                          </button>
+                        </li>
+                        <li>
+                          <button class="dropdown-item text-danger" (click)="deleteCurriculumItem('service', service)">
+                            <i class="fas fa-trash me-2"></i>Excluir
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                    <p class="card-text small">{{ service.Description }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-primary fw-bold">
+                      {{ service.Price | currency:'BRL':'symbol':'1.0-0' }}
+                    </span>
+                        <small class="text-muted">{{ service.Duration }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noServices>
+          <p class="text-muted text-center py-3">
+            <i class="fas fa-cogs fa-2x mb-2"></i><br>
+            Nenhum serviço cadastrado
+          </p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+<!-- END CURRICULUM TAB -->
+
+<!-- Componentes Modais -->
+<app-project-form-modal 
+  *ngIf="showProjectModal"
+  [project]="selectedProject"
+  [isEditMode]="isEditMode"
+  [isViewMode]="isViewMode"
+  (save)="saveProject($event)"
+  (cancel)="closeProjectModal()">
+</app-project-form-modal>
+
+<app-delete-confirmation-modal 
+  *ngIf="showDeleteModal"
+  [itemName]="selectedProject?.Name || ''"
+  [itemType]="'projeto'"
+  (confirm)="deleteProject()"
+  (cancel)="showDeleteModal = false">
+</app-delete-confirmation-modal>
+
+<app-curriculum-form-modal 
+  *ngIf="showCurriculumModal"
+  [type]="curriculumModalType"
+  [item]="selectedCurriculumItem"
+  [isEditMode]="isEditCurriculumMode"
+  (save)="saveCurriculumItem($event)"
+  (cancel)="closeCurriculumModal()">
+</app-curriculum-form-modal> 

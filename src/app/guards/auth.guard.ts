@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../shared/services/auth.service';
+import { compileInjectable } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,8 @@ export class AuthGuard implements CanActivate {
           return true;
         } else {
           // Redirecionar para home se não estiver autenticado
+          console.log('Não está autenticado');
+         
           return this.router.createUrlTree(['/home']);
         }
       })

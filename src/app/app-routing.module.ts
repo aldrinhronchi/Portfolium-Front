@@ -1,24 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { CurriculumComponent } from './curriculum/curriculum.component';
-import { ContactComponent } from './contact/contact.component';
-import { LoginComponent } from './login/login.component';
-import { IntegrationTestComponent } from './integration-test/integration-test.component';
+import { HomeComponent } from './Pages/home/home.component';
+import { CurriculumComponent } from './Pages/curriculum/curriculum.component';
+import { ContactComponent } from './Pages/contact/contact.component';
+import { LoginComponent } from './Pages/login/login.component';
+import { IntegrationTestComponent } from './Pages/integration-test/integration-test.component';
+import { NotFoundComponent } from './Pages/not-found/not-found.component';
+import { AdminDashboardComponent } from './Pages/admin-dashboard/admin-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ProjectsComponent } from './Pages/projects/projects.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
   { path: 'projects', component: ProjectsComponent },
   { path: 'curriculum', component: CurriculumComponent },
   { path: 'contact', component: ContactComponent },
-  { path: 'test-integration', component: IntegrationTestComponent },
-  // Exemplo de rota protegida - remover quando não precisar mais
-  { path: 'admin', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '/home' }
+  { path: 'login', component: LoginComponent },
+  { path: 'integration-test', component: IntegrationTestComponent },
+  { 
+    path: 'admin', 
+    component: AdminDashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '/404' }
 ];
 
 @NgModule({

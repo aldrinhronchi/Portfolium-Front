@@ -1,0 +1,7 @@
+/* Componente agora usa SweetAlert2, então não precisamos de estilos específicos */
+/* Os estilos são gerenciados pelo próprio SweetAlert2 */
+
+/* Apenas para garantir que o componente não ocupe espaço */
+:host {
+  display: none;
+} 
