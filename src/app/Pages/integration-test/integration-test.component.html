@@ -1,84 +1,101 @@
-<div class="container mt-4">
-  <div class="card">
-    <div class="card-header">
-      <h4><i class="fas fa-flask"></i> Teste de Integração - Fase 1</h4>
-      <p class="mb-0">Verificando conexão entre Frontend e Backend</p>
+<div class="integration-test-page">
+  <div class="container-fluid">
+    <div class="test-header">
+      <h1 class="test-title">INTEGRATION TEST</h1>
+      <p class="test-subtitle">Verificando conexão entre Frontend e Backend</p>
     </div>
-    <div class="card-body">
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <button class="btn btn-primary me-2" (click)="runTests()" [disabled]="loading">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-            {{ loading ? 'Testando...' : 'Executar Todos os Testes' }}
-          </button>
-          <button class="btn btn-info me-2" (click)="testLogin()">
-            Testar Login
-          </button>
-          <button class="btn btn-warning me-2" (click)="logout()">
-            Logout
-          </button>
+    
+    <div class="test-container">
+      <div class="test-controls">
+        <div class="control-group">
+          <h2 class="control-title">CONTROLES PRINCIPAIS</h2>
+          <div class="btn-group-brutal">
+            <button class="btn-brutal btn-primary" (click)="runTests()" [disabled]="loading">
+              <span *ngIf="loading" class="loading-spinner"></span>
+              {{ loading ? 'TESTANDO...' : 'EXECUTAR TODOS OS TESTES' }}
+            </button>
+            <button class="btn-brutal btn-info" (click)="testLogin()">
+              TESTAR LOGIN
+            </button>
+            <button class="btn-brutal btn-warning" (click)="logout()">
+              LOGOUT
+            </button>
+          </div>
         </div>
-        <div class="col-md-6">
-          <button class="btn btn-success me-2" (click)="testInterceptors()">
-            Testar Interceptors
-          </button>
-          <button class="btn btn-secondary" (click)="testSweetAlert()">
-            Testar SweetAlert2
-          </button>
+        
+        <div class="control-group">
+          <h2 class="control-title">TESTES ESPECÍFICOS</h2>
+          <div class="btn-group-brutal">
+            <button class="btn-brutal btn-success" (click)="testInterceptors()">
+              TESTAR INTERCEPTORS
+            </button>
+            <button class="btn-brutal btn-secondary" (click)="testSweetAlert()">
+              TESTAR SWEETALERT2
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Teste</th>
-              <th>Status</th>
-              <th>Detalhes</th>
-              <th>Horário</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let result of testResults" 
-                [class]="'table-' + (result.status === 'Sucesso' ? 'success' : 
-                                   result.status === 'Erro' ? 'danger' : 
-                                   result.status === 'Autenticado' ? 'info' : 'warning')">
-              <td>{{ result.test }}</td>
-              <td>
-                <span class="badge" 
-                      [class]="'bg-' + (result.status === 'Sucesso' ? 'success' : 
-                                       result.status === 'Erro' ? 'danger' : 
-                                       result.status === 'Autenticado' ? 'info' : 'warning')">
+      <div class="test-results">
+        <h2 class="results-title">RESULTADOS DOS TESTES</h2>
+        <div class="results-table-container">
+          <div class="results-header">
+            <div class="header-item">TESTE</div>
+            <div class="header-item">STATUS</div>
+            <div class="header-item">DETALHES</div>
+            <div class="header-item">HORÁRIO</div>
+          </div>
+          <div class="results-body">
+            <div *ngFor="let result of testResults" 
+                 class="result-row"
+                 [class.success]="result.status === 'Sucesso'"
+                 [class.error]="result.status === 'Erro'"
+                 [class.info]="result.status === 'Autenticado'"
+                 [class.warning]="result.status === 'Não Autenticado' || result.status === 'Funcionando'">
+              <div class="result-item">{{ result.test }}</div>
+              <div class="result-item">
+                <span class="status-badge" 
+                      [class.success]="result.status === 'Sucesso'"
+                      [class.error]="result.status === 'Erro'"
+                      [class.info]="result.status === 'Autenticado'"
+                      [class.warning]="result.status === 'Não Autenticado' || result.status === 'Funcionando'">
                   {{ result.status }}
                 </span>
-              </td>
-              <td>{{ result.details }}</td>
-              <td>{{ result.timestamp }}</td>
-            </tr>
-          </tbody>
-        </table>
+              </div>
+              <div class="result-item">{{ result.details }}</div>
+              <div class="result-item">{{ result.timestamp }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="testResults.length === 0" class="no-results">
+          <p>NENHUM TESTE EXECUTADO AINDA</p>
+          <p>Clique em "EXECUTAR TODOS OS TESTES" para começar</p>
+        </div>
       </div>
 
-      <div class="alert alert-info mt-3">
-        <h5><i class="fas fa-info-circle"></i> Como testar:</h5>
-        <ol>
-          <li>Certifique-se de que o backend está rodando na porta 7116</li>
-          <li>Execute "Executar Todos os Testes" para verificar conexões básicas</li>
-          <li>Use "Testar Login" com as credenciais do seu banco de dados</li>
-          <li>Verifique se não há erros de CORS no console do navegador</li>
-        </ol>
-      </div>
+      <div class="test-info">
+        <div class="info-card">
+          <h3 class="info-title">COMO TESTAR</h3>
+          <ol class="info-list">
+            <li>Certifique-se de que o backend está rodando na porta 7116</li>
+            <li>Execute "EXECUTAR TODOS OS TESTES" para verificar conexões básicas</li>
+            <li>Use "TESTAR LOGIN" com as credenciais do seu banco de dados</li>
+            <li>Verifique se não há erros de CORS no console do navegador</li>
+          </ol>
+        </div>
 
-      <div class="alert alert-success mt-3">
-        <h5><i class="fas fa-check-circle"></i> Interceptors Padrão Vedrano Implementados:</h5>
-        <ul class="mb-0">
-          <li>✅ <strong>ErrorHandlerService</strong> - Intercepta erros e mostra SweetAlert2</li>
-          <li>✅ <strong>LoadingInterceptor</strong> - Mostra spinner durante requisições</li>
-          <li>✅ <strong>TokenInterceptorService</strong> - Adiciona JWT automaticamente</li>
-          <li>✅ <strong>SweetAlert2</strong> - Alertas modernos e responsivos</li>
-          <li>✅ <strong>LoadingService</strong> - Controle global de loading</li>
-          <li>✅ <strong>Página 404</strong> - Tratamento de rotas inexistentes</li>
-        </ul>
+        <div class="info-card success">
+          <h3 class="info-title">INTERCEPTORS IMPLEMENTADOS</h3>
+          <ul class="info-list">
+            <li>✅ <strong>ErrorHandlerService</strong> - Intercepta erros e mostra SweetAlert2</li>
+            <li>✅ <strong>LoadingInterceptor</strong> - Mostra spinner durante requisições</li>
+            <li>✅ <strong>TokenInterceptorService</strong> - Adiciona JWT automaticamente</li>
+            <li>✅ <strong>SweetAlert2</strong> - Alertas modernos e responsivos</li>
+            <li>✅ <strong>LoadingService</strong> - Controle global de loading</li>
+            <li>✅ <strong>Página 404</strong> - Tratamento de rotas inexistentes</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

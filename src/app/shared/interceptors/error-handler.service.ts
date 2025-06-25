@@ -62,8 +62,16 @@ export class ErrorHandlerService implements HttpInterceptor {
       title: Titulo.toString(),
       text: info.Message,
       icon: Icon,
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'OK'
+      confirmButtonText: 'ENTENDI',
+      allowOutsideClick: false,
+      customClass: {
+        popup: 'swal2-brutal-popup',
+        title: 'swal2-brutal-title',
+        htmlContainer: 'swal2-brutal-content',
+        confirmButton: 'swal2-brutal-confirm',
+        icon: 'swal2-brutal-icon'
+      },
+      buttonsStyling: false
     });
     
     return info;

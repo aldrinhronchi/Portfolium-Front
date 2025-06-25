@@ -1,0 +1,686 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* Container principal */
+.portfolio-block {
+  background: var(--bg-primary);
+  min-height: 100vh;
+  transition: all 0.3s ease;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.container {
+  padding: 6rem 2rem 2rem;
+  max-width: 1400px;
+}
+
+/* Título principal brutal */
+.title {
+  margin-bottom: 4rem;
+}
+
+.title h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 3rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  position: relative;
+}
+
+.title h2::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: var(--primary-gradient);
+}
+
+.title p {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+/* ==================== SIDEBAR DE FILTROS ==================== */
+.filters-sidebar {
+  background: var(--bg-secondary);
+  border: 3px solid var(--border-color);
+  border-radius: 0;
+  padding: 2rem;
+  position: sticky;
+  top: 7rem;
+  height: fit-content;
+  transition: all 0.3s ease;
+}
+
+.filter-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid var(--border-color);
+}
+
+.filter-section {
+  margin-bottom: 2.5rem;
+}
+
+.filter-section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.filter-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -0.3rem;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: var(--accent-primary);
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border: 2px solid transparent;
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+}
+
+.filter-option:hover {
+  border-color: var(--accent-primary);
+  background: var(--bg-primary);
+  transform: translateX(5px);
+}
+
+.filter-option.active {
+  border-color: var(--accent-primary);
+  background: var(--accent-primary);
+  color: #ffffff;
+}
+
+.filter-count {
+  background: var(--text-muted);
+  color: var(--bg-primary);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 25px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.filter-option.active .filter-count {
+  background: #ffffff;
+  color: var(--accent-primary);
+}
+
+.filter-label {
+  font-size: 0.95rem;
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.filter-actions {
+  border-top: 3px solid var(--border-color);
+  padding-top: 1.5rem;
+}
+
+.btn-clear-filters {
+  width: 100%;
+  background: transparent;
+  border: 3px solid var(--text-muted);
+  color: var(--text-muted);
+  padding: 1rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-clear-filters::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--text-muted);
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.btn-clear-filters:hover::before {
+  left: 0;
+}
+
+.btn-clear-filters:hover {
+  color: var(--bg-primary);
+  border-color: var(--text-muted);
+}
+
+/* ==================== HEADER DOS PROJETOS ==================== */
+.projects-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid var(--border-color);
+}
+
+.results-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.results-count {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.active-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-tag {
+  background: var(--accent-primary);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-tag:hover {
+  background: var(--accent-secondary);
+  transform: scale(1.05);
+}
+
+.filter-tag i {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.filter-tag i:hover {
+  opacity: 1;
+}
+
+/* ==================== CARDS DOS PROJETOS ==================== */
+.project-sidebar-card .card {
+  border: 3px solid var(--border-color) !important;
+  border-radius: 0 !important;
+  background: var(--bg-secondary) !important;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.project-sidebar-card .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px var(--shadow-color) !important;
+  border-color: var(--accent-primary) !important;
+}
+
+/* Imagem do projeto */
+.project-image {
+  transition: all 0.3s ease;
+  border-bottom: 3px solid var(--border-color);
+}
+
+.project-sidebar-card .card:hover .project-image {
+  transform: scale(1.05);
+}
+
+/* Overlay brutal */
+.overlay {
+  background: linear-gradient(45deg, rgba(133, 86, 204, 0.9), rgba(3, 252, 202, 0.9)) !important;
+  transition: all 0.3s ease !important;
+}
+
+.overlay::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.overlay:hover::before {
+  opacity: 0.85;
+}
+
+/* ==================== CARD BODY E METADADOS ==================== */
+.card-body {
+  padding: 1.5rem !important;
+  color: var(--text-primary);
+}
+
+.project-meta {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.category-badge {
+  background: var(--accent-secondary) !important;
+  color: #ffffff !important;
+  border: 2px solid var(--accent-secondary) !important;
+  border-radius: 0 !important;
+  padding: 0.4rem 0.8rem !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.8rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+}
+
+.status-badge {
+  border: 2px solid !important;
+  border-radius: 0 !important;
+  padding: 0.4rem 0.8rem !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.8rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+}
+
+.status-completed {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+.status-development {
+  background: #f59e0b !important;
+  color: #ffffff !important;
+  border-color: #f59e0b !important;
+}
+
+.status-paused {
+  background: #6b7280 !important;
+  color: #ffffff !important;
+  border-color: #6b7280 !important;
+}
+
+.status-archived {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  border-color: #ef4444 !important;
+}
+
+.status-planned {
+  background: #8b5cf6 !important;
+  color: #ffffff !important;
+  border-color: #8b5cf6 !important;
+}
+
+.status-default {
+  background: var(--text-muted) !important;
+  color: #ffffff !important;
+  border-color: var(--text-muted) !important;
+}
+
+.card-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--text-primary) !important;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.card-text {
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--text-muted) !important;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* Badges de tecnologia brutais */
+.badge {
+  font-family: 'Space Grotesk', sans-serif !important;
+  background: var(--accent-primary) !important;
+  color: #ffffff !important;
+  border: 2px solid var(--accent-primary) !important;
+  border-radius: 0 !important;
+  padding: 0.5rem 0.75rem !important;
+  font-weight: 500 !important;
+  font-size: 0.8rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+  transition: all 0.3s ease !important;
+}
+
+.badge:hover {
+  background: var(--accent-secondary) !important;
+  border-color: var(--accent-secondary) !important;
+  transform: scale(1.05);
+}
+
+/* Container das tecnologias com limite de 2 linhas */
+.technologies-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  max-height: 4.5rem; /* Aproximadamente 2 linhas de badges */
+  overflow: hidden;
+  position: relative;
+}
+
+/* Efeito de fade para indicar mais tecnologias */
+.technologies-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30px;
+  height: 100%;
+  background: linear-gradient(to left, var(--bg-secondary) 0%, transparent 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Mostrar fade apenas quando há overflow */
+.technologies-container.has-overflow::after {
+  opacity: 1;
+}
+
+/* Tooltip para mostrar todas as tecnologias no hover */
+.technologies-container:hover {
+  max-height: none;
+  z-index: 10;
+  background: var(--bg-secondary);
+  border: 2px solid var(--accent-primary);
+  padding: 0.5rem;
+  margin: -0.5rem;
+  box-shadow: 0 8px 25px var(--shadow-color);
+}
+
+.technologies-container:hover::after {
+  opacity: 0;
+}
+
+/* Botões brutais */
+.btn {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+  border-width: 3px !important;
+  border-radius: 0 !important;
+  padding: 0.75rem 1rem !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  left: 0;
+}
+
+.btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+.btn:active {
+  transform: translateY(0) !important;
+}
+
+/* Variações dos botões */
+.btn-primary {
+  background: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+  color: #ffffff !important;
+}
+
+.btn-primary::before {
+  background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary)) !important;
+}
+
+.btn-outline-success {
+  background: transparent !important;
+  border-color: #10b981 !important;
+  color: #10b981 !important;
+}
+
+.btn-outline-success::before {
+  background: #10b981 !important;
+}
+
+.btn-outline-success:hover {
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+.btn-outline-dark {
+  background: transparent !important;
+  border-color: var(--text-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.btn-outline-dark::before {
+  background: var(--text-primary) !important;
+}
+
+.btn-outline-dark:hover {
+  color: var(--bg-primary) !important;
+  border-color: var(--text-primary) !important;
+}
+
+.btn-outline-primary {
+  background: transparent !important;
+  border-color: var(--accent-primary) !important;
+  color: var(--accent-primary) !important;
+}
+
+.btn-outline-primary::before {
+  background: var(--accent-primary) !important;
+}
+
+.btn-outline-primary:hover {
+  color: #ffffff !important;
+  border-color: var(--accent-primary) !important;
+}
+
+/* Loading e estados */
+.spinner-border {
+  border-color: var(--accent-primary) !important;
+  border-right-color: transparent !important;
+  width: 3rem;
+  height: 3rem;
+  border-width: 4px;
+}
+
+.alert {
+  font-family: 'Space Grotesk', sans-serif !important;
+  border: 3px solid !important;
+  border-radius: 0 !important;
+  padding: 1.5rem !important;
+  font-weight: 500 !important;
+}
+
+.alert-danger {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-color: #ef4444 !important;
+  color: #ef4444 !important;
+}
+
+/* Empty state */
+.fa-search, .fa-folder-open {
+  color: var(--text-muted) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* Modal adjustments */
+.modal-content {
+  border: 3px solid var(--border-color) !important;
+  border-radius: 0 !important;
+  background: var(--bg-secondary) !important;
+}
+
+/* ==================== RESPONSIVIDADE ==================== */
+@media (max-width: 991px) {
+  .filters-sidebar {
+    position: static;
+    margin-bottom: 2rem;
+  }
+  
+  .filter-options {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .filter-option {
+    flex: 0 0 auto;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 4rem 1rem 2rem;
+  }
+  
+  .title h2 {
+    font-size: 2.5rem;
+  }
+  
+  .title {
+    margin-bottom: 3rem;
+  }
+  
+  .filters-sidebar {
+    padding: 1.5rem;
+  }
+  
+  .filter-title {
+    font-size: 1.3rem;
+  }
+  
+  .results-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .card-body {
+    padding: 1.25rem !important;
+  }
+  
+  .btn {
+    padding: 0.65rem 0.85rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 3rem 0.75rem 1.5rem;
+  }
+  
+  .title h2 {
+    font-size: 2rem;
+  }
+  
+  .filters-sidebar {
+    padding: 1rem;
+  }
+  
+  .filter-options {
+    flex-direction: column;
+  }
+  
+  .card-body {
+    padding: 1rem !important;
+  }
+  
+  .btn {
+    padding: 0.6rem 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .badge {
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .project-meta {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .technologies-container {
+    max-height: 4rem; /* Reduzir um pouco no mobile */
+  }
+  
+  .technologies-container:hover {
+    padding: 0.25rem;
+    margin: -0.25rem;
+  }
+}

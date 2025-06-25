@@ -1,0 +1,142 @@
+<!-- Error state -->
+<div *ngIf="!project" class="modal-error">
+  <div class="error-container">
+    <div class="error-icon">⚠️</div>
+    <h3 class="error-title">PROJETO NÃO ENCONTRADO</h3>
+    <p class="error-description">Não foi possível carregar os detalhes do projeto.</p>
+  </div>
+</div>
+
+<!-- Project details -->
+<div *ngIf="project" class="modal-project">
+  <div class="modal-header-brutal">
+    <div class="project-title-container">
+      <h1 class="project-title">{{ project.Name }}</h1>
+      <span class="status-badge" [class]="getStatusClass(project.Status)">
+        {{ project.Status || 'N/A' }}
+      </span>
+    </div>
+    <button type="button" class="btn-close-brutal" data-bs-dismiss="modal" aria-label="Close">
+      ✕
+    </button>
+  </div>
+  
+  <div class="modal-body-brutal">
+    <div class="project-layout">
+      <!-- Image section -->
+      <div class="image-section">
+        <div class="image-container">
+          <div id="projectCarousel" class="carousel-brutal slide" data-bs-ride="carousel">
+            <!-- Indicators -->
+            <div class="carousel-indicators-brutal" *ngIf="getAdditionalImagesList().length > 0">
+              <button type="button" data-bs-target="#projectCarousel" data-bs-slide-to="0" 
+                      class="indicator-brutal active" aria-current="true"></button>
+              <button *ngFor="let image of getAdditionalImagesList(); let i = index" 
+                      type="button" data-bs-target="#projectCarousel" 
+                      [attr.data-bs-slide-to]="i + 1" 
+                      class="indicator-brutal"></button>
+            </div>
+            
+            <!-- Slides -->
+            <div class="carousel-inner-brutal">
+              <div class="carousel-item active">
+                <img [src]="getMainImage()" class="project-image-brutal" 
+                     [alt]="project.Name">
+              </div>
+              <div *ngFor="let image of getAdditionalImagesList()" class="carousel-item">
+                <img [src]="image" class="project-image-brutal" 
+                     [alt]="project.Name">
+              </div>
+            </div>
+            
+            <!-- Controls -->
+            <button *ngIf="getAdditionalImagesList().length > 0" 
+                    class="carousel-control-brutal carousel-control-prev" type="button" 
+                    data-bs-target="#projectCarousel" data-bs-slide="prev">
+              <span class="control-icon">‹</span>
+            </button>
+            <button *ngIf="getAdditionalImagesList().length > 0" 
+                    class="carousel-control-brutal carousel-control-next" type="button" 
+                    data-bs-target="#projectCarousel" data-bs-slide="next">
+              <span class="control-icon">›</span>
+            </button>
+          </div>
+          </div>
+        </div>
+        
+      <!-- Info section -->
+      <div class="info-section">
+        <div class="info-container">
+          <!-- Category -->
+          <div class="info-block">
+            <h3 class="info-label">CATEGORIA</h3>
+            <span class="category-badge">{{ project.Category || 'N/A' }}</span>
+            </div>
+            
+          <!-- Dates -->
+          <div class="info-block">
+            <h3 class="info-label">PERÍODO</h3>
+            <div class="date-range">
+                {{ formatDate(project.StartDate) }} - {{ formatDate(project.EndDate) }}
+            </div>
+            </div>
+            
+            <!-- Technologies -->
+          <div class="info-block" *ngIf="getTechnologiesList().length > 0">
+            <h3 class="info-label">TECNOLOGIAS</h3>
+            <div class="tech-grid">
+                <span *ngFor="let tech of getTechnologiesList()" 
+                    class="tech-badge-brutal">{{ tech }}</span>
+              </div>
+            </div>
+            
+            <!-- Short description -->
+          <div class="info-block" *ngIf="project.ShortDescription">
+            <h3 class="info-label">RESUMO</h3>
+            <p class="project-summary">{{ project.ShortDescription }}</p>
+            </div>
+            
+            <!-- Action buttons -->
+          <div class="action-buttons" [ngClass]="getButtonLayoutClass()">
+              <button *ngIf="project.DemoUrl" 
+                    class="btn-brutal btn-demo" 
+                      (click)="openDemoUrl()">
+              DEMO
+              </button>
+              <button *ngIf="project.RepositoryUrl" 
+                    class="btn-brutal btn-repo" 
+                      (click)="openRepositoryUrl()">
+              CÓDIGO
+              </button>
+              <button *ngIf="project.ProjectUrl" 
+                    class="btn-brutal btn-site" 
+                      (click)="openProjectUrl()">
+              SITE
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Full description -->
+    <div class="description-section" *ngIf="project.Description">
+      <h3 class="description-title">DESCRIÇÃO COMPLETA</h3>
+      <div class="description-container">
+        <div class="description-content" [innerHTML]="project.Description"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal-footer-brutal">
+    <button type="button" class="btn-brutal btn-close-modal" data-bs-dismiss="modal">
+      FECHAR
+    </button>
+    <button *ngIf="project.DemoUrl" 
+            type="button" class="btn-brutal btn-primary-footer" 
+            (click)="openDemoUrl()">
+      VER PROJETO
+    </button>
+  </div>
+</div>
+
+

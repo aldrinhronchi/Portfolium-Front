@@ -1,191 +1,129 @@
-<div class="modal fade show" [style.display]="'block'" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">
-          {{ getModalTitle() }}
-        </h5>
-        <button type="button" class="btn-close" (click)="onCancel()"></button>
+<div *ngIf="isVisible" class="modal-backdrop-brutal" (click)="closeModal()">
+  <div class="modal-container-brutal" (click)="$event.stopPropagation()">
+    
+    <!-- Header -->
+    <div class="modal-header-brutal">
+      <h2 class="modal-title-brutal">
+        {{ isEditMode ? 'Editar Projeto' : 'Novo Projeto' }}
+      </h2>
+      <button class="close-btn-brutal" (click)="closeModal()" type="button">
+        ×
+      </button>
       </div>
+
+    <!-- Body -->
+    <div class="modal-body-brutal">
       <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-        <div class="modal-body">
-          <div class="row">
+        
             <!-- Nome -->
-            <div class="col-md-8 mb-3">
-              <label class="form-label">Nome <span class="text-danger">*</span></label>
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">Nome *</label>
               <input 
                 type="text" 
-                class="form-control"
-                formControlName="Name"
-                [class.is-invalid]="hasError('Name')"
-                placeholder="Nome do projeto">
-              <div *ngIf="hasError('Name')" class="invalid-feedback">
-                {{ getErrorMessage('Name') }}
-              </div>
-            </div>
-
-            <!-- Categoria -->
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Categoria</label>
-              <select class="form-select" formControlName="Category">
-                <option *ngFor="let category of projectCategories" [value]="category">
-                  {{ category }}
-                </option>
-              </select>
-            </div>
-
-            <!-- Descrição Curta -->
-            <div class="col-12 mb-3">
-              <label class="form-label">Descrição Curta</label>
-              <input 
-                type="text" 
-                class="form-control"
-                formControlName="ShortDescription"
-                [class.is-invalid]="hasError('ShortDescription')"
-                placeholder="Breve descrição do projeto">
-              <div *ngIf="hasError('ShortDescription')" class="invalid-feedback">
-                {{ getErrorMessage('ShortDescription') }}
+            class="form-control-brutal"
+            formControlName="name"
+            placeholder="Nome do projeto"
+          >
+          <div *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched" 
+               class="invalid-feedback-brutal">
+            Nome é obrigatório
               </div>
             </div>
 
             <!-- Descrição -->
-            <div class="col-12 mb-3">
-              <label class="form-label">Descrição</label>
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">Descrição *</label>
               <textarea 
-                class="form-control" 
+            class="form-control-brutal"
+            formControlName="description"
                 rows="4"
-                formControlName="Description"
-                placeholder="Descrição detalhada do projeto"></textarea>
+            placeholder="Descrição do projeto"
+          ></textarea>
+          <div *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched" 
+               class="invalid-feedback-brutal">
+            Descrição é obrigatória
             </div>
-
-            <!-- URLs -->
-            <div class="col-md-4 mb-3">
-              <label class="form-label">URL do Projeto</label>
-              <input 
-                type="url" 
-                class="form-control"
-                formControlName="ProjectUrl"
-                placeholder="https://...">
-            </div>
-
-            <div class="col-md-4 mb-3">
-              <label class="form-label">URL da Demo</label>
-              <input 
-                type="url" 
-                class="form-control"
-                formControlName="DemoUrl"
-                placeholder="https://...">
-            </div>
-
-            <div class="col-md-4 mb-3">
-              <label class="form-label">URL do Repositório</label>
-              <input 
-                type="url" 
-                class="form-control"
-                formControlName="RepositoryUrl"
-                placeholder="https://github.com/...">
             </div>
 
             <!-- Tecnologias -->
-            <div class="col-12 mb-3">
-              <label class="form-label">Tecnologias</label>
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">Tecnologias</label>
               <input 
                 type="text" 
-                class="form-control"
-                formControlName="Technologies"
-                placeholder='["Angular", "TypeScript", ".NET Core"]'>
-              <small class="form-text text-muted">
-                Insira as tecnologias como array JSON ou separadas por vírgula
-              </small>
+            class="form-control-brutal"
+            formControlName="technologies"
+            placeholder="Ex: Angular, TypeScript, CSS"
+          >
             </div>
 
-            <!-- Status e Configurações -->
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Status</label>
-              <select class="form-select" formControlName="Status">
-                <option *ngFor="let status of projectStatuses" [value]="status">
-                  {{ status }}
-                </option>
-              </select>
-            </div>
-
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Ordem de Exibição</label>
+        <!-- URL -->
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">URL</label>
               <input 
-                type="number" 
-                class="form-control"
-                formControlName="DisplayOrder"
-                min="0"
-                placeholder="0">
+            type="url" 
+            class="form-control-brutal"
+            formControlName="url"
+            placeholder="https://exemplo.com"
+          >
             </div>
 
-            <div class="col-md-4 mb-3 d-flex align-items-end">
-              <div class="form-check">
+        <!-- GitHub URL -->
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">GitHub URL</label>
                 <input 
-                  class="form-check-input" 
-                  type="checkbox" 
-                  formControlName="IsFeatured"
-                  id="featuredCheck">
-                <label class="form-check-label" for="featuredCheck">
-                  Projeto em Destaque
-                </label>
-              </div>
+            type="url" 
+            class="form-control-brutal"
+            formControlName="githubUrl"
+            placeholder="https://github.com/usuario/projeto"
+          >
             </div>
 
-            <!-- Datas -->
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Data de Início</label>
+        <!-- Imagem URL -->
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">Imagem URL</label>
               <input 
-                type="date" 
-                class="form-control"
-                formControlName="StartDate">
+            type="url" 
+            class="form-control-brutal"
+            formControlName="imageUrl"
+            placeholder="URL da imagem do projeto"
+          >
             </div>
 
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Data de Fim</label>
+        <!-- Ativo -->
+        <div class="form-group-brutal">
+          <div class="checkbox-group-brutal">
               <input 
-                type="date" 
-                class="form-control"
-                formControlName="EndDate">
-            </div>
-
-            <!-- Imagens -->
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Imagem Principal</label>
-              <input 
-                type="text" 
-                class="form-control"
-                formControlName="MainImage"
-                placeholder="URL da imagem principal">
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Imagens Adicionais</label>
-              <input 
-                type="text" 
-                class="form-control"
-                formControlName="AdditionalImages"
-                placeholder='["url1", "url2", "url3"]'>
-              <small class="form-text text-muted">
-                URLs das imagens como array JSON
-              </small>
-            </div>
+              type="checkbox" 
+              class="checkbox-brutal"
+              formControlName="isActive"
+              id="isActive"
+            >
+            <label for="isActive" class="form-label-brutal">Projeto Ativo</label>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="onCancel()">
-            {{ isViewMode ? 'Fechar' : 'Cancelar' }}
-          </button>
-          <button 
-            *ngIf="!isViewMode"
-            type="submit" 
-            class="btn btn-primary" 
-            [disabled]="projectForm.invalid">
-            {{ isEditMode ? 'Atualizar' : 'Criar' }}
-          </button>
-        </div>
+
       </form>
     </div>
+
+    <!-- Footer -->
+    <div class="modal-footer-brutal">
+      <button 
+        type="button" 
+        class="btn-brutal btn-secondary-brutal"
+        (click)="closeModal()"
+      >
+        Cancelar
+          </button>
+          <button 
+        type="button" 
+        class="btn-brutal btn-primary-brutal"
+        (click)="onSubmit()"
+        [disabled]="projectForm.invalid || isLoading"
+      >
+        <span *ngIf="isLoading" class="spinner-brutal"></span>
+            {{ isEditMode ? 'Atualizar' : 'Criar' }}
+          </button>
+    </div>
+
   </div>
 </div>
-<div class="modal-backdrop fade show"></div> 

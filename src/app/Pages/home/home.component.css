@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* Variáveis de tema locais */
+:root {
+  --home-bg: linear-gradient(135deg, #f8f8f8 0%, #e6e6e6 50%, #f8f8f8 100%);
+  --home-overlay: linear-gradient(45deg, rgba(133, 86, 204, 0.1) 0%, rgba(3, 252, 202, 0.1) 100%);
+  --highlight-bg: var(--accent-primary);
+  --highlight-text: #ffffff;
+  --highlight-border: var(--accent-secondary);
+  --button-bg: #f8f8f8;
+}
+
+.dark-theme {
+  --home-bg: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 50%, #1a1a1a 100%);
+  --home-overlay: linear-gradient(45deg, rgba(133, 86, 204, 0.2) 0%, rgba(3, 252, 202, 0.2) 100%);
+  --highlight-bg: var(--accent-secondary);
+  --highlight-text: var(--text-primary);
+  --highlight-border: var(--accent-primary);
+  --button-bg: #1a1a1a;
+}
+
+/* Reset e configurações base */
+* {
+  box-sizing: border-box;
+}
+
+.home {
+  background: var(--home-bg);
+  position: relative;
+  min-height: 100vh;
+  padding: 0;
+  margin-bottom: -1.3%;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.5s ease;
+}
+
+.home::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--home-overlay);
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-section {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.content-wrapper {
+  max-width: 800px;
+  width: 100%;
+}
+
+/* Tipografia brutal */
+.brutal-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0 0 3rem 0;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.name-highlight {
+  background: var(--highlight-bg);
+  color: var(--highlight-text);
+  padding: 0.2em 0.4em;
+  margin: 0 0.1em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid var(--highlight-border);
+  cursor: pointer;
+  display: inline-block;
+  transform: skew(-5deg);
+}
+
+.name-highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--highlight-border), var(--highlight-bg));
+  transition: left 0.4s ease;
+  z-index: -1;
+}
+
+.name-highlight:hover {
+  transform: skew(-5deg) scale(1.05) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(133, 86, 204, 0.4);
+  border-color: var(--highlight-bg);
+}
+
+.name-highlight:hover::before {
+  left: 0;
+}
+
+.name-highlight:active {
+  transform: skew(-5deg) scale(1.02) translateY(0);
+  box-shadow: 0 4px 10px rgba(133, 86, 204, 0.3);
+}
+
+/* Seção de digitação */
+.typing-section {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 4rem 0;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  transition: all 0.5s ease;
+}
+
+.prompt {
+  color: var(--accent-primary);
+  font-weight: 700;
+  margin-right: 0.5rem;
+  text-shadow: 0 0 10px currentColor;
+  transition: all 0.3s ease;
+}
+
+.typing-text {
+  color: var(--text-primary) !important;
+  transition: all 0.5s ease;
+}
+
+.cursor {
+  border-right: 3px solid var(--accent-primary);
+  animation: 1s blink infinite;
+  box-shadow: 0 0 5px var(--accent-primary);
+  transition: all 0.5s ease;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Botões brutais */
+.cta-section {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.brutal-btn {
+  display: inline-block;
+  padding: 1.2rem 2.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 3px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.brutal-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.brutal-btn:hover::before {
+  left: 0;
+}
+
+.brutal-btn:hover {
+  color: var(--button-bg);
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(133, 86, 204, 0.3);
+}
+
+.brutal-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(133, 86, 204, 0.3);
+}
+
+.brutal-btn-primary {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: var(--button-bg);
+}
+
+.brutal-btn-primary::before {
+  background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+}
+
+.brutal-btn-secondary {
+  border-color: var(--accent-secondary);
+  color: var(--accent-secondary);
+}
+
+.brutal-btn-secondary::before {
+  background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .hero-section {
+    padding: 4rem 0 2rem;
+  }
+  
+  .brutal-title {
+    font-size: clamp(2rem, 10vw, 3rem);
+    margin-bottom: 2rem;
+  }
+  
+  .typing-section {
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .cta-section {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .brutal-btn {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .brutal-title {
+    font-size: clamp(1.8rem, 12vw, 2.5rem);
+  }
+  
+  .typing-section {
+    font-size: 1rem;
+  }
+  
+  .brutal-btn {
+    font-size: 1rem;
+    padding: 0.9rem 1.5rem;
+  }
+}

@@ -23,6 +23,7 @@ import {
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CurriculumService } from 'src/app/shared/services/curriculum.service';
 import { ProjectService } from 'src/app/shared/services/project.service';
+import { SweetAlertBrutalService } from '../../shared/services/sweetalert-brutal.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -57,7 +58,6 @@ export class AdminDashboardComponent implements OnInit {
 
   // Modais e formulários
   showProjectModal = false;
-  showDeleteModal = false;
   isEditMode = false;
   isViewMode = false;
 
@@ -99,7 +99,8 @@ export class AdminDashboardComponent implements OnInit {
     private projectService: ProjectService,
     private curriculumService: CurriculumService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private sweetAlertBrutalService: SweetAlertBrutalService
   ) {
     this.initializeCurriculumForm();
   }
@@ -259,12 +260,17 @@ export class AdminDashboardComponent implements OnInit {
 
     operation.subscribe({
       next: (response) => {
-        this.successMessage = this.isEditMode 
+        const message = this.isEditMode 
           ? 'Projeto atualizado com sucesso!' 
           : 'Projeto criado com sucesso!';
+        
+        this.sweetAlertBrutalService.toast(message, 'success');
         this.closeProjectModal();
         this.loadProjects();
         this.loadStats();
+      },
+      error: () => {
+        this.sweetAlertBrutalService.toast('Erro ao salvar projeto', 'error');
       }
     });
   }
@@ -273,17 +279,50 @@ export class AdminDashboardComponent implements OnInit {
    * Confirmar exclusão
    */
   confirmDelete(project: Project) {
-    this.selectedProject = project;
-    this.showDeleteModal = true;
+    Swal.fire({
+      title: '⚠️ CONFIRMAR EXCLUSÃO',
+      html: `
+        <div style="text-align: center; font-family: 'Space Grotesk', sans-serif;">
+          <div style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; color: #dc3545;">
+            EXCLUIR PROJETO
+          </div>
+          <div style="background: #f8f9fa; border: 3px solid #dee2e6; padding: 1rem; margin: 1rem 0; transform: skew(-2deg);">
+            <div style="transform: skew(2deg); font-weight: 600;">
+              ${project.Name}
+            </div>
+          </div>
+          <p style="color: #6c757d; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
+            Esta ação não pode ser desfeita
+          </p>
+        </div>
+      `,
+      icon: undefined,
+      showCancelButton: true,
+      confirmButtonText: 'EXCLUIR',
+      cancelButtonText: 'CANCELAR',
+      reverseButtons: true,
+      customClass: {
+        popup: 'swal2-brutal-popup',
+        title: 'swal2-brutal-title',
+        confirmButton: 'swal2-brutal-confirm swal2-brutal-danger',
+        cancelButton: 'swal2-brutal-cancel',
+        htmlContainer: 'swal2-brutal-content'
+      },
+      buttonsStyling: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.executeProjectDeletion(project);
+      }
+    });
   }
 
   /**
-   * Excluir projeto
+   * Executar exclusão do projeto
    */
-  deleteProject() {
-    if (!this.selectedProject) return;
-
-    let projectId = this.selectedProject.GuidID ?? "";
+  private executeProjectDeletion(project: Project) {
+    let projectId = project.GuidID ?? "";
     if (projectId === "") {
       this.error = 'Erro ao excluir projeto';
       return;
@@ -291,9 +330,21 @@ export class AdminDashboardComponent implements OnInit {
     
     this.projectService.deleteProject(projectId).subscribe({
       next: () => {
-        this.successMessage = 'Projeto excluído com sucesso!';
-        this.showDeleteModal = false;
-        this.selectedProject = null;
+        Swal.fire({
+          title: '✅ SUCESSO!',
+          text: 'PROJETO EXCLUÍDO COM SUCESSO',
+          icon: undefined,
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'swal2-brutal-popup',
+            title: 'swal2-brutal-title swal2-brutal-success',
+            confirmButton: 'swal2-brutal-confirm swal2-brutal-success'
+          },
+          buttonsStyling: false,
+          timer: 3000,
+          timerProgressBar: true
+        });
+        
         this.loadProjects();
         this.loadStats();
       }
@@ -555,15 +606,17 @@ export class AdminDashboardComponent implements OnInit {
 
     this.saveCurriculumByType(dataToSave).subscribe({
       next: () => {
-        this.successMessage = this.isEditCurriculumMode 
+        const message = this.isEditCurriculumMode 
           ? 'Item atualizado com sucesso!' 
           : 'Item adicionado com sucesso!';
+        
+        this.sweetAlertBrutalService.toast(message, 'success');
         this.closeCurriculumModal();
         this.loadCurriculumData();
       },
       error: (error) => {
         console.error('Erro ao salvar item do currículo:', error);
-        this.error = 'Erro ao salvar item. Tente novamente.';
+        this.sweetAlertBrutalService.toast('Erro ao salvar item', 'error');
       }
     });
   }
@@ -668,14 +721,17 @@ export class AdminDashboardComponent implements OnInit {
         deleteOperation = this.curriculumService.deleteService(item.id);
         break;
       default:
-        this.error = 'Tipo não suportado';
+        this.sweetAlertBrutalService.toast('Tipo não suportado', 'error');
         return;
     }
 
     deleteOperation.subscribe({
       next: () => {
-        this.successMessage = 'Item excluído com sucesso!';
+        this.sweetAlertBrutalService.toast('Item excluído com sucesso!', 'success');
         this.loadCurriculumData();
+      },
+      error: () => {
+        this.sweetAlertBrutalService.toast('Erro ao excluir item', 'error');
       }
     });
   }

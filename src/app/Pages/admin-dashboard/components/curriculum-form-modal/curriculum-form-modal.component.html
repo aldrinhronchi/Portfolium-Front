@@ -1,311 +1,98 @@
-<div class="modal fade show" [style.display]="'block'" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{ getModalTitle() }}</h5>
-        <button type="button" class="btn-close" (click)="onCancel()"></button>
-      </div>
+<div *ngIf="isVisible" class="modal-backdrop-brutal" (click)="closeModal()">
+  <div class="modal-container-brutal" (click)="$event.stopPropagation()">
+    
+    <!-- Header -->
+    <div class="modal-header-brutal">
+      <h2 class="modal-title-brutal">
+        {{ getModalTitle() }}
+      </h2>
+      <button class="close-btn-brutal" (click)="closeModal()" type="button">
+        ×
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body-brutal">
       <form [formGroup]="curriculumForm" (ngSubmit)="onSubmit()">
-        <div class="modal-body">
-          <!-- Campos dinâmicos baseados no tipo -->
-          <div [ngSwitch]="type">
-            
-            <!-- Informações Pessoais -->
-            <div *ngSwitchCase="'personal'">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Nome *</label>
-                  <input type="text" class="form-control" formControlName="Name" [class.is-invalid]="hasError('Name')">
-                  <div *ngIf="hasError('Name')" class="invalid-feedback">{{ getErrorMessage('Name') }}</div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Título Profissional *</label>
-                  <input type="text" class="form-control" formControlName="Title" [class.is-invalid]="hasError('Title')">
-                  <div *ngIf="hasError('Title')" class="invalid-feedback">{{ getErrorMessage('Title') }}</div>
-                </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label">Descrição</label>
-                  <textarea class="form-control" rows="3" formControlName="Description"></textarea>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Localização</label>
-                  <input type="text" class="form-control" formControlName="Location">
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Telefone</label>
-                  <input type="tel" class="form-control" formControlName="Phone">
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Email</label>
-                  <input type="email" class="form-control" formControlName="Email">
-                </div>
-                
-                <!-- Campos Estatísticos -->
-                <div class="col-12 mb-3">
-                  <h6 class="text-muted">📊 Estatísticas do Portfólio</h6>
-                </div>
-                <div class="col-md-3 mb-3">
-                  <label class="form-label">Anos de Experiência</label>
-                  <input type="number" class="form-control" formControlName="YearsExperience" min="0">
-                </div>
-                <div class="col-md-3 mb-3">
-                  <label class="form-label">Projetos Concluídos</label>
-                  <input type="number" class="form-control" formControlName="ProjectsCompleted" min="0">
-                </div>
-                <div class="col-md-3 mb-3">
-                  <label class="form-label">Clientes Felizes</label>
-                  <input type="number" class="form-control" formControlName="HappyClients" min="0">
-                </div>
-                <div class="col-md-3 mb-3">
-                  <label class="form-label">Certificações</label>
-                  <input type="number" class="form-control" formControlName="Certifications" min="0">
-                </div>
-                
-                <!-- Redes Sociais -->
-                <div class="col-12 mb-3">
-                  <h6 class="text-muted">🔗 Redes Sociais</h6>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">LinkedIn URL</label>
-                  <input type="url" class="form-control" formControlName="LinkedInUrl">
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">GitHub URL</label>
-                  <input type="url" class="form-control" formControlName="GitHubUrl">
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Portfolio URL</label>
-                  <input type="url" class="form-control" formControlName="PortfolioUrl">
-                </div>
-              </div>
-            </div>
+        
+        <!-- Campos básicos -->
+        <div class="form-section">
+          <h3 class="section-title">Informações Básicas</h3>
+          
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Name')">
+            <label class="form-label-brutal">Nome *</label>
+            <input 
+              type="text" 
+              class="form-control-brutal"
+              formControlName="Name"
+              placeholder="Nome..."
+            >
+          </div>
 
-            <!-- Habilidade -->
-            <div *ngSwitchCase="'skill'">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Nome da Habilidade *</label>
-                  <input type="text" class="form-control" formControlName="Name" [class.is-invalid]="hasError('Name')">
-                  <div *ngIf="hasError('Name')" class="invalid-feedback">{{ getErrorMessage('Name') }}</div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Categoria *</label>
-                  <select class="form-select" formControlName="Category" [class.is-invalid]="hasError('Category')">
-                    <option value="">Selecione uma categoria</option>
-                    <option *ngFor="let cat of skillCategories" [value]="cat">{{ cat }}</option>
-                  </select>
-                  <div *ngIf="hasError('Category')" class="invalid-feedback">{{ getErrorMessage('Category') }}</div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Nível (0-100) *</label>
-                  <input type="number" class="form-control" formControlName="Level" min="0" max="100" [class.is-invalid]="hasError('Level')">
-                  <div *ngIf="hasError('Level')" class="invalid-feedback">{{ getErrorMessage('Level') }}</div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Ícone</label>
-                  <input type="text" class="form-control" formControlName="Icon" placeholder="fab fa-angular">
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Cor</label>
-                  <input type="color" class="form-control" formControlName="Color">
-                </div>
-              </div>
-            </div>
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Title')">
+            <label class="form-label-brutal">Título *</label>
+            <input 
+              type="text" 
+              class="form-control-brutal"
+              formControlName="Title"
+              placeholder="Título..."
+            >
+          </div>
 
-            <!-- Experiência -->
-            <div *ngSwitchCase="'experience'">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Título do Cargo *</label>
-                  <input type="text" class="form-control" formControlName="Title" [class.is-invalid]="hasError('Title')">
-                  <div *ngIf="hasError('Title')" class="invalid-feedback">{{ getErrorMessage('Title') }}</div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Empresa *</label>
-                  <input type="text" class="form-control" formControlName="Company" [class.is-invalid]="hasError('Company')">
-                  <div *ngIf="hasError('Company')" class="invalid-feedback">{{ getErrorMessage('Company') }}</div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Data de Início *</label>
-                  <input type="date" class="form-control" formControlName="StartDate" [class.is-invalid]="hasError('StartDate')">
-                  <div *ngIf="hasError('StartDate')" class="invalid-feedback">{{ getErrorMessage('StartDate') }}</div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Data de Fim</label>
-                  <input type="date" class="form-control" formControlName="EndDate">
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Localização</label>
-                  <input type="text" class="form-control" formControlName="Location">
-                </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label">Descrição</label>
-                  <textarea class="form-control" rows="3" formControlName="Description"></textarea>
-                </div>
-                
-                <!-- Campos Detalhados -->
-                <div class="col-12 mb-3">
-                  <label class="form-label">Responsabilidades</label>
-                  <textarea class="form-control" rows="3" formControlName="Responsibilities" 
-                            placeholder="Separe as responsabilidades por vírgula ou lista em JSON"></textarea>
-                  <small class="form-text text-muted">Ex: Desenvolvimento de aplicações web, Gestão de equipe, Code review</small>
-                </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label">Tecnologias Utilizadas</label>
-                  <textarea class="form-control" rows="2" formControlName="Technologies" 
-                            placeholder="Separe as tecnologias por vírgula ou lista em JSON"></textarea>
-                  <small class="form-text text-muted">Ex: Angular, TypeScript, C#, .NET Core, SQL Server</small>
-                </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label">Conquistas</label>
-                  <textarea class="form-control" rows="3" formControlName="Achievements" 
-                            placeholder="Separe as conquistas por vírgula ou lista em JSON"></textarea>
-                  <small class="form-text text-muted">Ex: Aumento de 30% na performance, Implementação de CI/CD, Redução de bugs em 50%</small>
-                </div>
-                
-                <div class="col-12 mb-3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" formControlName="IsCurrentJob">
-                    <label class="form-check-label">Trabalho atual</label>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Company')">
+            <label class="form-label-brutal">Empresa</label>
+            <input 
+              type="text" 
+              class="form-control-brutal"
+              formControlName="Company"
+              placeholder="Empresa..."
+            >
+          </div>
 
-            <!-- Educação -->
-            <div *ngSwitchCase="'education'">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Grau/Curso *</label>
-                  <input type="text" class="form-control" formControlName="Degree" [class.is-invalid]="hasError('Degree')">
-                  <div *ngIf="hasError('Degree')" class="invalid-feedback">{{ getErrorMessage('Degree') }}</div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Instituição *</label>
-                  <input type="text" class="form-control" formControlName="Institution" [class.is-invalid]="hasError('Institution')">
-                  <div *ngIf="hasError('Institution')" class="invalid-feedback">{{ getErrorMessage('Institution') }}</div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Data de Início *</label>
-                  <input type="date" class="form-control" formControlName="StartDate" [class.is-invalid]="hasError('StartDate')">
-                  <div *ngIf="hasError('StartDate')" class="invalid-feedback">{{ getErrorMessage('StartDate') }}</div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Data de Conclusão</label>
-                  <input type="date" class="form-control" formControlName="EndDate">
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Localização</label>
-                  <input type="text" class="form-control" formControlName="Location">
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Nota/CRA</label>
-                  <input type="text" class="form-control" formControlName="Grade">
-                </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label">Descrição</label>
-                  <textarea class="form-control" rows="3" formControlName="Description"></textarea>
-                </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label">Conquistas Acadêmicas</label>
-                  <textarea class="form-control" rows="3" formControlName="Achievements" 
-                            placeholder="Separe as conquistas por vírgula ou lista em JSON"></textarea>
-                  <small class="form-text text-muted">Ex: Formatura Magna Cum Laude, Bolsa de estudos, Projeto de pesquisa premiado</small>
-                </div>
-              </div>
-            </div>
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Description')">
+            <label class="form-label-brutal">Descrição</label>
+            <textarea 
+              class="form-control-brutal"
+              formControlName="Description"
+              rows="3"
+              placeholder="Descrição..."
+            ></textarea>
+          </div>
 
-            <!-- Certificação -->
-            <div *ngSwitchCase="'certification'">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Nome da Certificação *</label>
-                  <input type="text" class="form-control" formControlName="Name" [class.is-invalid]="hasError('Name')">
-                  <div *ngIf="hasError('Name')" class="invalid-feedback">{{ getErrorMessage('Name') }}</div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Emissor *</label>
-                  <input type="text" class="form-control" formControlName="Issuer" [class.is-invalid]="hasError('Issuer')">
-                  <div *ngIf="hasError('Issuer')" class="invalid-feedback">{{ getErrorMessage('Issuer') }}</div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Data de Emissão *</label>
-                  <input type="date" class="form-control" formControlName="IssueDate" [class.is-invalid]="hasError('IssueDate')">
-                  <div *ngIf="hasError('IssueDate')" class="invalid-feedback">{{ getErrorMessage('IssueDate') }}</div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Data de Expiração</label>
-                  <input type="date" class="form-control" formControlName="ExpiryDate">
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">ID da Credencial</label>
-                  <input type="text" class="form-control" formControlName="CredentialId">
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">URL da Credencial</label>
-                  <input type="url" class="form-control" formControlName="CredentialUrl">
-                </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label">Descrição</label>
-                  <textarea class="form-control" rows="3" formControlName="Description"></textarea>
-                </div>
-              </div>
-            </div>
-
-            <!-- Serviço -->
-            <div *ngSwitchCase="'service'">
-              <div class="row">
-                <div class="col-md-8 mb-3">
-                  <label class="form-label">Título do Serviço *</label>
-                  <input type="text" class="form-control" formControlName="Title" [class.is-invalid]="hasError('Title')">
-                  <div *ngIf="hasError('Title')" class="invalid-feedback">{{ getErrorMessage('Title') }}</div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Ícone</label>
-                  <input type="text" class="form-control" formControlName="Icon" placeholder="fas fa-code">
-                </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label">Descrição</label>
-                  <textarea class="form-control" rows="3" formControlName="Description"></textarea>
-                </div>
-                <div class="col-12 mb-3">
-                  <label class="form-label">Funcionalidades/Recursos</label>
-                  <textarea class="form-control" rows="3" formControlName="Features" 
-                            placeholder="Separe as funcionalidades por vírgula ou lista em JSON"></textarea>
-                  <small class="form-text text-muted">Ex: Design responsivo, Integração com APIs, SEO otimizado, Dashboard administrativo</small>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Preço</label>
-                  <input type="number" class="form-control" formControlName="Price" min="0" step="0.01" [class.is-invalid]="hasError('Price')">
-                  <div *ngIf="hasError('Price')" class="invalid-feedback">{{ getErrorMessage('Price') }}</div>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Moeda</label>
-                  <select class="form-select" formControlName="Currency">
-                    <option value="BRL">Real (BRL)</option>
-                    <option value="USD">Dólar (USD)</option>
-                    <option value="EUR">Euro (EUR)</option>
-                  </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Duração</label>
-                  <input type="text" class="form-control" formControlName="Duration" placeholder="ex: 2-3 semanas">
-                </div>
-              </div>
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('IsActive')">
+            <div class="checkbox-group-brutal">
+              <input 
+                type="checkbox" 
+                class="checkbox-brutal"
+                formControlName="IsActive"
+                id="isActive"
+              >
+              <label for="isActive" class="form-label-brutal">Ativo</label>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="onCancel()">
-            Cancelar
-          </button>
-          <button type="submit" class="btn btn-primary" [disabled]="loading || curriculumForm.invalid">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-            {{ isEditMode ? 'Atualizar' : 'Salvar' }}
-          </button>
-        </div>
+
       </form>
     </div>
+
+    <!-- Footer -->
+    <div class="modal-footer-brutal">
+      <button 
+        type="button" 
+        class="btn-brutal btn-secondary-brutal"
+        (click)="closeModal()"
+      >
+        Cancelar
+      </button>
+      <button 
+        type="button" 
+        class="btn-brutal btn-primary-brutal"
+        (click)="onSubmit()"
+        [disabled]="curriculumForm.invalid"
+      >
+        {{ isEditMode ? 'Atualizar' : 'Criar' }}
+      </button>
+    </div>
+
   </div>
-</div>
-<div class="modal-backdrop fade show"></div> 
+</div> 

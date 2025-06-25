@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Project, ProjectStatus, ProjectCategory, ProjectUtils } from '../../../../models/project.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -9,71 +9,100 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./project-form-modal.component.css'],
   standalone: false,
 })
-export class ProjectFormModalComponent implements OnInit {
+export class ProjectFormModalComponent implements OnInit, OnChanges {
   @Input() project: Project | null = null;
   @Input() isEditMode = false;
   @Input() isViewMode = false;
+  @Input() isVisible = false;
   @Output() save = new EventEmitter<Project>();
   @Output() cancel = new EventEmitter<void>();
 
   projectForm!: FormGroup;
   projectStatuses = Object.values(ProjectStatus);
   projectCategories = Object.values(ProjectCategory);
+  isLoading = false;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
 
   ngOnInit() {
     this.initializeForm();
+    this.loadProjectData();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // Detecta mudanças nos dados do projeto
+    if (changes['project'] && !changes['project'].firstChange) {
+      this.loadProjectData();
+    }
+    
+    // Detecta mudanças no modo de visualização
+    if (changes['isViewMode'] && this.projectForm) {
+      if (this.isViewMode) {
+        this.projectForm.disable();
+      } else {
+        this.projectForm.enable();
+      }
+    }
+  }
+
+  private loadProjectData() {
     if (this.project && (this.isEditMode || this.isViewMode)) {
-      const projectForForm = ProjectUtils.prepareProjectForForm(this.project);
+      // Mapear os dados do projeto para o formulário
       this.projectForm.patchValue({
-        ...projectForForm,
-        GuidID: this.project.GuidID || ''
+        name: this.project.Name || '',
+        description: this.project.Description || '',
+        technologies: this.project.Technologies || '',
+        url: this.project.ProjectUrl || this.project.DemoUrl || '',
+        githubUrl: this.project.RepositoryUrl || '',
+        imageUrl: this.project.MainImage || '',
+        isActive: this.project.IsActive !== false // Default true se não especificado
+      });
+    } else {
+      // Resetar formulário para novo projeto
+      this.projectForm.reset({
+        name: '',
+        description: '',
+        technologies: '',
+        url: '',
+        githubUrl: '',
+        imageUrl: '',
+        isActive: true
       });
     }
     
     // Desabilitar formulário em modo de visualização
     if (this.isViewMode) {
       this.projectForm.disable();
+    } else {
+      this.projectForm.enable();
     }
   }
 
   private initializeForm(): void {
     this.projectForm = this.formBuilder.group({
-      Name: ['', [Validators.required, Validators.maxLength(200)]],
-      Description: ['', Validators.maxLength(2000)],
-      ShortDescription: ['', Validators.maxLength(500)],
-      Category: ['', Validators.required],
-      Status: ['', Validators.required],
-      IsFeatured: [false],
-      StartDate: [''],
-      EndDate: [''],
-      // URLs
-      ProjectUrl: [''],
-      DemoUrl: [''],
-      RepositoryUrl: [''],
-      // Imagens
-      MainImage: [''],
-      AdditionalImages: [''],
-      ImageUrl: [''], // Mantido para compatibilidade
-      // Outros campos
-      Technologies: [''],
-      Features: [''],
-      Challenges: [''],
-      Lessons: [''],
-      DisplayOrder: [0, [Validators.min(0)]]
+      name: ['', [Validators.required, Validators.maxLength(200)]],
+      description: ['', [Validators.required, Validators.maxLength(2000)]],
+      technologies: [''],
+      url: [''],
+      githubUrl: [''],
+      imageUrl: [''],
+      isActive: [true]
     });
   }
 
   onSubmit() {
     if (this.projectForm.valid) {
-      // Usa ProjectUtils para preparar os dados do formulário para salvamento
-      const projectData = ProjectUtils.prepareProjectForSave(this.projectForm.value);
+      this.isLoading = true;
+      const projectData = this.projectForm.value;
       this.save.emit(projectData);
     }
   }
 
   onCancel() {
+    this.cancel.emit();
+  }
+
+  closeModal() {
     this.cancel.emit();
   }
 

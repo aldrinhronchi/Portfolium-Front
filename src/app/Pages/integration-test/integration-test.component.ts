@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { ProjectService } from '../../shared/services/project.service';
+import { SweetAlertBrutalService } from '../../shared/services/sweetalert-brutal.service';
 import { RequestViewModel } from 'src/app/models/request.viewmodel';
 import { Project } from 'src/app/models/project.model';
 
@@ -18,7 +19,8 @@ export class IntegrationTestComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private sweetAlert: SweetAlertBrutalService
   ) { }
 
   ngOnInit(): void {
@@ -215,18 +217,51 @@ export class IntegrationTestComponent implements OnInit {
    * Testar SweetAlert2 diretamente
    */
   testSweetAlert(): void {
-    import('sweetalert2').then(Swal => {
-      Swal.default.fire({
-        title: 'Teste SweetAlert2',
-        text: 'Os interceptors estão funcionando perfeitamente!',
-        icon: 'success',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Perfeito!'
-      });
-      
-      this.addTestResult('SweetAlert2', 'Sucesso', 'SweetAlert2 funcionando corretamente');
-    }).catch(error => {
-      this.addTestResult('SweetAlert2', 'Erro', 'Erro ao carregar SweetAlert2');
+    // Demonstração de diferentes tipos de alertas brutais
+    this.sweetAlert.confirm(
+      'TESTE SWEETALERT2',
+      'Qual tipo de alerta brutalista você gostaria de testar?',
+      'VER EXEMPLOS',
+      'PULAR TESTE'
+    ).then((result) => {
+      if (result.isConfirmed) {
+        // Sucesso
+        this.sweetAlert.success(
+          'DESIGN BRUTALISTA',
+          '🎨 Estilo aplicado com sucesso! Design consistente em todo o sistema.'
+        ).then(() => {
+          // Warning
+          this.sweetAlert.warning(
+            'EXEMPLO DE WARNING',
+            'Este é um alerta de aviso com design brutalista!'
+          ).then(() => {
+            // Error
+            this.sweetAlert.error(
+              'EXEMPLO DE ERRO',
+              'Este é um alerta de erro com design brutalista!'
+            ).then(() => {
+              // Info
+              this.sweetAlert.info(
+                'EXEMPLO DE INFO',
+                'Este é um alerta informativo com design brutalista!'
+              ).then(() => {
+                // Toast
+                this.sweetAlert.toast('TOAST BRUTALISTA FUNCIONANDO!', 'success');
+                
+                setTimeout(() => {
+                  this.sweetAlert.toast('SEGUNDO TOAST DE TESTE!', 'info');
+                }, 1000);
+
+                setTimeout(() => {
+                  this.sweetAlert.toast('TERCEIRO TOAST DE ERRO!', 'error');
+                }, 2000);
+              });
+            });
+          });
+        });
+      }
     });
+    
+    this.addTestResult('SweetAlert2', 'Sucesso', 'SweetAlert2 brutalista com serviço funcionando corretamente');
   }
 } 

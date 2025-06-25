@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
     // Redirecionar se já estiver logado
     if (this.authService.isAuthenticatedValue) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/admin']);
     }
   }
 
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(credentials.Email, credentials.Password).subscribe({
       next: (response) => {
         if (response && response.Data && response.Data.length > 0) {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/admin']);
         } else {
           this.error = 'Erro ao fazer login';
         }

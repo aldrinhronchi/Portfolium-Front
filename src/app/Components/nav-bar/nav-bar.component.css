@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+.nav-menu {
+	background: var(--primary-gradient);
+	border-bottom: 3px solid var(--border-color);
+	font-family: 'Space Grotesk', sans-serif;
+	padding: 1rem 0;
+	backdrop-filter: blur(10px);
+	transition: all 0.3s ease;
+}
+
+.navbar-nav-controls {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 45px;
+	height: 45px;
+	background: rgba(255, 255, 255, 0.1);
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-radius: 50%;
+	color: #fff;
+	font-size: 1.2rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	backdrop-filter: blur(10px);
+}
+
+.theme-toggle:hover {
+	background: rgba(255, 255, 255, 0.2);
+	border-color: rgba(255, 255, 255, 0.5);
+	transform: scale(1.1);
+	box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.theme-toggle:active {
+	transform: scale(0.95);
+}
+
+.theme-icon {
+	transition: all 0.3s ease;
+}
+
+.theme-toggle:hover .theme-icon {
+	transform: rotate(360deg);
+}
+
+.navbar-brand {
+	font-family: 'Space Grotesk', sans-serif;
+	font-weight: 700;
+	font-size: 1.5rem;
+	color: #fff !important;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand:hover {
+	color: #fff !important;
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+	transform: scale(1.05);
+}
+
+.nav-link {
+	font-family: 'Space Grotesk', sans-serif;
+	font-weight: 500;
+	font-size: 1rem;
+	color: rgba(255, 255, 255, 0.9) !important;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+	padding: 0.75rem 1.5rem !important;
+	margin: 0 0.25rem;
+	border: 2px solid transparent;
+	transition: all 0.3s ease;
+	border-radius: 0;
+	backdrop-filter: blur(5px);
+}
+
+.nav-link:hover {
+	color: #fff !important;
+	background: rgba(255, 255, 255, 0.1);
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link.link-active,
+.nav-link[routerlinkactive="link-active"] {
+	color: #fff !important;
+	background: rgba(255, 255, 255, 0.2);
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	font-weight: 700;
+	box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile menu */
+.navbar-toggler {
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	padding: 0.5rem;
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(5px);
+	transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+	border-color: rgba(255, 255, 255, 0.5);
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-toggler:focus {
+	box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
+.navbar-toggler-icon {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='m4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+@media (max-width: 991px) {
+	.navbar-collapse {
+		background: rgba(0, 0, 0, 0.9);
+		border: 2px solid rgba(255, 255, 255, 0.2);
+		border-top: none;
+		margin-top: 1rem;
+		padding: 1rem;
+		backdrop-filter: blur(10px);
+	}
+	
+	.nav-link {
+		border: 2px solid transparent;
+		margin: 0.25rem 0;
+		background: rgba(255, 255, 255, 0.05);
+	}
+	
+	.nav-link:hover {
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		border-radius: 0;
+		background: rgba(255, 255, 255, 0.1);
+	}
+
+	.navbar-nav-controls {
+		order: 2;
+	}
+	
+	.navbar-brand {
+		order: 1;
+	}
+	
+	.navbar-collapse {
+		order: 3;
+		width: 100%;
+	}
+}

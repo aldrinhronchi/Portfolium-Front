@@ -1,28 +1,227 @@
-.error-content h1 {
-  font-size: 8rem;
-  text-shadow: 0.125rem 0.125rem 0.25rem rgba(0,0,0,0.1);
+/* ===== 404 PAGE - BRUTALISTA DESIGN ===== */
+
+.not-found-page {
+  font-family: 'Space Grotesk', monospace;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 
-.error-actions .btn {
+.not-found-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 20px,
+    rgba(133, 86, 204, 0.05) 20px,
+    rgba(133, 86, 204, 0.05) 40px
+  );
+  pointer-events: none;
+}
+
+.error-container {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.error-content {
+  background: var(--bg-secondary);
+  border: 4px solid var(--text-primary);
+  padding: 3rem;
+  position: relative;
+  transform: skew(-2deg);
   transition: all 0.3s ease;
 }
 
-.error-actions .btn:hover {
-  transform: translateY(-0.125rem);
-  box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.15);
+.error-content:hover {
+  transform: skew(-2deg) translateY(-5px);
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.2),
+    8px 8px 0 var(--accent-primary);
 }
 
-@media (max-width: 48rem) {
-  .error-content h1 {
+.error-content > * {
+  transform: skew(2deg);
+}
+
+.error-number {
+  font-family: 'Space Grotesk', monospace;
+  font-weight: 900;
+  font-size: clamp(6rem, 15vw, 12rem);
+  line-height: 0.8;
+  color: var(--accent-primary);
+  text-shadow: 
+    4px 4px 0px var(--accent-secondary),
+    8px 8px 0px var(--text-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -4px;
+}
+
+.error-title {
+  font-family: 'Space Grotesk', monospace;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.error-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  font-weight: 500;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-brutal {
+  font-family: 'Space Grotesk', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 1rem 2rem;
+  border: 3px solid var(--text-primary);
+  border-radius: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-brutal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-brutal:hover::before {
+  left: 100%;
+}
+
+.btn-brutal.btn-primary {
+  background: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
+}
+
+.btn-brutal.btn-primary:hover {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+  transform: translateY(-3px) skew(-2deg);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    4px 4px 0 var(--accent-secondary);
+}
+
+.btn-brutal.btn-secondary {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.btn-brutal.btn-secondary:hover {
+  background: var(--text-primary);
+  color: var(--bg-secondary);
+  transform: translateY(-3px) skew(2deg);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    4px 4px 0 var(--accent-primary);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .error-content {
+    padding: 2rem;
+    margin: 1rem;
+  }
+  
+  .error-number {
+    font-size: 8rem;
+  }
+  
+  .error-title {
+    font-size: 1.8rem;
+  }
+  
+  .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-brutal {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .error-content {
+    padding: 1.5rem;
+    transform: none;
+  }
+  
+  .error-content:hover {
+    transform: translateY(-5px);
+  }
+  
+  .error-content > * {
+    transform: none;
+  }
+  
+  .error-number {
     font-size: 6rem;
   }
   
-  .error-actions .btn {
-    width: 100%;
-    margin-bottom: 1rem;
+  .error-title {
+    font-size: 1.5rem;
   }
-  
-  .error-actions .btn:last-child {
-    margin-bottom: 0;
-  }
+}
+
+/* ===== DARK THEME ===== */
+.dark-theme .not-found-page {
+  background: var(--bg-primary);
+}
+
+.dark-theme .error-content {
+  background: var(--bg-secondary);
+  border-color: var(--text-primary);
+}
+
+.dark-theme .error-number {
+  color: var(--accent-primary);
+  text-shadow: 
+    4px 4px 0px var(--accent-secondary),
+    8px 8px 0px var(--text-primary);
+}
+
+.dark-theme .error-title {
+  color: var(--text-primary);
+}
+
+.dark-theme .error-description {
+  color: var(--text-secondary);
 } 
