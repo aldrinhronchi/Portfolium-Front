@@ -1,135 +1,141 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
-import { ContactMessage, ContactResponse, ContactInfo, ContactConfig } from '../../models/contact.model';
-import { AppConstants } from '../constants/app.constants';
-import { environment } from '../../../environments/environment';
-import { RequestViewModel } from 'src/app/models/request.viewmodel';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { ApiService } from "./api.service";
+import {
+	ContactMessage,
+	ContactResponse,
+	ContactInfo,
+	ContactConfig,
+} from "../../models/contact.model";
+import { AppConstants } from "../constants/app.constants";
+import { environment } from "../../../environments/environment";
+import { RequestViewModel } from "src/app/models/request.viewmodel";
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: "root",
 })
 export class ContactService {
-  private readonly contactConfig: ContactConfig = {
-    EnableEmailService: true,
-    EmailServiceProvider: 'api',
-    EnableWhatsApp: true,
-    EnableSocialLinks: true
-  };
+	private readonly contactConfig: ContactConfig = {
+		EnableEmailService: true,
+		EmailServiceProvider: "api",
+		EnableWhatsApp: true,
+		EnableSocialLinks: true,
+	};
 
-  constructor(private apiService: ApiService) { }
+	constructor(private apiService: ApiService) {}
 
-  /**
-   * Enviar mensagem de contato via API
-   */
-  sendContactMessage(message: ContactMessage): Observable<RequestViewModel<ContactMessage>> {
-    return this.apiService.post<RequestViewModel<ContactMessage>>(
-      `${AppConstants.API_ENDPOINTS.CONTACT.BASE}/${AppConstants.API_ENDPOINTS.CONTACT.SEND}`,
-      message
-    );
-  }
+	/**
+	 * Enviar mensagem de contato via API
+	 */
+	sendContactMessage(message: ContactMessage): Observable<RequestViewModel<ContactMessage>> {
+		return this.apiService.post<RequestViewModel<ContactMessage>>(
+			`${AppConstants.API_ENDPOINTS.CONTACT.BASE}/${AppConstants.API_ENDPOINTS.CONTACT.SEND}`,
+			message,
+		);
+	}
 
-  /**
-   * Obter informações de contato configuradas
-   */
-  getContactInfo(): Observable<RequestViewModel<ContactInfo>> {
-    return this.apiService.get<RequestViewModel<ContactInfo>>(
-      `${AppConstants.API_ENDPOINTS.CONTACT.BASE}/${AppConstants.API_ENDPOINTS.CONTACT.GET_INFO}`
-    );
-  }
+	/**
+	 * Obter informações de contato configuradas
+	 */
+	getContactInfo(): Observable<RequestViewModel<ContactInfo>> {
+		return this.apiService.get<RequestViewModel<ContactInfo>>(
+			`${AppConstants.API_ENDPOINTS.CONTACT.BASE}/${AppConstants.API_ENDPOINTS.CONTACT.GET_INFO}`,
+		);
+	}
 
-  /**
-   * Enviar mensagem via WhatsApp
-   */
-  sendWhatsAppMessage(contactInfo: ContactInfo, customMessage?: string): void {
-    const defaultMessage = 'Olá, vim pelo seu site, gostaria de conversar, você tem disponibilidade?';
-    const message = encodeURIComponent(customMessage || defaultMessage);
-    const whatsappUrl = `https://wa.me/${contactInfo.WhatsAppNumber}?text=${message}`;
-    
-    window.open(whatsappUrl, '_blank');
-  }
+	/**
+	 * Enviar mensagem via WhatsApp
+	 */
+	sendWhatsAppMessage(contactInfo: ContactInfo, customMessage?: string): void {
+		const defaultMessage =
+			"Olá, vim pelo seu site, gostaria de conversar, você tem disponibilidade?";
+		const message = encodeURIComponent(customMessage || defaultMessage);
+		const whatsappUrl = `https://wa.me/${contactInfo.WhatsAppNumber}?text=${message}`;
 
-  /**
-   * Abrir cliente de email
-   */
-  openEmail(contactInfo: ContactInfo, subject?: string, body?: string): void {
-    const encodedSubject = encodeURIComponent(subject || '🤝 Contato via Portfolio');
-    const encodedBody = encodeURIComponent(body || '');
-    
-    const mailtoUrl = `mailto:${contactInfo.Email}?subject=${encodedSubject}&body=${encodedBody}`;
-    window.location.href = mailtoUrl;
-  }
+		window.open(whatsappUrl, "_blank");
+	}
 
-  /**
-   * Criar mensagem de email formatada
-   */
-  createEmailFromContactForm(formData: ContactMessage): { subject: string; body: string } {
-    const subject = `[Portfolio] ${formData.Subject}`;
-    const body = `Nome: ${formData.Name}\n\n` +
-                 `Email: ${formData.Email}\n\n` +
-                 `Mensagem:\n${formData.Message}`;
-    
-    return { subject, body };
-  }
+	/**
+	 * Abrir cliente de email
+	 */
+	openEmail(contactInfo: ContactInfo, subject?: string, body?: string): void {
+		const encodedSubject = encodeURIComponent(subject || "🤝 Contato via Portfolio");
+		const encodedBody = encodeURIComponent(body || "");
 
-  /**
-   * Validar formulário de contato
-   */
-  validateContactMessage(message: ContactMessage): string[] {
-    const errors: string[] = [];
+		const mailtoUrl = `mailto:${contactInfo.Email}?subject=${encodedSubject}&body=${encodedBody}`;
+		window.location.href = mailtoUrl;
+	}
 
-    if (!message.Name || message.Name.trim().length < 2) {
-      errors.push('Nome deve ter pelo menos 2 caracteres');
-    }
+	/**
+	 * Criar mensagem de email formatada
+	 */
+	createEmailFromContactForm(formData: ContactMessage): { subject: string; body: string } {
+		const subject = `[Portfolio] ${formData.Subject}`;
+		const body =
+			`Nome: ${formData.Name}\n\n` +
+			`Email: ${formData.Email}\n\n` +
+			`Mensagem:\n${formData.Message}`;
 
-    if (!message.Email || !this.isValidEmail(message.Email)) {
-      errors.push('Email deve ser válido');
-    }
+		return { subject, body };
+	}
 
-    if (!message.Subject || message.Subject.trim().length < 5) {
-      errors.push('Assunto deve ter pelo menos 5 caracteres');
-    }
+	/**
+	 * Validar formulário de contato
+	 */
+	validateContactMessage(message: ContactMessage): string[] {
+		const errors: string[] = [];
 
-    if (!message.Message || message.Message.trim().length < 10) {
-      errors.push('Mensagem deve ter pelo menos 10 caracteres');
-    }
+		if (!message.Name || message.Name.trim().length < 2) {
+			errors.push("Nome deve ter pelo menos 2 caracteres");
+		}
 
-    return errors;
-  }
+		if (!message.Email || !this.isValidEmail(message.Email)) {
+			errors.push("Email deve ser válido");
+		}
 
-  /**
-   * Verificar se email é válido
-   */
-  private isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
+		if (!message.Subject || message.Subject.trim().length < 5) {
+			errors.push("Assunto deve ter pelo menos 5 caracteres");
+		}
 
-  /**
-   * Obter configurações de contato
-   */
-  getContactConfig(): ContactConfig {
-    return { ...this.contactConfig };
-  }
+		if (!message.Message || message.Message.trim().length < 10) {
+			errors.push("Mensagem deve ter pelo menos 10 caracteres");
+		}
 
-  /**
-   * Atualizar configurações de contato (para admin)
-   */
-  updateContactConfig(config: Partial<ContactConfig>): void {
-    Object.assign(this.contactConfig, config);
-  }
+		return errors;
+	}
 
-  /**
-   * Registrar tentativa de contato para analytics (opcional)
-   */
-  trackContactAttempt(type: 'form' | 'whatsapp' | 'email' | 'social'): void {
-    const key = `contact_attempt_${type}`;
-    const attempts = parseInt(localStorage.getItem(key) || '0') + 1;
-    localStorage.setItem(key, attempts.toString());
-    
-    // Log apenas em desenvolvimento
-    if (!environment.production) {
-        console.log(`Contact attempt tracked: ${type}`);
-    }
-  }
-} 
+	/**
+	 * Verificar se email é válido
+	 */
+	private isValidEmail(email: string): boolean {
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailRegex.test(email);
+	}
+
+	/**
+	 * Obter configurações de contato
+	 */
+	getContactConfig(): ContactConfig {
+		return { ...this.contactConfig };
+	}
+
+	/**
+	 * Atualizar configurações de contato (para admin)
+	 */
+	updateContactConfig(config: Partial<ContactConfig>): void {
+		Object.assign(this.contactConfig, config);
+	}
+
+	/**
+	 * Registrar tentativa de contato para analytics (opcional)
+	 */
+	trackContactAttempt(type: "form" | "whatsapp" | "email" | "social"): void {
+		const key = `contact_attempt_${type}`;
+		const attempts = parseInt(localStorage.getItem(key) || "0") + 1;
+		localStorage.setItem(key, attempts.toString());
+
+		if (!environment.production) {
+			console.log(`Contact attempt tracked: ${type}`);
+		}
+	}
+}
