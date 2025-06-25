@@ -336,8 +336,10 @@ body {
 
 /* ==================== CORREÇÕES GLOBAIS PARA TEMA ESCURO ==================== */
 
-/* Correção global para text-muted no tema escuro */
-.dark-theme .text-muted {
+/* Correção consolidada para text-muted no tema escuro */
+.dark-theme .text-muted,
+.dark-theme *[class*="text-muted"],
+.dark-theme .card-text.text-muted {
   color: var(--text-muted) !important;
 }
 
@@ -366,41 +368,9 @@ body {
   color: #06b6d4 !important;
 }
 
-/* Correção universal para TODOS os elementos text-muted em qualquer página */
-.dark-theme *[class*="text-muted"] {
-  color: var(--text-muted) !important;
-}
-
-/* Correção para elementos específicos que podem estar herdando cores erradas */
-.dark-theme p.text-muted,
-.dark-theme h1.text-muted,
-.dark-theme h2.text-muted,
-.dark-theme h3.text-muted,
-.dark-theme h4.text-muted,
-.dark-theme h5.text-muted,
-.dark-theme h6.text-muted,
-.dark-theme span.text-muted,
-.dark-theme div.text-muted,
-.dark-theme small.text-muted {
-  color: var(--text-muted) !important;
-}
-
 /* Correção para card-text que pode estar com cor errada */
 .dark-theme .card-text {
   color: var(--text-primary) !important;
-}
-
-.dark-theme .card-text.text-muted {
-  color: var(--text-muted) !important;
-}
-
-/* Correção para elementos dentro de containers Bootstrap */
-.dark-theme .container .text-muted,
-.dark-theme .container-fluid .text-muted,
-.dark-theme .row .text-muted,
-.dark-theme .col .text-muted,
-.dark-theme .card .text-muted {
-  color: var(--text-muted) !important;
 }
 
 /* ===== SWEETALERT2 BRUTALISTA CUSTOMIZATION ===== */

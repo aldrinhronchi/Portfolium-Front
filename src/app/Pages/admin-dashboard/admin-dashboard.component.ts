@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import Swal from 'sweetalert2';
 
 import { 
   Project, 
@@ -276,42 +275,14 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   /**
-   * Confirmar exclusão
+   * Confirmar exclusão de projeto
    */
   confirmDelete(project: Project) {
-    Swal.fire({
-      title: '⚠️ CONFIRMAR EXCLUSÃO',
-      html: `
-        <div style="text-align: center; font-family: 'Space Grotesk', sans-serif;">
-          <div style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; color: #dc3545;">
-            EXCLUIR PROJETO
-          </div>
-          <div style="background: #f8f9fa; border: 3px solid #dee2e6; padding: 1rem; margin: 1rem 0; transform: skew(-2deg);">
-            <div style="transform: skew(2deg); font-weight: 600;">
-              ${project.Name}
-            </div>
-          </div>
-          <p style="color: #6c757d; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
-            Esta ação não pode ser desfeita
-          </p>
-        </div>
-      `,
-      icon: undefined,
-      showCancelButton: true,
-      confirmButtonText: 'EXCLUIR',
-      cancelButtonText: 'CANCELAR',
-      reverseButtons: true,
-      customClass: {
-        popup: 'swal2-brutal-popup',
-        title: 'swal2-brutal-title',
-        confirmButton: 'swal2-brutal-confirm swal2-brutal-danger',
-        cancelButton: 'swal2-brutal-cancel',
-        htmlContainer: 'swal2-brutal-content'
-      },
-      buttonsStyling: false,
-      allowOutsideClick: false,
-      allowEscapeKey: false
-    }).then((result) => {
+    this.sweetAlertBrutalService.confirmDelete(
+      `PROJETO: ${project.Name}`,
+      'EXCLUIR',
+      'CANCELAR'
+    ).then((result) => {
       if (result.isConfirmed) {
         this.executeProjectDeletion(project);
       }
@@ -330,21 +301,7 @@ export class AdminDashboardComponent implements OnInit {
     
     this.projectService.deleteProject(projectId).subscribe({
       next: () => {
-        Swal.fire({
-          title: '✅ SUCESSO!',
-          text: 'PROJETO EXCLUÍDO COM SUCESSO',
-          icon: undefined,
-          confirmButtonText: 'OK',
-          customClass: {
-            popup: 'swal2-brutal-popup',
-            title: 'swal2-brutal-title swal2-brutal-success',
-            confirmButton: 'swal2-brutal-confirm swal2-brutal-success'
-          },
-          buttonsStyling: false,
-          timer: 3000,
-          timerProgressBar: true
-        });
-        
+        this.sweetAlertBrutalService.toast('PROJETO EXCLUÍDO COM SUCESSO!', 'success');
         this.loadProjects();
         this.loadStats();
       }
@@ -355,12 +312,30 @@ export class AdminDashboardComponent implements OnInit {
    * Alternar destaque
    */
   toggleFeatured(project: Project) {
-    const updatedProject = { ...project, IsFeatured: !project.IsFeatured };
-    
-    this.projectService.updateProject(updatedProject).subscribe({
-      next: () => {
-        project.IsFeatured = !project.IsFeatured;
-        this.loadStats();
+    const action = project.IsFeatured ? 'REMOVER DESTAQUE' : 'ADICIONAR DESTAQUE';
+    const message = project.IsFeatured 
+      ? `Remover o projeto "${project.Name}" dos destaques?`
+      : `Adicionar o projeto "${project.Name}" aos destaques?`;
+
+    this.sweetAlertBrutalService.confirm(
+      action,
+      message,
+      'CONFIRMAR',
+      'CANCELAR'
+    ).then((result) => {
+      if (result.isConfirmed) {
+        const updatedProject = { ...project, IsFeatured: !project.IsFeatured };
+        
+        this.projectService.updateProject(updatedProject).subscribe({
+          next: () => {
+            project.IsFeatured = !project.IsFeatured;
+            this.loadStats();
+            this.sweetAlertBrutalService.toast(
+              project.IsFeatured ? 'PROJETO ADICIONADO AOS DESTAQUES!' : 'PROJETO REMOVIDO DOS DESTAQUES!', 
+              'success'
+            );
+          }
+        });
       }
     });
   }
@@ -369,12 +344,30 @@ export class AdminDashboardComponent implements OnInit {
    * Alternar status ativo
    */
   toggleStatus(project: Project) {
-    const updatedProject = { ...project, IsActive: !project.IsActive };
-    
-    this.projectService.updateProject(updatedProject).subscribe({
-      next: () => {
-        project.IsActive = !project.IsActive;
-        this.loadStats();
+    const action = project.IsActive ? 'DESATIVAR PROJETO' : 'ATIVAR PROJETO';
+    const message = project.IsActive 
+      ? `Desativar o projeto "${project.Name}"? (não será exibido publicamente)`
+      : `Ativar o projeto "${project.Name}"? (será exibido publicamente)`;
+
+    this.sweetAlertBrutalService.confirm(
+      action,
+      message,
+      'CONFIRMAR',
+      'CANCELAR'
+    ).then((result) => {
+      if (result.isConfirmed) {
+        const updatedProject = { ...project, IsActive: !project.IsActive };
+        
+        this.projectService.updateProject(updatedProject).subscribe({
+          next: () => {
+            project.IsActive = !project.IsActive;
+            this.loadStats();
+            this.sweetAlertBrutalService.toast(
+              project.IsActive ? 'PROJETO ATIVADO!' : 'PROJETO DESATIVADO!', 
+              'success'
+            );
+          }
+        });
       }
     });
   }
@@ -666,32 +659,19 @@ export class AdminDashboardComponent implements OnInit {
    */
   deleteCurriculumItem(type: string, item: any) {
     const itemName = item.Name || item.Title || item.Degree || 'item';
+    const typeNames: { [key: string]: string } = {
+      skill: 'HABILIDADE',
+      experience: 'EXPERIÊNCIA', 
+      education: 'EDUCAÇÃO',
+      certification: 'CERTIFICAÇÃO',
+      service: 'SERVIÇO'
+    };
     
-    Swal.fire({
-      title: 'Confirmar Exclusão',
-      html: `
-        <div class="text-center">
-          <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-          <p>Tem certeza que deseja excluir o ${type} <strong>${itemName}</strong>?</p>
-          <p class="text-muted">Esta ação não pode ser desfeita.</p>
-        </div>
-      `,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Sim, excluir!',
-      cancelButtonText: 'Cancelar',
-      reverseButtons: true,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      showClass: {
-        popup: 'animate__animated animate__fadeInDown'
-      },
-      hideClass: {
-        popup: 'animate__animated animate__fadeOutUp'
-      }
-    }).then((result) => {
+    this.sweetAlertBrutalService.confirmDelete(
+      `${typeNames[type] || type.toUpperCase()}: ${itemName}`,
+      'EXCLUIR',
+      'CANCELAR'
+    ).then((result) => {
       if (result.isConfirmed) {
         this.executeCurriculumItemDeletion(type, item);
       }

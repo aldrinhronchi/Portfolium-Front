@@ -465,8 +465,6 @@
   border: 1px solid #ef4444;
 }
 
-
-
 /* Ícone de certificação com animação */
 .resume-title i.fa-certificate {
   animation: pulse 2s infinite;
@@ -676,9 +674,7 @@
   color: #dc3545 !important;
 }
 
-.dark-theme .text-muted {
-  color: var(--text-secondary) !important;
-}
+/* Regra .text-muted removida - já está no styles.css global */
 
 /* Correções específicas do componente curriculum já estão no CSS global */
 
@@ -750,4 +746,12 @@
 
 .service-card {
   animation: slideInUp 0.6s ease-out;
+}
+
+/* Consolidação das regras do service-card no tema escuro */
+.dark-theme .service-card,
+.dark-theme .service-card .card-body,
+.dark-theme .service-card li,
+.dark-theme .service-card small {
+  color: var(--text-primary) !important;
 } 
