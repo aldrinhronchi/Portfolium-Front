@@ -1,32 +1,29 @@
 <div class="home">
-    <div class="container text-center">
-      <div class="row justify-content-around">
-        <div class="col-5 align-self-center center ">
-          <div class="row">
-            <div class="text-left">
-              <h2 class="glitch-wrapper">
-                Hey i am <span class="glitch" data-glitch="Aldrin H. Ronchi" >Aldrin H. Ronchi</span><br />
-                but you can call me <span class="glitch" data-glitch="Terore">Terore</span>
-              </h2>
-            </div>
-          </div>
-          <div class="row gy-5">
-            <div class="text-start">
-              <span style="color: #ffff">> </span>
-              <span #textElement class="text"></span>
-              <span #blinkElement class="text blink"></span>
-            </div>
-          </div>
-          <div class="row" style="margin-top: 5%;">
-            <div class="col-5">
-              <a type="button" class="btn btn-outline-primary" [routerLink]="['/projects']"  >See my project</a>
-            </div>
-            <div class="col-5">
-              <a type="button" class="btn btn-outline-primary" [routerLink]="['/curriculum']" >Learn more</a>
-            </div>
-          </div>
+  <div class="container">
+    <div class="hero-section">
+      <div class="content-wrapper">
+        <div class="intro-text">
+          <h1 class="brutal-title">
+            Ola! eu meu nome é <span class="name-highlight">Aldrin H. Ronchi</span><br />
+            mas pode me chamar de <span class="name-highlight">Terore</span>
+          </h1>
         </div>
-        <div class="col-4"></div>
+        
+        <div class="typing-section">
+          <span class="prompt">></span>
+          <span #textElement class="typing-text"></span>
+          <span #blinkElement class="cursor blink"></span>
+        </div>
+        
+        <div class="cta-section">
+          <a class="brutal-btn brutal-btn-primary" [routerLink]="['/projects']">
+            Ver meus projetos
+          </a>
+          <a class="brutal-btn brutal-btn-secondary" [routerLink]="['/curriculum']">
+            Saiba mais
+          </a>
+        </div>
       </div>
     </div>
   </div>
+</div>

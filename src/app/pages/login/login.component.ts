@@ -11,7 +11,6 @@ import { AuthService } from '../../shared/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  loading = false;
   error = '';
 
   constructor(
@@ -36,7 +35,6 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
     const { email, password } = this.loginForm.value;
     this.authService.login(email, password).subscribe({
       next: () => {
@@ -44,7 +42,6 @@ export class LoginComponent implements OnInit {
       },
       error: error => {
         this.error = 'Email ou senha inválidos';
-        this.loading = false;
       }
     });
   }

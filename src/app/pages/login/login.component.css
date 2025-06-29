@@ -1,12 +1,311 @@
-.card {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Estilos antigos removidos - usando design brutalista */
+
+/* ===== LOGIN PAGE - BRUTALISTA DESIGN ===== */
+
+.login-page {
+  font-family: 'Space Grotesk', monospace;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 
-.card-header {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
+.login-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 15px,
+    rgba(133, 86, 204, 0.1) 15px,
+    rgba(133, 86, 204, 0.1) 30px
+  );
+  pointer-events: none;
 }
 
-.form-group label {
+.login-container {
+  position: relative;
+  z-index: 2;
+  max-width: 450px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-title {
+  font-family: 'Space Grotesk', monospace;
+  font-weight: 900;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  color: var(--text-primary);
+  text-shadow: 
+    3px 3px 0px var(--accent-primary),
+    6px 6px 0px var(--accent-secondary);
+  margin-bottom: 0.5rem;
+  line-height: 0.9;
+}
+
+.login-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-form-container {
+  background: var(--bg-secondary);
+  border: 4px solid var(--text-primary);
+  padding: 2.5rem;
+  position: relative;
+  transform: skew(-2deg);
+  transition: all 0.3s ease;
+}
+
+.login-form-container:hover {
+  transform: skew(-2deg) translateY(-5px);
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.2),
+    8px 8px 0 var(--accent-primary);
+}
+
+.login-form-container > * {
+  transform: skew(2deg);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label-brutal {
+  display: block;
+  font-family: 'Space Grotesk', monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.form-control-brutal {
+  width: 100%;
+  padding: 1rem;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  background: var(--bg-primary);
+  border: 3px solid var(--text-primary);
+  border-radius: 0;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.form-control-brutal::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.form-control-brutal:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 
+    0 0 0 2px var(--accent-primary),
+    inset 0 0 0 1px var(--bg-secondary);
+  transform: translateY(-2px);
+}
+
+.form-control-brutal.is-invalid {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.3);
+}
+
+.invalid-feedback-brutal {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #dc3545;
+  background: rgba(220, 53, 69, 0.1);
+  padding: 0.5rem;
+  border: 2px solid #dc3545;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.alert-brutal.alert-danger {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border: 3px solid #dc3545;
+  border-radius: 0;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+}
+
+.form-actions {
+  margin-top: 2rem;
+}
+
+.btn-brutal.btn-login {
+  width: 100%;
+  font-family: 'Space Grotesk', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 1.2rem 2rem;
+  border: 3px solid var(--accent-primary);
+  border-radius: 0;
+  background: var(--accent-primary);
+  color: #ffffff;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-brutal.btn-login::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-brutal.btn-login:hover::before {
+  left: 100%;
+}
+
+.btn-brutal.btn-login:hover {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+  transform: translateY(-3px) skew(-1deg);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    6px 6px 0 var(--accent-secondary);
+}
+
+.btn-brutal.btn-login:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-brutal.btn-login:disabled:hover {
+  background: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 1rem;
+  }
+  
+  .login-form-container {
+    padding: 2rem;
+    margin: 1rem 0;
+  }
+  
+  .login-title {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-form-container {
+    padding: 1.5rem;
+    transform: none;
+  }
+  
+  .login-form-container:hover {
+    transform: translateY(-5px);
+  }
+  
+  .login-form-container > * {
+    transform: none;
+  }
+  
+  .login-title {
+    font-size: 2.5rem;
+  }
+  
+  .form-control-brutal {
+    padding: 0.8rem;
+  }
+  
+  .btn-brutal.btn-login {
+    padding: 1rem;
+  }
+}
+
+/* ===== DARK THEME ===== */
+.dark-theme .login-page {
+  background: var(--bg-primary);
+}
+
+.dark-theme .login-form-container {
+  background: var(--bg-secondary);
+  border-color: var(--text-primary);
+}
+
+.dark-theme .login-title {
+  color: var(--text-primary);
+  text-shadow: 
+    3px 3px 0px var(--accent-primary),
+    6px 6px 0px var(--accent-secondary);
+}
+
+.dark-theme .login-subtitle {
+  color: var(--text-secondary);
+}
+
+.dark-theme .form-label-brutal {
+  color: var(--text-primary);
+}
+
+.dark-theme .form-control-brutal {
+  background: var(--bg-primary);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.dark-theme .form-control-brutal::placeholder {
+  color: var(--text-secondary);
+}
+
+.dark-theme .form-control-brutal:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 
+    0 0 0 2px var(--accent-primary),
+    inset 0 0 0 1px var(--bg-secondary);
 } 

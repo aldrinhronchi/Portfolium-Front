@@ -1,145 +1,540 @@
-<!-- ======= About Section ======= -->
-<section id="about" class="about">
-  <div class="container">
-    <div class="row no-gutters">
-      <div class="image col-xl-5 d-flex align-items-stretch justify-content-center justify-content-lg-start">
-        <img [src]="personalInfo?.ProfileImage || '/assets/img/me.jpg'" alt="Profile Image" class="img-fluid">
-      </div>
-      <div class="col-xl-7 ps-0 ps-lg-5 pe-lg-1 d-flex align-items-stretch">
-        <div class="content d-flex flex-column justify-content-center">
-          <div class="section-title">
-            <h2>{{ personalInfo?.Name || 'Carregando...' }}</h2>
-            <h3>{{ personalInfo?.Title }}</h3>
-          </div>
-
-            <p>{{ personalInfo?.Description }}</p>
+<div class="curriculum-page">
+  <!-- ======= Header Section ======= -->
+  <section class="hero-section py-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <h1 class="display-4 fw-bold mb-3">{{ personalInfo?.Name || "CARREGANDO..." }}</h1>
+          <h2 class="h3 mb-4">{{ personalInfo?.Title || 'CARREGANDO...' }}</h2>
+          <p class="lead mb-4">{{ personalInfo?.Description || 'Carregando informações...' }}</p>
           
-          <div class="row">
-            <div class="col-md-6 d-md-flex align-items-md-stretch">
-              <div class="count-box">
-                <i class="far fa-smile"></i>
-                <span>{{ personalInfo?.HappyClients || 0 }}</span>
-                <p><strong>Clientes Satisfeitos</strong></p>
+          <div class="d-flex gap-3 mb-4 flex-wrap">
+            <button class="btn btn-light btn-lg" (click)="downloadCV()">
+              <i class="fas fa-download me-2"></i>
+              DOWNLOAD CV
+            </button>
+            <button class="btn btn-outline-light btn-lg" (click)="scrollToSection('contact')">
+              <i class="fas fa-envelope me-2"></i>
+              CONTATO
+            </button>
+          </div>
+        </div>
+        
+        <div class="col-lg-6 text-center">
+          <img src="/assets/img/me.jpg" alt="Perfil Profissional" 
+               class="img-fluid rounded-circle shadow-lg" 
+               style="max-width: 300px; width: 100%;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= About Section ======= -->
+  <section id="about" class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mb-5">
+          <h2 class="section-title">SOBRE MIM</h2>
+          <p class="text-muted">Conheça mais sobre minha trajetória e conquistas</p>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <div class="row text-center">
+            <div class="col-md-3 col-sm-6 mb-4">
+              <div class="stat-card p-4 h-100">
+                <i class="far fa-clock text-warning"></i>
+                <h3 class="text-warning">{{ personalInfo?.YearsExperience || 0 }}+</h3>
+                <p class="mb-0"><strong>Anos de Experiência</strong></p>
               </div>
             </div>
-
-            <div class="col-md-6 d-md-flex align-items-md-stretch">
-              <div class="count-box">
-                <i class="far fa-newspaper"></i>
-                <span>{{ personalInfo?.ProjectsCompleted || 0 }}</span>
-                <p><strong>Projetos Completados</strong></p>
+            
+            <div class="col-md-3 col-sm-6 mb-4">
+              <div class="stat-card p-4 h-100">
+                <i class="far fa-folder text-success"></i>
+                <h3 class="text-success">{{ personalInfo?.ProjectsCompleted || 0 }}+</h3>
+                <p class="mb-0"><strong>Projetos Concluídos</strong></p>
               </div>
             </div>
-
-            <div class="col-md-6 d-md-flex align-items-md-stretch">
-              <div class="count-box">
-                <i class="far fa-clock"></i>
-                <span>{{ personalInfo?.YearsExperience || 0 }}</span>
-                <p><strong>Anos de Experiência</strong></p>
+            
+            <div class="col-md-3 col-sm-6 mb-4">
+              <div class="stat-card p-4 h-100">
+                <i class="far fa-smile text-info"></i>
+                <h3 class="text-info">{{ personalInfo?.HappyClients || 0 }}+</h3>
+                <p class="mb-0"><strong>Clientes Satisfeitos</strong></p>
               </div>
             </div>
-
-            <div class="col-md-6 d-md-flex align-items-md-stretch">
-              <div class="count-box">
-                <i class="fas fa-award"></i>
-                <span>{{ personalInfo?.Certifications || 0 }}</span>
-                <p><strong>Certificações</strong></p>
+            
+            <div class="col-md-3 col-sm-6 mb-4">
+              <div class="stat-card p-4 h-100">
+                <i class="fas fa-certificate text-danger"></i>
+                <h3 class="text-danger">{{ personalInfo?.Certifications || 0 }}+</h3>
+                <p class="mb-0"><strong>Certificações</strong></p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<!-- ======= End About Section ======= -->
+  </section>
 
-<!-- ======= Skills Section ======= -->
-<section id="skills" class="skills section-bg">
-  <div class="container">
-    <div class="section-title">
-      <h2>Habilidades</h2>
-      <p>Minhas principais habilidades técnicas e profissionais.</p>
-    </div>
-
-    <div class="row skills-content">
-      <div class="col-lg-6" *ngFor="let skill of skills">
-        <div class="progress">
-          <span class="skill">
-            {{ skill.Name }} <i class="val">{{ skill.Level }}%</i>
-          </span>
-          <div class="progress-bar" [style.width.%]="skill.Level"></div>
+  <!-- ======= Skills Section ======= -->
+  <section id="skills" class="skills-section py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mb-5">
+          <h2 class="section-title">HABILIDADES TÉCNICAS</h2>
+          <p class="text-muted">Tecnologias e ferramentas que domino</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-<!-- ======= End Skills Section ======= -->
 
-<!-- ======= Resume Section ======= -->
-<section id="resume" class="resume section-bg">
-  <div class="container">
-    <div class="section-title">
-      <h2>Currículo</h2>
-      <p>Minha trajetória profissional e acadêmica.</p>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-6">
-        <h3 class="resume-title">Resumo</h3>
-        <div class="resume-item pb-0">
-          <h4>{{ personalInfo?.Name }}</h4>
-          <p><em>{{ personalInfo?.Description }}</em></p>
-          <ul>
-            <li>{{ personalInfo?.Location }}</li>
-            <li>{{ personalInfo?.Phone }}</li>
-            <li>{{ personalInfo?.Email }}</li>
+      <!-- Skills Tabs -->
+      <div class="row">
+        <div class="col-12">
+          <ul class="nav nav-pills justify-content-center mb-4" id="skillsTabs">
+            <li class="nav-item">
+              <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#frontend">
+                <i class="fas fa-code me-2"></i>FRONTEND
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#backend">
+                <i class="fas fa-server me-2"></i>BACKEND
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#database">
+                <i class="fas fa-database me-2"></i>DATABASE
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tools">
+                <i class="fas fa-tools me-2"></i>TOOLS
+              </button>
+            </li>
           </ul>
-        </div>
 
-        <h3 class="resume-title">Educação</h3>
-        <div class="resume-item" *ngFor="let edu of education">
-          <h4>{{ edu.Degree }}</h4>
-          <h5>{{ edu.StartDate | date:'yyyy' }} - {{ edu.EndDate | date:'yyyy' }}</h5>
-          <p><em>{{ edu.Institution }}</em></p>
-          <p>{{ edu.Description }}</p>
-        </div>
-      </div>
+          <div class="tab-content">
+            <!-- Frontend Skills -->
+            <div class="tab-pane fade show active" id="frontend">
+              <div class="row">
+                <!-- Layout uma coluna (≤4 skills) -->
+                <div *ngIf="!shouldUseTwoColumns('Frontend')" class="col-lg-8 mx-auto">
+                  <div *ngFor="let skill of getSkillsByCategory('Frontend')" class="skill-item">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="skill-name">{{ skill.Name }}</span>
+                      <span class="skill-percent">{{ skill.Level }}%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" 
+                           [class]="getSkillLevelClass(skill.Level)"
+                           [style.width.%]="skill.Level"
+                           role="progressbar">
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-      <div class="col-lg-6">
-        <h3 class="resume-title">Experiência Profissional</h3>
-        <div class="resume-item" *ngFor="let exp of experiences">
-          <h4>{{ exp.Title }}</h4>
-          <h5>{{ exp.StartDate | date:'yyyy' }} - {{ exp.EndDate ? (exp.EndDate | date:'yyyy') : 'Presente' }}</h5>
-          <p><em>{{ exp.Company }}, {{ exp.Location }}</em></p>
-          <p>{{ exp.Description }}</p>
+                <!-- Layout duas colunas (>4 skills) -->
+                <ng-container *ngIf="shouldUseTwoColumns('Frontend')">
+                  <div class="col-lg-6">
+                    <div *ngFor="let skill of getSkillsInColumns('Frontend').left" class="skill-item">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="skill-name">{{ skill.Name }}</span>
+                        <span class="skill-percent">{{ skill.Level }}%</span>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar" 
+                             [class]="getSkillLevelClass(skill.Level)"
+                             [style.width.%]="skill.Level"
+                             role="progressbar">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div *ngFor="let skill of getSkillsInColumns('Frontend').right" class="skill-item">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="skill-name">{{ skill.Name }}</span>
+                        <span class="skill-percent">{{ skill.Level }}%</span>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar" 
+                             [class]="getSkillLevelClass(skill.Level)"
+                             [style.width.%]="skill.Level"
+                             role="progressbar">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Backend Skills -->
+            <div class="tab-pane fade" id="backend">
+              <div class="row">
+                <!-- Layout uma coluna (≤4 skills) -->
+                <div *ngIf="!shouldUseTwoColumns('Backend')" class="col-lg-8 mx-auto">
+                  <div *ngFor="let skill of getSkillsByCategory('Backend')" class="skill-item">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="skill-name">{{ skill.Name }}</span>
+                      <span class="skill-percent">{{ skill.Level }}%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" 
+                           [class]="getSkillLevelClass(skill.Level)"
+                           [style.width.%]="skill.Level"
+                           role="progressbar">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Layout duas colunas (>4 skills) -->
+                <ng-container *ngIf="shouldUseTwoColumns('Backend')">
+                  <div class="col-lg-6">
+                    <div *ngFor="let skill of getSkillsInColumns('Backend').left" class="skill-item">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="skill-name">{{ skill.Name }}</span>
+                        <span class="skill-percent">{{ skill.Level }}%</span>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar" 
+                             [class]="getSkillLevelClass(skill.Level)"
+                             [style.width.%]="skill.Level"
+                             role="progressbar">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div *ngFor="let skill of getSkillsInColumns('Backend').right" class="skill-item">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="skill-name">{{ skill.Name }}</span>
+                        <span class="skill-percent">{{ skill.Level }}%</span>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar" 
+                             [class]="getSkillLevelClass(skill.Level)"
+                             [style.width.%]="skill.Level"
+                             role="progressbar">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Database Skills -->
+            <div class="tab-pane fade" id="database">
+              <div class="row">
+                <!-- Layout uma coluna (≤4 skills) -->
+                <div *ngIf="!shouldUseTwoColumns('Database')" class="col-lg-8 mx-auto">
+                  <div *ngFor="let skill of getSkillsByCategory('Database')" class="skill-item">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="skill-name">{{ skill.Name }}</span>
+                      <span class="skill-percent">{{ skill.Level }}%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" 
+                           [class]="getSkillLevelClass(skill.Level)"
+                           [style.width.%]="skill.Level"
+                           role="progressbar">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Layout duas colunas (>4 skills) -->
+                <ng-container *ngIf="shouldUseTwoColumns('Database')">
+                  <div class="col-lg-6">
+                    <div *ngFor="let skill of getSkillsInColumns('Database').left" class="skill-item">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="skill-name">{{ skill.Name }}</span>
+                        <span class="skill-percent">{{ skill.Level }}%</span>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar" 
+                             [class]="getSkillLevelClass(skill.Level)"
+                             [style.width.%]="skill.Level"
+                             role="progressbar">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div *ngFor="let skill of getSkillsInColumns('Database').right" class="skill-item">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="skill-name">{{ skill.Name }}</span>
+                        <span class="skill-percent">{{ skill.Level }}%</span>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar" 
+                             [class]="getSkillLevelClass(skill.Level)"
+                             [style.width.%]="skill.Level"
+                             role="progressbar">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Tools Skills -->
+            <div class="tab-pane fade" id="tools">
+              <div class="row">
+                <!-- Layout uma coluna (≤4 skills) -->
+                <div *ngIf="!shouldUseTwoColumns('Tools')" class="col-lg-8 mx-auto">
+                  <div *ngFor="let skill of getSkillsByCategory('Tools')" class="skill-item">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="skill-name">{{ skill.Name }}</span>
+                      <span class="skill-percent">{{ skill.Level }}%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" 
+                           [class]="getSkillLevelClass(skill.Level)"
+                           [style.width.%]="skill.Level"
+                           role="progressbar">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Layout duas colunas (>4 skills) -->
+                <ng-container *ngIf="shouldUseTwoColumns('Tools')">
+                  <div class="col-lg-6">
+                    <div *ngFor="let skill of getSkillsInColumns('Tools').left" class="skill-item">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="skill-name">{{ skill.Name }}</span>
+                        <span class="skill-percent">{{ skill.Level }}%</span>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar" 
+                             [class]="getSkillLevelClass(skill.Level)"
+                             [style.width.%]="skill.Level"
+                             role="progressbar">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div *ngFor="let skill of getSkillsInColumns('Tools').right" class="skill-item">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="skill-name">{{ skill.Name }}</span>
+                        <span class="skill-percent">{{ skill.Level }}%</span>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar" 
+                             [class]="getSkillLevelClass(skill.Level)"
+                             [style.width.%]="skill.Level"
+                             role="progressbar">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<!-- ======= End Resume Section ======= -->
+  </section>
 
-<!-- ======= Services Section ======= -->
-<section id="services" class="services section-bg">
-  <div class="container">
-    <div class="section-title">
-      <h2>Serviços</h2>
-      <p>Serviços que ofereço aos meus clientes.</p>
-    </div>
+  <!-- ======= Resume Section ======= -->
+  <section id="resume" class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mb-5">
+          <h2 class="section-title">EXPERIÊNCIA & EDUCAÇÃO</h2>
+          <p class="text-muted">Minha trajetória profissional e acadêmica</p>
+        </div>
+      </div>
 
-    <div class="row">
-      <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" *ngFor="let service of services">
-        <div class="icon-box">
-          <div class="icon"><i [class]="service.Icon || 'fas fa-code'"></i></div>
-          <h4 class="title">{{ service.Title }}</h4>
-          <p class="description">{{ service.Description }}</p>
+      <div class="row">
+        <!-- Education & Certifications Column -->
+        <div class="col-lg-6">
+          <h3 class="resume-title mb-4">
+            <i class="fas fa-graduation-cap text-success"></i>
+            EDUCAÇÃO
+          </h3>
+          <div *ngFor="let education of education" class="resume-item">
+            <h4 class="text-success">{{ education.Degree }}</h4>
+            <h5 class="text-muted mb-2">{{ getEducationPeriod(education) }}</h5>
+            <p class="text-primary mb-2">
+              <em>{{ education.Institution }}, {{ education.Location }}</em>
+            </p>
+            <p class="text-muted">{{ education.Description }}</p>
+          </div>
+
+          <!-- Certificações (apenas se houver) -->
+          <div *ngIf="certifications && certifications.length > 0">
+            <h3 class="resume-title mb-4 mt-5">
+              <i class="fas fa-certificate text-info"></i>
+              CERTIFICAÇÕES
+            </h3>
+            <div *ngFor="let certification of certifications" class="resume-item">
+              <h4 class="text-info">{{ certification.Name }}</h4>
+              <h5 class="text-muted mb-2">
+                {{ formatCertificationDate(certification.IssueDate) }}
+                <span *ngIf="certification.ExpiryDate && !isCertificationValid(certification)" class="text-danger ms-2">
+                  (Expirada)
+                </span>
+                <span *ngIf="certification.ExpiryDate && isCertificationValid(certification)" class="text-success ms-2">
+                  (Válida até {{ formatCertificationDate(certification.ExpiryDate) }})
+                </span>
+              </h5>
+              <p class="text-primary mb-2">
+                <em>{{ certification.Issuer }}</em>
+              </p>
+              <p *ngIf="certification.Description" class="text-muted mb-2">{{ certification.Description }}</p>
+              <p *ngIf="certification.CredentialUrl" class="mb-0">
+                <a [href]="certification.CredentialUrl" target="_blank" rel="noopener noreferrer" class="text-primary">
+                  <i class="fas fa-external-link-alt me-1"></i>
+                  Ver Credencial
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experience Column -->
+        <div class="col-lg-6">
+          <h3 class="resume-title mb-4">
+            <i class="fas fa-briefcase text-warning"></i>
+            EXPERIÊNCIA PROFISSIONAL
+          </h3>
+          <div *ngFor="let experience of experiences" class="resume-item">
+            <h4 class="text-warning">{{ experience.Title }}</h4>
+            <h5 class="text-muted mb-2">{{ getExperiencePeriod(experience) }}</h5>
+            <p class="text-primary mb-2">
+              <em>{{ experience.Company }}, {{ experience.Location }}</em>
+            </p>
+            <p class="text-muted mb-3">{{ experience.Description }}</p>
+            <ul class="list-unstyled">
+              <li *ngFor="let responsibility of parseArray(experience.Responsibilities)" class="mb-1">
+                {{ responsibility }}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<!-- ======= End Services Section ======= -->
+  </section>
+
+  <!-- ======= Services Section ======= -->
+  <section id="services" class="skills-section py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mb-5">
+          <h2 class="section-title">SERVIÇOS</h2>
+          <p class="text-muted">Como posso ajudar você e sua empresa</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div *ngFor="let service of services" class="col-md-6 col-lg-3 d-flex align-items-stretch mb-4">
+          <div class="card service-card h-100">
+            <div class="card-body text-center p-4">
+              <div class="service-icon mb-3">
+                <i [class]="service.Icon + ' fa-3x'"></i>
+              </div>
+              <h4 class="card-title mb-3">{{ service.Title }}</h4>
+              <p class="card-text text-muted mb-4">{{ service.Description }}</p>
+              
+              <!-- Service Features -->
+              <ul class="list-unstyled text-start">
+                <li *ngFor="let feature of parseArray(service.Features)" class="mb-2">
+                  {{ feature }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= Contact Section ======= -->
+  <section id="contact" class="contact-section py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mb-5">
+          <h2 class="section-title text-white">VAMOS TRABALHAR JUNTOS?</h2>
+          <p class="text-white-50">Entre em contato e vamos conversar sobre seu próximo projeto</p>
+        </div>
+      </div>
+      
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="row text-center g-4">
+            <div class="col-md-4">
+              <div class="contact-info h-100">
+                <i class="fas fa-phone"></i>
+                <h5>TELEFONE</h5>
+                <a [href]="'tel:' + (personalInfo?.Phone || '')" 
+                   class="contact-link"
+                   *ngIf="personalInfo?.Phone; else loadingPhone">
+                  {{ personalInfo?.Phone }}
+                </a>
+                <ng-template #loadingPhone>
+                  <p>Carregando...</p>
+                </ng-template>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="contact-info h-100">
+                <i class="fas fa-envelope"></i>
+                <h5>EMAIL</h5>
+                <a [href]="'mailto:' + (personalInfo?.Email || '')" 
+                   class="contact-link"
+                   *ngIf="personalInfo?.Email; else loadingEmail">
+                  {{ personalInfo?.Email }}
+                </a>
+                <ng-template #loadingEmail>
+                  <p>Carregando...</p>
+                </ng-template>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="contact-info h-100">
+                <i class="fas fa-map-marker-alt"></i>
+                <h5>LOCALIZAÇÃO</h5>
+                <a [href]="getGoogleMapsUrl(personalInfo?.Location)" 
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="contact-link"
+                   *ngIf="personalInfo?.Location; else loadingLocation">
+                  {{ personalInfo?.Location }}
+                </a>
+                <ng-template #loadingLocation>
+                  <p>Carregando...</p>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+          
+          <div class="text-center mt-5">
+            <a routerLink="/contact" class="btn btn-light btn-lg me-3">
+              <i class="fas fa-envelope me-2"></i>
+              ENTRE EM CONTATO
+            </a>
+            <button class="btn btn-outline-light btn-lg" (click)="downloadCV()">
+              <i class="fas fa-download me-2"></i>
+              DOWNLOAD CV
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
 
 
 

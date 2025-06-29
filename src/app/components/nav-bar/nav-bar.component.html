@@ -1,24 +1,30 @@
 <header>
-  <nav class="navbar navbar-dark navbar-expand-lg portfolio-navbar nav-menu fixed-top ">
+  <nav class="navbar navbar-dark navbar-expand-lg portfolio-navbar nav-menu fixed-top">
     <div class="container">
-      <a class="navbar-brand logo" href="#">Portfolium</a>
-      <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarNav">
-        <span class="visually-hidden">Toggle navigation</span>
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <a class="navbar-brand logo" href="#">Portfolio - Terore</a>
+      
+      <div class="navbar-nav-controls">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="(isDarkTheme$ | async) ? 'Ativar modo claro' : 'Ativar modo escuro'">
+          <i class="theme-icon" [ngClass]="(isDarkTheme$ | async) ? 'fas fa-sun' : 'fas fa-moon'"></i>
+        </button>
+        
+
+      </div>
+
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link" [routerLink]="['/']">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['/projects']">Projects</a>
+            <a class="nav-link" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['/projects']">Projetos</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['/curriculum']">CV</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['/contact']">Contact</a>
+            <a class="nav-link" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['/contact']">Contato</a>
           </li>
         </ul>
       </div>

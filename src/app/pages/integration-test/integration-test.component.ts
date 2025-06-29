@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { ProjectService } from '../../shared/services/project.service';
-import Swal from 'sweetalert2';
+
 import { Project } from 'src/app/models/project.model';
+import { SweetAlertBrutalService } from 'src/app/shared/services/sweetalert-brutal.service';
 
 @Component({
   selector: 'app-integration-test',
@@ -13,19 +14,19 @@ import { Project } from 'src/app/models/project.model';
 })
 export class IntegrationTestComponent implements OnInit {
   testResults: any[] = [];
-  loading = false;
 
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
-    private projectService: ProjectService  ) { }
+    private projectService: ProjectService,
+    private sweetAlert: SweetAlertBrutalService
+  ) { }
 
   ngOnInit(): void {
     this.runTests();
   }
 
   async runTests(): Promise<void> {
-    this.loading = true;
     this.testResults = [];
 
     // Teste 1: Conexão com API
@@ -39,8 +40,6 @@ export class IntegrationTestComponent implements OnInit {
 
     // Teste 4: API de Projetos
     await this.testProjectsAPI();
-
-    this.loading = false;
   }
 
   private async testApiConnection(): Promise<void> {
@@ -214,14 +213,51 @@ export class IntegrationTestComponent implements OnInit {
    * Testar SweetAlert2 diretamente
    */
   testSweetAlert(): void {
-    Swal.fire({
-      title: 'Teste',
-      text: 'SweetAlert2 funcionando corretamente!',
-      icon: 'success'
-    }).then((result) => {
+    // Demonstração de diferentes tipos de alertas 
+    this.sweetAlert.confirm(
+      'TESTE SWEETALERT2',
+      'Qual tipo de alerta brutalista você gostaria de testar?',
+      'VER EXEMPLOS',
+      'PULAR TESTE'
+    ).then((result) => {
       if (result.isConfirmed) {
-        this.addTestResult('SweetAlert2', 'Sucesso', 'SweetAlert2 funcionando corretamente!');
+        // Sucesso
+        this.sweetAlert.success(
+          'DESIGN BRUTALISTA',
+          '🎨 Estilo aplicado com sucesso! Design consistente em todo o sistema.'
+        ).then(() => {
+          // Warning
+          this.sweetAlert.warning(
+            'EXEMPLO DE WARNING',
+            'Este é um alerta de aviso com design brutalista!'
+          ).then(() => {
+            // Error
+            this.sweetAlert.error(
+              'EXEMPLO DE ERRO',
+              'Este é um alerta de erro com design brutalista!'
+            ).then(() => {
+              // Info
+              this.sweetAlert.info(
+                'EXEMPLO DE INFO',
+                'Este é um alerta informativo com design brutalista!'
+              ).then(() => {
+                // Toast
+                this.sweetAlert.toast('TOAST BRUTALISTA FUNCIONANDO!', 'success');
+                
+                setTimeout(() => {
+                  this.sweetAlert.toast('SEGUNDO TOAST DE TESTE!', 'info');
+                }, 1000);
+
+                setTimeout(() => {
+                  this.sweetAlert.toast('TERCEIRO TOAST DE ERRO!', 'error');
+                }, 2000);
+              });
+            });
+          });
+        });
       }
     });
+    
+    this.addTestResult('SweetAlert2', 'Sucesso', 'SweetAlert2 brutalista com serviço funcionando corretamente');
   }
 } 

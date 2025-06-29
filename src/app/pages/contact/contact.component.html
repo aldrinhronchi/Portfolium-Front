@@ -1,86 +1,212 @@
-<div class="container">
-    <div class="row">
+<div class="contact-page">
+    <div class="container">
+      <div class="row">
         <div class="text-center title">
-            <h2>Contact me</h2>
+          <h2>Entre em Contato</h2>
+          <p class="text-muted">Vamos conversar sobre seu próximo projeto</p>
         </div>
-    </div>
-    <div class="row d-flex justify-content-center" style="margin-top: 1rem;">
-        <div class="row border border-secondary rounded">
-            <div class="col-md-6 col-xl-5">
-                <div>
-                    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-                        <div class="mb-3">
-                            <label class="form-label" for="name">Name</label>
-                            <input id="name" class="form-control" type="text" formControlName="name"/>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="email">Email</label>
-                            <input id="email" class="form-control" type="email" formControlName="email"/>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="subject">Subject</label>
-                            <input id="subject" class="form-control" type="text" formControlName="subject"/>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="message">Message</label>
-                            <textarea id="message" class="form-control" formControlName="message"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <div class="row">
-                                <div class="col-md-6 offset-6 button">
-                                    <button class="btn btn-primary d-block w-100" type="submit" 
-                                            [disabled]="contactForm.invalid">
-                                        Enviar Mensagem
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+      </div>
+      
+      <div class="row d-flex justify-content-center" style="margin-top: 2rem;">
+        <div class="col-lg-10">
+          <div class="contact-card row border border-secondary p-4 shadow-sm">
+            <!-- Contact Form -->
+            <div class="col-md-6 col-xl-6">
+              <h4 class="mb-4">Envie uma Mensagem</h4>
+              
+              <!-- Success/Error Messages -->
+              <div *ngIf="submitMessage" 
+                   class="alert" 
+                   [class.alert-success]="submitSuccess"
+                   [class.alert-danger]="!submitSuccess && submitMessage.includes('Erro')"
+                   [class.alert-info]="!submitSuccess && !submitMessage.includes('Erro')"
+                   role="alert">
+                <i class="fas" 
+                   [class.fa-check-circle]="submitSuccess"
+                   [class.fa-exclamation-triangle]="!submitSuccess && submitMessage.includes('Erro')"
+                   [class.fa-info-circle]="!submitSuccess && !submitMessage.includes('Erro')"
+                   class="me-2"></i>
+                {{ submitMessage }}
+              </div>
+              
+              <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate class="brutal-form">
+                <!-- Name -->
+                <div class="mb-3 form-group-brutal">
+                  <label class="form-label" for="name">
+                    Nome <span class="text-danger">*</span>
+                  </label>
+                  <input 
+                    id="name" 
+                    class="form-control" 
+                    type="text" 
+                    formControlName="name"
+                    [class.is-invalid]="hasError('name')"
+                    placeholder="Seu nome completo"
+                    autocomplete="name" />
+                  <div *ngIf="hasError('name')" class="invalid-feedback">
+                    {{ getErrorMessage('name') }}
+                  </div>
                 </div>
-            </div>
-            <div class="col-md-5 col-xl-5 d-flex justify-content-center justify-content-xl-start">
-                <div class="row d-flex flex-wrap h-100">
-                    <div class="row">
-                        <h5>Whatsapp</h5>
-                    </div>
-                    <a class="link-secondary" href="https://wa.me/55{{contactInfo.Phone}}?text=Ol%C3%A1%2C+vim+pelo+seu+site%2C+gostaria+de+conversar%2C+voc%C3%AA+tem+disponibilidade%3F">
-                        <div class="row">
-                            <div class="col-2 text-center icon">
-                                <i class="fab fa-whatsapp"></i>
-                            </div>
-                            <div class="col-10">
-                                <h4>{{contactInfo.Phone}}</h4>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="row">
-                        <h5>Email</h5>
-                    </div>
-                    <a class="link-secondary" href="mailto:{{contactInfo.Email}}?subject=🤝%20Project%20info.%20Let's%20talk">
-                        <div class="row">
-                            <div class="col-2 text-center icon">
-                                <i class="far fa-envelope"></i>
-                            </div>
-                            <div class="col-10">
-                                <h4>{{contactInfo.Email}}</h4>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="row">
-                        <h5>Location</h5>
-                    </div>
-                    <a class="link-secondary" href="#">
-                        <div class="row">
-                            <div class="col-2 text-center icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="col-10">
-                                <h4>{{contactInfo.Location}}</h4>
-                            </div>
-                        </div>
-                    </a>
+                
+                <!-- Email -->
+                <div class="mb-3 form-group-brutal">
+                  <label class="form-label" for="contactEmail">
+                    Email <span class="text-danger">*</span>
+                  </label>
+                  <input 
+                    id="contactEmail" 
+                    class="form-control" 
+                    type="email" 
+                    formControlName="email"
+                    [class.is-invalid]="hasError('email')"
+                    placeholder="seu@email.com"
+                    autocomplete="email" />
+                  <div *ngIf="hasError('email')" class="invalid-feedback">
+                    {{ getErrorMessage('email') }}
+                  </div>
                 </div>
+                
+                <!-- Subject -->
+                <div class="mb-3 form-group-brutal">
+                  <label class="form-label" for="subject">
+                    Assunto <span class="text-danger">*</span>
+                  </label>
+                  <input 
+                    id="subject" 
+                    class="form-control" 
+                    type="text" 
+                    formControlName="subject"
+                    [class.is-invalid]="hasError('subject')"
+                    placeholder="Assunto da mensagem"
+                    autocomplete="off" />
+                  <div *ngIf="hasError('subject')" class="invalid-feedback">
+                    {{ getErrorMessage('subject') }}
+                  </div>
+                </div>
+                
+                <!-- Message -->
+                <div class="mb-3 form-group-brutal">
+                  <label class="form-label" for="message">
+                    Mensagem <span class="text-danger">*</span>
+                  </label>
+                  <textarea 
+                    id="message" 
+                    class="form-control" 
+                    rows="5"
+                    formControlName="message"
+                    [class.is-invalid]="hasError('message')"
+                    placeholder="Descreva seu projeto ou como posso ajudá-lo..."></textarea>
+                  <div *ngIf="hasError('message')" class="invalid-feedback">
+                    {{ getErrorMessage('message') }}
+                  </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="mb-3">
+                  <button 
+                    class="btn btn-primary btn-lg w-100 brutal-submit-btn" 
+                    type="submit" 
+                    [disabled]="isSubmitting || contactForm.invalid">
+                    <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    <i *ngIf="!isSubmitting" class="fas fa-paper-plane me-2"></i>
+                    {{ isSubmitting ? 'Enviando...' : 'Enviar Mensagem' }}
+                  </button>
+                </div>
+              </form>
             </div>
+            
+            <!-- Contact Info -->
+            <div class="col-md-6 col-xl-6">
+              <h4 class="mb-4">Informações de Contato</h4>
+              
+              <!-- Loading State -->
+              <div *ngIf="loading" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Carregando...</span>
+                </div>
+              </div>
+              
+              <div *ngIf="!loading" class="contact-info-section">
+                <!-- WhatsApp -->
+                <div class="mb-4 contact-info-item">
+                  <div class="row mb-2">
+                    <div class="col-12">
+                      <h6 class="text-muted mb-2">
+                        <i class="fab fa-whatsapp text-success me-2"></i>
+                        WhatsApp
+                      </h6>
+                    </div>
+                  </div>
+                  <button 
+                    class="btn btn-outline-success w-100 text-start d-flex align-items-center brutal-contact-btn"
+                    (click)="openWhatsApp()"
+                    type="button">
+                    <div class="me-3">
+                      <i class="fab fa-whatsapp fa-lg"></i>
+                    </div>
+                    <div>
+                      <div class="fw-bold">+55 (48) 99976-9594</div>
+                      <small class="text-muted">Clique para conversar</small>
+                    </div>
+                  </button>
+                </div>
+                
+                <!-- Email -->
+                <div class="mb-4 contact-info-item">
+                  <div class="row mb-2">
+                    <div class="col-12">
+                      <h6 class="text-muted mb-2">
+                        <i class="far fa-envelope text-primary me-2"></i>
+                        Email
+                      </h6>
+                    </div>
+                  </div>
+                  <button 
+                    class="btn btn-outline-primary w-100 text-start d-flex align-items-center brutal-contact-btn"
+                    (click)="openEmail()"
+                    type="button">
+                    <div class="me-3">
+                      <i class="far fa-envelope fa-lg"></i>
+                    </div>
+                    <div>
+                                           <div class="fw-bold">work.aldrinronchi&#64;gmail.com</div>
+                      <small class="text-muted">Clique para enviar email</small>
+                    </div>
+                  </button>
+                </div>
+                
+                <!-- Location -->
+                <div class="mb-4 contact-info-item">
+                  <div class="row mb-2">
+                    <div class="col-12">
+                      <h6 class="text-muted mb-2">
+                        <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                        Localização
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center p-3 border rounded brutal-location-card">
+                    <div class="me-3">
+                      <i class="fas fa-map-marker-alt fa-lg text-danger"></i>
+                    </div>
+                    <div>
+                      <div class="fw-bold">Curitibanos, SC - Brasil</div>
+                      <small class="text-muted">Trabalho remoto disponível</small>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Response Time Info -->
+                <div class="response-info alert alert-info">
+                  <i class="fas fa-info-circle me-2"></i>
+                  <strong>Resposta Rápida</strong><br>
+                  Geralmente respondo em até 24 horas. Para contato urgente, prefira o WhatsApp.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+  

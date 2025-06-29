@@ -1,2 +1,780 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* Reset global */
+* {
+  box-sizing: border-box;
+}
+
+/* Variáveis globais de tema */
+:root {
+  --primary-gradient: linear-gradient(135deg, #8556cc 0%, #03fcca 100%);
+  --secondary-gradient: linear-gradient(45deg, #8556cc 0%, #03fcca 100%);
+  --shadow-color: rgba(133, 86, 204, 0.3);
+}
+
+/* Tema claro (padrão) */
+:root,
+.light-theme {
+  --bg-primary: #f9f9f9;
+  --bg-secondary: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #333333;
+  --text-muted: #666666;
+  --border-color: #333333;
+  --accent-primary: #8556cc;
+  --accent-secondary: #03fcca;
+  --input-bg: #ffffff;
+  --input-border: #333333;
+  --input-text: #1a1a1a;
+}
+
+/* Tema escuro */
+.dark-theme {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #0d0d0d;
+  --text-primary: #f8f8f8;
+  --text-secondary: #e0e0e0;
+  --text-muted: #cccccc;
+  --border-color: #8556cc;
+  --accent-primary: #03fcca;
+  --accent-secondary: #8556cc;
+  --input-bg: #1a1a1a;
+  --input-border: #666666;
+  --input-text: #f8f8f8;
+}
+
+/* Transições globais */
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}
+
+/* ==================== INPUTS  GLOBAIS ==================== */
+
+/* Mixin para inputs  - use com classe .brutal-input */
+.brutal-input,
+.brutal-form .form-control {
+  font-family: 'Space Grotesk', sans-serif !important;
+  background: var(--input-bg) !important;
+  border: 3px solid var(--input-border) !important;
+  border-radius: 0 !important;
+  padding: 1rem 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  color: var(--input-text) !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+}
+
+.brutal-input:focus,
+.brutal-form .form-control:focus {
+  background: var(--input-bg) !important;
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 0.25rem rgba(133, 86, 204, 0.25) !important;
+  color: var(--input-text) !important;
+  outline: none !important;
+}
+
+.brutal-input::placeholder,
+.brutal-form .form-control::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.7 !important;
+  font-style: italic !important;
+}
+
+/* Labels  */
+.brutal-label,
+.brutal-form .form-label {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+  font-size: 0.9rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Textareas  */
+.brutal-textarea,
+.brutal-form textarea.form-control {
+  resize: vertical !important;
+  min-height: 150px !important;
+}
+
+/* Estados de erro  */
+.brutal-input.is-invalid,
+.brutal-form .form-control.is-invalid {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 0.25rem rgba(239, 68, 68, 0.25) !important;
+}
+
+.brutal-error,
+.brutal-form .invalid-feedback {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  color: #ef4444 !important;
+  margin-top: 0.5rem !important;
+  display: block !important;
+}
+
+/* Botões  globais */
+.brutal-btn {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border: 3px solid !important;
+  border-radius: 0 !important;
+  padding: 1rem 2rem !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+}
+
+.brutal-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.brutal-btn:hover::before {
+  left: 0;
+}
+
+.brutal-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px var(--shadow-color) !important;
+}
+
+.brutal-btn:active {
+  transform: translateY(0) !important;
+}
+
+/* Variações dos botões */
+.brutal-btn-primary {
+  background: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.brutal-btn-primary::before {
+  background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary)) !important;
+}
+.brutal-btn-primary:hover {
+  color: var(--text-primary) !important;
+}
+.brutal-btn-secondary {
+  background: transparent !important;
+  border-color: var(--accent-secondary) !important;
+  color: var(--accent-secondary) !important;
+}
+
+.brutal-btn-secondary::before {
+  background: var(--accent-secondary) !important;
+}
+
+.brutal-btn-secondary:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Select  */
+.brutal-select {
+  font-family: 'Space Grotesk', sans-serif !important;
+  background: var(--input-bg) !important;
+  border: 3px solid var(--input-border) !important;
+  border-radius: 0 !important;
+  padding: 1rem 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  color: var(--input-text) !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
+  background-position: right 1rem center !important;
+  background-repeat: no-repeat !important;
+  background-size: 1rem !important;
+}
+
+.brutal-select:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 0.25rem rgba(133, 86, 204, 0.25) !important;
+  outline: none !important;
+}
+
+/* Checkboxes e radios  */
+.brutal-checkbox,
+.brutal-radio {
+  appearance: none !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  border: 3px solid var(--input-border) !important;
+  background: var(--input-bg) !important;
+  margin-right: 0.75rem !important;
+  position: relative !important;
+  cursor: pointer !important;
+}
+
+.brutal-radio {
+  border-radius: 50% !important;
+}
+
+.brutal-checkbox:checked,
+.brutal-radio:checked {
+  background: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+}
+
+.brutal-checkbox:checked::before {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: #ffffff !important;
+  font-weight: bold !important;
+  font-size: 1rem !important;
+}
+
+.brutal-radio:checked::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 0.5rem !important;
+  height: 0.5rem !important;
+  background: #ffffff !important;
+  border-radius: 50% !important;
+}
+
+/* Loading spinner global */
+
+/* Utilitários globais */
+.gradient-text {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px var(--shadow-color);
+}
+
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+/* Responsividade dos inputs */
+@media (max-width: 768px) {
+  .brutal-input,
+  .brutal-form .form-control,
+  .brutal-select {
+    padding: 0.875rem 1.25rem !important;
+    font-size: 0.95rem !important;
+  }
+  
+  .brutal-btn {
+    padding: 0.875rem 1.5rem !important;
+    font-size: 0.95rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .brutal-input,
+  .brutal-form .form-control,
+  .brutal-select {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .brutal-btn {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* ==================== CORREÇÕES GLOBAIS PARA TEMA ESCURO ==================== */
+
+/* Correção consolidada para text-muted no tema escuro */
+.dark-theme .text-muted,
+.dark-theme *[class*="text-muted"],
+.dark-theme .card-text.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* Correção específica para elementos Bootstrap no tema escuro */
+.dark-theme .text-primary {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .brutal-btn-primary {
+  color: var(--bg-primary) !important;
+}
+.dark-theme .brutal-btn-primary:hover {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.dark-theme .text-success {
+  color: #10b981 !important;
+}
+
+.dark-theme .text-danger {
+  color: #ef4444 !important;
+}
+
+.dark-theme .text-warning {
+  color: #f59e0b !important;
+}
+
+.dark-theme .text-info {
+  color: #06b6d4 !important;
+}
+
+/* Correção para card-text que pode estar com cor errada */
+.dark-theme .card-text {
+  color: var(--text-primary) !important;
+}
+
+/* ===== SWEETALERT2 BRUTALISTA CUSTOMIZATION ===== */
+
+/* Container principal do SweetAlert2 */
+.swal2-popup {
+  font-family: 'Space Grotesk', monospace !important;
+  border: 4px solid var(--text-primary) !important;
+  border-radius: 0 !important;
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    8px 8px 0 var(--accent-primary) !important;
+  transform: skew(-2deg) !important;
+  padding: 2rem !important;
+  max-width: 500px !important;
+}
+
+/* Ícones do SweetAlert2 */
+.swal2-icon {
+  border: 3px solid var(--text-primary) !important;
+  border-radius: 0 !important;
+  transform: skew(2deg) !important;
+  font-size: 2rem !important;
+  width: 80px !important;
+  height: 80px !important;
+  margin: 1rem auto 2rem auto !important;
+}
+
+.swal2-icon-success {
+  background: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+.swal2-icon-error {
+  background: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.swal2-icon-warning {
+  background: #ffc107 !important;
+  border-color: #ffc107 !important;
+}
+
+.swal2-icon-info {
+  background: #17a2b8 !important;
+  border-color: #17a2b8 !important;
+}
+
+.swal2-icon-question {
+  background: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+}
+
+/* Elementos internos dos ícones */
+.swal2-icon::before,
+.swal2-icon::after {
+  display: none !important;
+}
+
+.swal2-icon .swal2-icon-content {
+  font-family: 'Space Grotesk', monospace !important;
+  font-weight: 900 !important;
+  font-size: 2.5rem !important;
+  color: #ffffff !important;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Título do SweetAlert2 */
+.swal2-title {
+  font-family: 'Space Grotesk', monospace !important;
+  font-weight: 800 !important;
+  font-size: 1.8rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: -1px !important;
+  color: var(--text-primary) !important;
+  margin-bottom: 1rem !important;
+  transform: skew(2deg) !important;
+  text-shadow: 2px 2px 0px var(--accent-secondary) !important;
+}
+
+/* Texto do SweetAlert2 */
+.swal2-html-container {
+  font-family: 'Space Grotesk', monospace !important;
+  font-weight: 500 !important;
+  font-size: 1rem !important;
+  color: var(--text-secondary) !important;
+  margin-bottom: 2rem !important;
+  transform: skew(2deg) !important;
+  line-height: 1.4 !important;
+}
+
+/* Botões do SweetAlert2 */
+.swal2-actions {
+  margin-top: 2rem !important;
+  transform: skew(2deg) !important;
+}
+
+.swal2-confirm,
+.swal2-deny,
+.swal2-cancel {
+  font-family: 'Space Grotesk', monospace !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  padding: 1rem 2rem !important;
+  border: 3px solid !important;
+  border-radius: 0 !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  font-size: 0.9rem !important;
+  margin: 0 0.5rem !important;
+}
+
+/* Botão de confirmação */
+.swal2-confirm {
+  background: var(--accent-primary) !important;
+  color: #ffffff !important;
+  border-color: var(--accent-primary) !important;
+}
+
+.swal2-confirm:hover {
+  background: var(--text-primary) !important;
+  color: var(--bg-primary) !important;
+  border-color: var(--text-primary) !important;
+  transform: translateY(-3px) skew(-2deg) !important;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    4px 4px 0 var(--accent-secondary) !important;
+}
+
+/* Botão de negação */
+.swal2-deny {
+  background: #dc3545 !important;
+  color: #ffffff !important;
+  border-color: #dc3545 !important;
+}
+
+.swal2-deny:hover {
+  background: var(--text-primary) !important;
+  color: #dc3545 !important;
+  border-color: var(--text-primary) !important;
+  transform: translateY(-3px) skew(2deg) !important;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    4px 4px 0 #dc3545 !important;
+}
+
+/* Botão de cancelamento */
+.swal2-cancel {
+  background: #6c757d !important;
+  color: #ffffff !important;
+  border-color: #6c757d !important;
+}
+
+.swal2-cancel:hover {
+  background: var(--text-primary) !important;
+  color: #6c757d !important;
+  border-color: var(--text-primary) !important;
+  transform: translateY(-3px) skew(-2deg) !important;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    4px 4px 0 #6c757d !important;
+}
+
+/* Efeito shimmer nos botões */
+.swal2-confirm::before,
+.swal2-deny::before,
+.swal2-cancel::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent) !important;
+  transition: left 0.5s ease !important;
+}
+
+.swal2-confirm:hover::before,
+.swal2-deny:hover::before,
+.swal2-cancel:hover::before {
+  left: 100% !important;
+}
+
+/* Overlay de fundo */
+.swal2-container {
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(5px) !important;
+}
+
+/* Input fields (se usado) */
+.swal2-input {
+  font-family: 'Space Grotesk', monospace !important;
+  font-weight: 500 !important;
+  background: var(--bg-primary) !important;
+  border: 3px solid var(--text-primary) !important;
+  border-radius: 0 !important;
+  color: var(--text-primary) !important;
+  padding: 1rem !important;
+  font-size: 1rem !important;
+  transform: skew(2deg) !important;
+}
+
+.swal2-input:focus {
+  outline: none !important;
+  border-color: var(--accent-primary) !important;
+  box-shadow: 
+    0 0 0 2px var(--accent-primary),
+    inset 0 0 0 1px var(--bg-secondary) !important;
+  transform: skew(2deg) translateY(-2px) !important;
+}
+
+/* Textarea (se usado) */
+.swal2-textarea {
+  font-family: 'Space Grotesk', monospace !important;
+  font-weight: 500 !important;
+  background: var(--bg-primary) !important;
+  border: 3px solid var(--text-primary) !important;
+  border-radius: 0 !important;
+  color: var(--text-primary) !important;
+  padding: 1rem !important;
+  font-size: 1rem !important;
+  transform: skew(2deg) !important;
+  resize: vertical !important;
+}
+
+/* Botão de fechar */
+.swal2-close {
+  font-family: 'Space Grotesk', monospace !important;
+  font-weight: 900 !important;
+  font-size: 2rem !important;
+  color: var(--text-primary) !important;
+  background: transparent !important;
+  border: none !important;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  text-align: center !important;
+  transition: all 0.3s ease !important;
+  transform: skew(2deg) !important;
+}
+
+.swal2-close:hover {
+  color: #dc3545 !important;
+  transform: skew(2deg) scale(1.2) !important;
+}
+
+/* Progress bar (se usado) */
+.swal2-progress-bar {
+  background: var(--accent-primary) !important;
+  height: 6px !important;
+  border-radius: 0 !important;
+}
+
+.swal2-progress-bar-container {
+  background: var(--bg-primary) !important;
+  border: 2px solid var(--text-primary) !important;
+  border-radius: 0 !important;
+  margin: 1rem 0 !important;
+}
+
+/* ===== RESPONSIVO PARA SWEETALERT2 ===== */
+@media (max-width: 768px) {
+  .swal2-popup {
+    transform: none !important;
+    padding: 1.5rem !important;
+    margin: 1rem !important;
+    max-width: calc(100% - 2rem) !important;
+  }
+  
+  .swal2-title,
+  .swal2-html-container,
+  .swal2-actions,
+  .swal2-input,
+  .swal2-textarea {
+    transform: none !important;
+  }
+  
+  .swal2-icon {
+    transform: none !important;
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .swal2-confirm,
+  .swal2-deny,
+  .swal2-cancel {
+    width: 100% !important;
+    margin: 0.5rem 0 !important;
+  }
+  
+  .swal2-actions {
+    flex-direction: column !important;
+  }
+}
+
+/* ===== DARK THEME PARA SWEETALERT2 ===== */
+.dark-theme .swal2-popup {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--text-primary) !important;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    8px 8px 0 var(--accent-primary) !important;
+}
+
+.dark-theme .swal2-title {
+  color: var(--text-primary) !important;
+  text-shadow: 2px 2px 0px var(--accent-secondary) !important;
+}
+
+.dark-theme .swal2-html-container {
+  color: var(--text-secondary) !important;
+}
+
+.dark-theme .swal2-input,
+.dark-theme .swal2-textarea {
+  background: var(--bg-primary) !important;
+  border-color: var(--text-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .swal2-close {
+  color: var(--text-primary) !important;
+}
+
+/* ===== ANIMAÇÕES CUSTOMIZADAS ===== */
+@keyframes swal2-show-brutal {
+  0% {
+    opacity: 0;
+    transform: skew(-2deg) scale(0.8) translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: skew(-2deg) scale(1) translateY(0);
+  }
+}
+
+@keyframes swal2-hide-brutal {
+  0% {
+    opacity: 1;
+    transform: skew(-2deg) scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: skew(-2deg) scale(0.8) translateY(100px);
+  }
+}
+
+.swal2-show {
+  animation: swal2-show-brutal 0.3s ease-out !important;
+}
+
+.swal2-hide {
+  animation: swal2-hide-brutal 0.3s ease-in !important;
+}
+
+/* ===== TOAST BRUTALISTA ===== */
+.swal2-brutal-toast {
+  font-family: 'Space Grotesk', monospace !important;
+  border: 3px solid var(--text-primary) !important;
+  border-radius: 0 !important;
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.3),
+    4px 4px 0 var(--accent-primary) !important;
+  transform: skew(-2deg) !important;
+  padding: 1rem !important;
+  min-width: 300px !important;
+}
+
+.swal2-brutal-toast-title {
+  font-family: 'Space Grotesk', monospace !important;
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  color: var(--text-primary) !important;
+  transform: skew(2deg) !important;
+}
+
+.swal2-brutal-toast .swal2-timer-progress-bar {
+  background: var(--accent-primary) !important;
+  height: 4px !important;
+  border-radius: 0 !important;
+}
+
+.swal2-brutal-toast .swal2-icon {
+  width: 30px !important;
+  height: 30px !important;
+  border: 2px solid var(--text-primary) !important;
+  border-radius: 0 !important;
+  transform: skew(2deg) !important;
+}
+
+/* ===== DARK THEME PARA TOAST ===== */
+.dark-theme .swal2-brutal-toast {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--text-primary) !important;
+}
+
+.dark-theme .swal2-brutal-toast-title {
+  color: var(--text-primary) !important;
+}
 

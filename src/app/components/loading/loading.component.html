@@ -1,12 +1,12 @@
 <div *ngIf="loading$ | async" class="loading-overlay">
   <div class="loading-container">
-    <div class="loading-spinner">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Carregando...</span>
-      </div>
-    </div>
     <div class="loading-text">
-      <p class="text-muted mt-3">Carregando...</p>
+      <h2 class="loading-title">CARREGANDO</h2>
+      <div class="loading-dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
     </div>
   </div>
 </div> 

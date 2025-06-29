@@ -1,79 +1,129 @@
-<div class="modal-header">
-  <h5 class="modal-title">{{ project ? 'Editar Projeto' : 'Novo Projeto' }}</h5>
-  <button type="button" class="btn-close" (click)="onCancel()"></button>
+<div *ngIf="isVisible" class="modal-backdrop-brutal" (click)="closeModal()">
+  <div class="modal-container-brutal" (click)="$event.stopPropagation()">
+    
+    <!-- Header -->
+    <div class="modal-header-brutal">
+      <h2 class="modal-title-brutal">
+        {{ isEditMode ? 'Editar Projeto' : 'Novo Projeto' }}
+      </h2>
+      <button class="close-btn-brutal" (click)="closeModal()" type="button">
+        ×
+      </button>
+      </div>
+
+    <!-- Body -->
+    <div class="modal-body-brutal">
+      <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+        
+            <!-- Nome -->
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">Nome *</label>
+              <input 
+                type="text" 
+            class="form-control-brutal"
+            formControlName="name"
+            placeholder="Nome do projeto"
+          >
+          <div *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched" 
+               class="invalid-feedback-brutal">
+            Nome é obrigatório
+              </div>
+            </div>
+
+            <!-- Descrição -->
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">Descrição *</label>
+              <textarea 
+            class="form-control-brutal"
+            formControlName="description"
+                rows="4"
+            placeholder="Descrição do projeto"
+          ></textarea>
+          <div *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched" 
+               class="invalid-feedback-brutal">
+            Descrição é obrigatória
+            </div>
+            </div>
+
+            <!-- Tecnologias -->
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">Tecnologias</label>
+              <input 
+                type="text" 
+            class="form-control-brutal"
+            formControlName="technologies"
+            placeholder="Ex: Angular, TypeScript, CSS"
+          >
+            </div>
+
+        <!-- URL -->
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">URL</label>
+              <input 
+            type="url" 
+            class="form-control-brutal"
+            formControlName="url"
+            placeholder="https://exemplo.com"
+          >
+            </div>
+
+        <!-- GitHub URL -->
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">GitHub URL</label>
+                <input 
+            type="url" 
+            class="form-control-brutal"
+            formControlName="githubUrl"
+            placeholder="https://github.com/usuario/projeto"
+          >
+            </div>
+
+        <!-- Imagem URL -->
+        <div class="form-group-brutal">
+          <label class="form-label-brutal">Imagem URL</label>
+              <input 
+            type="url" 
+            class="form-control-brutal"
+            formControlName="imageUrl"
+            placeholder="URL da imagem do projeto"
+          >
+            </div>
+
+        <!-- Ativo -->
+        <div class="form-group-brutal">
+          <div class="checkbox-group-brutal">
+              <input 
+              type="checkbox" 
+              class="checkbox-brutal"
+              formControlName="isActive"
+              id="isActive"
+            >
+            <label for="isActive" class="form-label-brutal">Projeto Ativo</label>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer-brutal">
+      <button 
+        type="button" 
+        class="btn-brutal btn-secondary-brutal"
+        (click)="closeModal()"
+      >
+        Cancelar
+          </button>
+          <button 
+        type="button" 
+        class="btn-brutal btn-primary-brutal"
+        (click)="onSubmit()"
+        [disabled]="projectForm.invalid || isLoading"
+      >
+        <span *ngIf="isLoading" class="spinner-brutal"></span>
+            {{ isEditMode ? 'Atualizar' : 'Criar' }}
+          </button>
+    </div>
+
+  </div>
 </div>
-<div class="modal-body">
-  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="name" class="form-label">Nome *</label>
-      <input type="text" class="form-control" id="name" formControlName="Name">
-      <div class="invalid-feedback" *ngIf="projectForm.get('Name')?.errors?.['required'] && projectForm.get('Name')?.touched">
-        Nome é obrigatório
-      </div>
-      <div class="invalid-feedback" *ngIf="projectForm.get('Name')?.errors?.['maxlength'] && projectForm.get('Name')?.touched">
-        Nome deve ter no máximo 200 caracteres
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <label for="description" class="form-label">Descrição</label>
-      <textarea class="form-control" id="description" rows="3" formControlName="Description"></textarea>
-      <div class="invalid-feedback" *ngIf="projectForm.get('Description')?.errors?.['maxlength'] && projectForm.get('Description')?.touched">
-        Descrição deve ter no máximo 2000 caracteres
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <label for="shortDescription" class="form-label">Descrição Curta</label>
-      <textarea class="form-control" id="shortDescription" rows="2" formControlName="ShortDescription"></textarea>
-      <div class="invalid-feedback" *ngIf="projectForm.get('ShortDescription')?.errors?.['maxlength'] && projectForm.get('ShortDescription')?.touched">
-        Descrição curta deve ter no máximo 500 caracteres
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <label for="technologies" class="form-label">Tecnologias</label>
-      <input type="text" class="form-control" id="technologies" formControlName="Technologies">
-      <small class="form-text text-muted">Separe as tecnologias por vírgula</small>
-    </div>
-
-    <div class="mb-3">
-      <label for="projectUrl" class="form-label">URL do Projeto</label>
-      <input type="url" class="form-control" id="projectUrl" formControlName="ProjectUrl">
-    </div>
-
-    <div class="mb-3">
-      <label for="demoUrl" class="form-label">URL da Demo</label>
-      <input type="url" class="form-control" id="demoUrl" formControlName="DemoUrl">
-    </div>
-
-    <div class="mb-3">
-      <label for="repositoryUrl" class="form-label">URL do Repositório</label>
-      <input type="url" class="form-control" id="repositoryUrl" formControlName="RepositoryUrl">
-    </div>
-
-    <div class="mb-3">
-      <label for="mainImage" class="form-label">Imagem Principal</label>
-      <input type="text" class="form-control" id="mainImage" formControlName="MainImage">
-    </div>
-
-    <div class="mb-3">
-      <label for="category" class="form-label">Categoria</label>
-      <input type="text" class="form-control" id="category" formControlName="Category">
-    </div>
-
-    <div class="mb-3">
-      <label for="displayOrder" class="form-label">Ordem de Exibição</label>
-      <input type="number" class="form-control" id="displayOrder" formControlName="DisplayOrder">
-    </div>
-
-    <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="isFeatured" formControlName="IsFeatured">
-      <label class="form-check-label" for="isFeatured">Destaque</label>
-    </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
-  <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="projectForm.invalid">Salvar</button>
-</div> 

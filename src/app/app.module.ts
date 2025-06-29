@@ -8,6 +8,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { FooterBarComponent } from './components/footer-bar/footer-bar.component';
+import { LoadingComponent } from './components/loading/loading.component';
 import { HomeComponent } from './pages/home/home.component';
 import { CurriculumComponent } from './pages/curriculum/curriculum.component';
 import { ContactComponent } from './pages/contact/contact.component';
@@ -24,6 +25,7 @@ import { IntegrationTestComponent } from './pages/integration-test/integration-t
     AppComponent,
     NavBarComponent,
     FooterBarComponent,
+    LoadingComponent,
     HomeComponent,
     CurriculumComponent,
     ContactComponent,

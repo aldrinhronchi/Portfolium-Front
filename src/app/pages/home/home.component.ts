@@ -11,9 +11,12 @@ export class HomeComponent implements AfterViewInit {
   @ViewChild("blinkElement") blinkElement!: ElementRef;
 
   @Input() wordArray: string[] = [
-    'I am a Full stack Developer.',
-    'I am a Front Developer.',
-    'I am a Back Developer.',
+    'Eu sou um Desenvolvedor Full Stack.',
+    'Eu sou um Desenvolvedor Front End.',
+    'Eu sou um Desenvolvedor Back End.',
+    // 'I am a Full stack Developer.',
+    // 'I am a Front Developer.',
+    // 'I am a Back Developer.',
   ];
   @Input() textColor = "#0A192F";
   @Input() blinkColor = "#03fcca";

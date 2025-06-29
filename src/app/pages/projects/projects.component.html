@@ -1,45 +1,182 @@
 <section class="portfolio-block projects-with-sidebar">
-    <div class="container">
-  
-      <!-- Start: portfolio heading -->
-      <div class="row">
-        <div class="text-center title">
-          <h2>Recent Work</h2>
+  <div class="container">
+
+    <!-- Start: portfolio heading -->
+    <div class="row">
+      <div class="text-center title">
+        <h2>Meus Projetos</h2>
+        <p class="text-muted">Veja alguns dos projetos que desenvolvi</p>
+      </div>
+    </div>
+
+    <!-- Projects content with sidebar -->
+    <div class="row">
+      
+      <!-- Sidebar with filters -->
+      <div class="col-lg-3 col-md-4 mb-4">
+        <div class="filters-sidebar">
+          <h4 class="filter-title">
+            <i class="fas fa-filter me-2"></i>
+            Filtros
+          </h4>
+          
+          <!-- Category filter -->
+          <div class="filter-section">
+            <h6 class="filter-section-title">Categorias</h6>
+            <div class="filter-options">
+              <div class="filter-option" 
+                   [class.active]="!selectedCategory"
+                   (click)="filterByCategory('')">
+                <span class="filter-count">{{ getTotalProjectsCount() }}</span>
+                <span class="filter-label">Todos os Projetos</span>
+              </div>
+              <div *ngFor="let category of availableCategories" 
+                   class="filter-option"
+                   [class.active]="selectedCategory === category.key"
+                   (click)="filterByCategory(category.key)">
+                <span class="filter-count">{{ category.count }}</span>
+                <span class="filter-label">{{ category.label }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Status filter -->
+          <div class="filter-section">
+            <h6 class="filter-section-title">Status</h6>
+            <div class="filter-options">
+              <div class="filter-option" 
+                   [class.active]="!selectedStatus"
+                   (click)="filterByStatus('')">
+                <span class="filter-count">{{ getTotalProjectsCount() }}</span>
+                <span class="filter-label">Todos</span>
+              </div>
+              <div *ngFor="let status of availableStatuses" 
+                   class="filter-option"
+                   [class.active]="selectedStatus === status.key"
+                   (click)="filterByStatus(status.key)">
+                <span class="filter-count">{{ status.count }}</span>
+                <span class="filter-label">{{ status.label }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clear filters -->
+          <div class="filter-actions">
+            <button class="btn-clear-filters" (click)="clearAllFilters()">
+              <i class="fas fa-times me-2"></i>
+              Limpar Filtros
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- End: portfolio side column -->
-      <div class="row">
-        <!-- Start: portfolio heading -->
-        <div class="col-md-3">
-          <ul class="list-unstyled sidebar">
-            <p>Much text</p>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              Launch demo modal
-            </button>
-          </ul>
+      <!-- Projects grid -->
+      <div class="col-lg-9 col-md-8">
+        <div class="projects-header">
+          <div class="results-info">
+            <span class="results-count">{{ filteredProjects.length }} projeto(s) encontrado(s)</span>
+            <span *ngIf="selectedCategory || selectedStatus" class="active-filters">
+              <span *ngIf="selectedCategory" class="filter-tag">
+                {{ getCategoryLabel(selectedCategory) }}
+                <i class="fas fa-times ms-1" (click)="filterByCategory('')"></i>
+              </span>
+              <span *ngIf="selectedStatus" class="filter-tag">
+                {{ getStatusLabel(selectedStatus) }}
+                <i class="fas fa-times ms-1" (click)="filterByStatus('')"></i>
+              </span>
+            </span>
+          </div>
         </div>
-        <!-- End: portfolio side column -->
-        <!-- Start: portfolio project grid -->
-        <div class="col-md-9">
-          <div class="row gx-4 gy-3">
-            <div *ngFor="let project of projects; let i = index" class="col-md-6 col-lg-4 project-sidebar-card">
-              <img data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="selectProject(project)"
-              (error)="onImageError($event, project)"   [src]="getProjectImage(project)" 
-              [alt]="project.Name">
-             
+
+        <div class="row gx-4 gy-4">
+          <div *ngFor="let project of filteredProjects" class="col-lg-6 col-xl-4 project-sidebar-card">
+            <div class="card h-100 shadow-sm">
+              <div class="position-relative overflow-hidden">
+                <img 
+                  [src]="getProjectImage(project)" 
+                  [alt]="project.Name"
+                  class="card-img-top project-image"
+                  style="height: 200px; object-fit: cover; cursor: pointer;"
+                  data-bs-toggle="modal" 
+                  data-bs-target="#projectModal"
+                  (click)="selectProject(project)"
+                  (error)="onImageError($event, project)">
+                <div class="overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                     style="background: rgba(0,0,0,0.7); opacity: 0; transition: opacity 0.3s;"
+                     onmouseover="this.style.opacity='1'" 
+                     onmouseout="this.style.opacity='0'">
+                  <i class="fas fa-eye text-white fs-2"></i>
+                </div>
+              </div>
               
+              <div class="card-body d-flex flex-column">
+                <div class="project-meta">
+                  <span *ngIf="project.Category" class="category-badge">{{ project.Category }}</span>
+                  <span *ngIf="project.Status" class="status-badge" [class]="getStatusClass(project.Status)">
+                    {{ project.Status }}
+                  </span>
+                </div>
+                
+                <h5 class="card-title">{{ project.Name }}</h5>
+                <p class="card-text text-muted small flex-grow-1">{{ project.ShortDescription }}</p>
+                
+                <!-- Technologies -->
+                <div class="technologies-container" 
+                     [class.has-overflow]="getProjectTechnologies(project).length > 4">
+                  <span *ngFor="let tech of getProjectTechnologies(project)" 
+                        class="badge bg-secondary">{{ tech }}</span>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="d-flex gap-2 mt-auto">
+                  <button 
+                    class="btn btn-primary btn-sm flex-fill"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#projectModal"
+                    (click)="selectProject(project)">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Detalhes
+                  </button>
+                  <button 
+                    *ngIf="project.DemoUrl" 
+                    class="btn btn-outline-success btn-sm"
+                    (click)="openDemoUrl(project)"
+                    title="Ver Demo">
+                    <i class="fas fa-external-link-alt"></i>
+                  </button>
+                  <button 
+                    *ngIf="project.RepositoryUrl" 
+                    class="btn btn-outline-dark btn-sm"
+                    (click)="openRepositoryUrl(project)"
+                    title="Ver Repositório">
+                    <i class="fab fa-github"></i>
+                  </button>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Empty state -->
+        <div *ngIf="filteredProjects.length === 0" class="text-center py-5">
+          <i class="fas fa-search fa-3x text-muted mb-3"></i>
+          <h4 class="text-muted">Nenhum projeto encontrado</h4>
+          <p class="text-muted">Tente ajustar os filtros ou limpar a seleção.</p>
+          <button class="btn btn-outline-primary" (click)="clearAllFilters()">
+            Limpar Filtros
+          </button>
         </div>
       </div>
-      <!-- End: portfolio project grid -->
-    </div>
-    </div>
-  </section>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <app-modal-info [project]="selectedProject"></app-modal-info> 
     </div>
   </div>
- 
+</section>
+
+<!-- Project Details Modal -->
+<div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true" 
+   (hidden.bs.modal)="closeProjectDetails()">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <app-modal-info [project]="selectedProject"></app-modal-info> 
+    </div>
+  </div>
+</div>

@@ -1,122 +1,222 @@
-<div class="modal-header">
-  <h5 class="modal-title">{{ getModalTitle() }}</h5>
-  <button type="button" class="btn-close" (click)="onCancel()"></button>
-</div>
-<div class="modal-body">
-  <form [formGroup]="curriculumForm" (ngSubmit)="onSubmit()">
-    <div formGroupName="PersonalInfo">
-      <h6 class="mb-3">Informações Pessoais</h6>
-      
-      <div class="mb-3">
-        <label for="name" class="form-label">Nome *</label>
-        <input type="text" class="form-control" id="name" formControlName="Name">
-        <div class="invalid-feedback" *ngIf="curriculumForm.get('PersonalInfo.Name')?.errors?.['required'] && curriculumForm.get('PersonalInfo.Name')?.touched">
-          Nome é obrigatório
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="title" class="form-label">Título *</label>
-        <input type="text" class="form-control" id="title" formControlName="Title">
-        <div class="invalid-feedback" *ngIf="curriculumForm.get('PersonalInfo.Title')?.errors?.['required'] && curriculumForm.get('PersonalInfo.Title')?.touched">
-          Título é obrigatório
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="description" class="form-label">Descrição</label>
-        <textarea class="form-control" id="description" rows="3" formControlName="Description"></textarea>
-      </div>
-
-      <div class="mb-3">
-        <label for="location" class="form-label">Localização</label>
-        <input type="text" class="form-control" id="location" formControlName="Location">
-      </div>
-
-      <div class="mb-3">
-        <label for="phone" class="form-label">Telefone</label>
-        <input type="tel" class="form-control" id="phone" formControlName="Phone">
-      </div>
-
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" formControlName="Email">
-        <div class="invalid-feedback" *ngIf="curriculumForm.get('PersonalInfo.Email')?.errors?.['email'] && curriculumForm.get('PersonalInfo.Email')?.touched">
-          Email inválido
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="profileImage" class="form-label">Imagem de Perfil</label>
-        <input type="text" class="form-control" id="profileImage" formControlName="ProfileImage">
-      </div>
-
-      <div class="row">
-        <div class="col-md-3 mb-3">
-          <label for="yearsExperience" class="form-label">Anos de Experiência</label>
-          <input type="number" class="form-control" id="yearsExperience" formControlName="YearsExperience">
-        </div>
-
-        <div class="col-md-3 mb-3">
-          <label for="projectsCompleted" class="form-label">Projetos Concluídos</label>
-          <input type="number" class="form-control" id="projectsCompleted" formControlName="ProjectsCompleted">
-        </div>
-
-        <div class="col-md-3 mb-3">
-          <label for="happyClients" class="form-label">Clientes Satisfeitos</label>
-          <input type="number" class="form-control" id="happyClients" formControlName="HappyClients">
-        </div>
-
-        <div class="col-md-3 mb-3">
-          <label for="certifications" class="form-label">Certificações</label>
-          <input type="number" class="form-control" id="certifications" formControlName="Certifications">
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="linkedInUrl" class="form-label">LinkedIn URL</label>
-        <input type="url" class="form-control" id="linkedInUrl" formControlName="LinkedInUrl">
-      </div>
-
-      <div class="mb-3">
-        <label for="gitHubUrl" class="form-label">GitHub URL</label>
-        <input type="url" class="form-control" id="gitHubUrl" formControlName="GitHubUrl">
-      </div>
-
-      <div class="mb-3">
-        <label for="portfolioUrl" class="form-label">Portfolio URL</label>
-        <input type="url" class="form-control" id="portfolioUrl" formControlName="PortfolioUrl">
-      </div>
+<div *ngIf="isVisible" class="modal-backdrop-brutal" (click)="closeModal()">
+  <div class="modal-container-brutal" (click)="$event.stopPropagation()">
+    
+    <!-- Header -->
+    <div class="modal-header-brutal">
+      <h2 class="modal-title-brutal">
+        {{ getModalTitle() }}
+      </h2>
+      <button class="close-btn-brutal" (click)="closeModal()" type="button">
+        ×
+      </button>
     </div>
 
-    <!-- Arrays de dados serão implementados em componentes separados -->
-    <div class="mb-3">
-      <h6>Habilidades</h6>
-      <p class="text-muted">Implementação pendente</p>
+    <!-- Body -->
+    <div class="modal-body-brutal">
+      <form [formGroup]="curriculumForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Campos básicos -->
+        <div class="form-section">
+          <h3 class="section-title">Informações Básicas</h3>
+          
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Name')">
+            <label class="form-label-brutal">Nome *</label>
+            <input 
+              type="text" 
+              class="form-control-brutal"
+              formControlName="Name"
+              placeholder="Nome..."
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Title')">
+            <label class="form-label-brutal">Título *</label>
+            <input 
+              type="text" 
+              class="form-control-brutal"
+              formControlName="Title"
+              placeholder="Título..."
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Company')">
+            <label class="form-label-brutal">Empresa</label>
+            <input 
+              type="text" 
+              class="form-control-brutal"
+              formControlName="Company"
+              placeholder="Empresa..."
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Description')">
+            <label class="form-label-brutal">Descrição</label>
+            <textarea 
+              class="form-control-brutal"
+              formControlName="Description"
+              rows="3"
+              placeholder="Descrição..."
+            ></textarea>
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Location')">
+            <label class="form-label-brutal">Localização</label>
+            <input 
+              type="text" 
+              class="form-control-brutal"
+              formControlName="Location"
+              placeholder="Ex: São Paulo, SP"
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Phone')">
+            <label class="form-label-brutal">Telefone</label>
+            <input 
+              type="tel" 
+              class="form-control-brutal"
+              formControlName="Phone"
+              placeholder="Ex: (11) 99999-9999"
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Email')">
+            <label class="form-label-brutal">Email</label>
+            <input 
+              type="email" 
+              class="form-control-brutal"
+              formControlName="Email"
+              placeholder="Ex: seuemail@exemplo.com"
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('ProfileImage')">
+            <label class="form-label-brutal">Imagem de Perfil (URL)</label>
+            <input 
+              type="url" 
+              class="form-control-brutal"
+              formControlName="ProfileImage"
+              placeholder="Ex: https://exemplo.com/imagem.jpg"
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('IsActive')">
+            <div class="checkbox-group-brutal">
+              <input 
+                type="checkbox" 
+                class="checkbox-brutal"
+                formControlName="IsActive"
+                id="isActive"
+              >
+              <label for="isActive" class="form-label-brutal">Ativo</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="form-section" *ngIf="curriculumForm.get('YearsExperience')">
+          <h3 class="section-title">Estatísticas</h3>
+          
+          <div class="form-group-brutal">
+            <label class="form-label-brutal">Anos de Experiência</label>
+            <input 
+              type="number" 
+              class="form-control-brutal"
+              formControlName="YearsExperience"
+              min="0"
+              placeholder="Ex: 5"
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('ProjectsCompleted')">
+            <label class="form-label-brutal">Projetos Concluídos</label>
+            <input 
+              type="number" 
+              class="form-control-brutal"
+              formControlName="ProjectsCompleted"
+              min="0"
+              placeholder="Ex: 50"
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('HappyClients')">
+            <label class="form-label-brutal">Clientes Satisfeitos</label>
+            <input 
+              type="number" 
+              class="form-control-brutal"
+              formControlName="HappyClients"
+              min="0"
+              placeholder="Ex: 25"
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('Certifications')">
+            <label class="form-label-brutal">Certificações</label>
+            <input 
+              type="number" 
+              class="form-control-brutal"
+              formControlName="Certifications"
+              min="0"
+              placeholder="Ex: 10"
+            >
+          </div>
+        </div>
+
+        <!-- Redes Sociais -->
+        <div class="form-section" *ngIf="curriculumForm.get('LinkedInUrl')">
+          <h3 class="section-title">Redes Sociais</h3>
+          
+          <div class="form-group-brutal">
+            <label class="form-label-brutal">LinkedIn URL</label>
+            <input 
+              type="url" 
+              class="form-control-brutal"
+              formControlName="LinkedInUrl"
+              placeholder="Ex: https://linkedin.com/in/seuusuario"
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('GitHubUrl')">
+            <label class="form-label-brutal">GitHub URL</label>
+            <input 
+              type="url" 
+              class="form-control-brutal"
+              formControlName="GitHubUrl"
+              placeholder="Ex: https://github.com/seuusuario"
+            >
+          </div>
+
+          <div class="form-group-brutal" *ngIf="curriculumForm.get('PortfolioUrl')">
+            <label class="form-label-brutal">Portfolio URL</label>
+            <input 
+              type="url" 
+              class="form-control-brutal"
+              formControlName="PortfolioUrl"
+              placeholder="Ex: https://seuportfolio.com"
+            >
+          </div>
+        </div>
+
+      </form>
     </div>
 
-    <div class="mb-3">
-      <h6>Experiências</h6>
-      <p class="text-muted">Implementação pendente</p>
+    <!-- Footer -->
+    <div class="modal-footer-brutal">
+      <button 
+        type="button" 
+        class="btn-brutal btn-secondary-brutal"
+        (click)="closeModal()"
+      >
+        Cancelar
+      </button>
+      <button 
+        type="button" 
+        class="btn-brutal btn-primary-brutal"
+        (click)="onSubmit()"
+        [disabled]="curriculumForm.invalid"
+      >
+        {{ isEditMode ? 'Atualizar' : 'Criar' }}
+      </button>
     </div>
 
-    <div class="mb-3">
-      <h6>Educação</h6>
-      <p class="text-muted">Implementação pendente</p>
-    </div>
-
-    <div class="mb-3">
-      <h6>Certificações</h6>
-      <p class="text-muted">Implementação pendente</p>
-    </div>
-
-    <div class="mb-3">
-      <h6>Serviços</h6>
-      <p class="text-muted">Implementação pendente</p>
-    </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
-  <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="curriculumForm.invalid">Salvar</button>
+  </div>
 </div> 

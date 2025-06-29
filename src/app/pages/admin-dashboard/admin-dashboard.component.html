@@ -1,95 +1,611 @@
-<div class="container mt-4">
-  <h2>Painel Administrativo</h2>
-
-  <div class="alert alert-danger" *ngIf="error">
-    {{ error }}
+<!-- Header -->
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1 class="admin-title">DASHBOARD ADMIN</h1>
+    <p class="admin-subtitle">Gerencie seus projetos e currículo</p>
   </div>
-
-
-  <!-- Projetos -->
-  <div class="card mt-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5 class="mb-0">Projetos</h5>
-      <button class="btn btn-primary btn-sm" (click)="openCreateModal()">Novo Projeto</button>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Título</th>
-              <th>Descrição</th>
-              <th>Tecnologias</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let project of projects">
-              <td>{{ project.Name }}</td>
-              <td>{{ project.Description }}</td>
-              <td>{{ project.Technologies }}</td>
-              <td>
-                <button class="btn btn-sm btn-outline-primary me-2" (click)="openEditModal(project)">
-                  Editar
-                </button>
-                <button class="btn btn-sm btn-outline-danger" (click)="confirmDelete(project)">
-                  Excluir
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="d-flex gap-2">
+    <a 
+      routerLink="/integration-test" 
+      class="btn-brutal btn-secondary-brutal"
+      title="Ir para Testes de Integração">
+      <i class="fas fa-flask"></i> TESTES
+    </a>
+    <button class="btn-brutal btn-logout" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> SAIR
+    </button>
   </div>
+</div>
 
-  <!-- Currículo -->
-  <div class="card mt-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5 class="mb-0">Currículo</h5>
-      <button class="btn btn-primary btn-sm" (click)="openCurriculumModal('personal')" [disabled]="!personalInfo">
-        Editar Currículo
+<!-- Navigation Tabs -->
+<div class="nav-tabs-brutal">
+  <div class="nav-item-brutal">
+    <button 
+      class="nav-link-brutal" 
+      [class.active]="activeTab === 'projects'"
+      (click)="setActiveTab('projects')">
+      PROJETOS
+    </button>
+  </div>
+  <div class="nav-item-brutal">
+    <button 
+      class="nav-link-brutal" 
+      [class.active]="activeTab === 'curriculum'"
+      (click)="setActiveTab('curriculum')">
+      CURRÍCULO
+    </button>
+  </div>
+</div>
+
+<!-- Mensagens de Sucesso/Erro -->
+<div *ngIf="successMessage" class="alert-brutal alert-success-brutal">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="error" class="alert-brutal alert-danger-brutal">
+  {{ error }}
+</div>
+
+<!-- PROJECTS TAB -->
+<div *ngIf="activeTab === 'projects'">
+
+<!-- Estatísticas -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon text-primary"><i class="fas fa-folder fa-2x"></i></div>
+    <h3 class="stat-number">{{ stats.total }}</h3>
+    <p class="stat-label">Total de Projetos</p>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon text-success"><i class="fas fa-eye fa-2x"></i></div>
+    <h3 class="stat-number">{{ stats.active }}</h3>
+    <p class="stat-label">Projetos Ativos</p>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon text-warning"><i class="fas fa-star fa-2x"></i></div>
+    <h3 class="stat-number">{{ stats.featured }}</h3>
+    <p class="stat-label">Em Destaque</p>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon text-info"><i class="fas fa-chart-bar fa-2x"></i></div>
+    <h3 class="stat-number">{{ getTotalCategories() }}</h3>
+    <p class="stat-label">Categorias</p>
+  </div>
+</div>
+
+<!-- Filtros e Ações -->
+<div class="card-brutal">
+  <div class="card-header-brutal">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="card-title">FILTROS</h5>
+      <button class="btn-brutal btn-primary-brutal" (click)="openCreateModal()">
+        NOVO PROJETO
       </button>
     </div>
-    <div class="card-body">
-      <div *ngIf="personalInfo">
-        <div class="mb-3">
-          <strong>Nome:</strong> {{ personalInfo.Name }}
-        </div>
-        <div class="mb-3">
-          <strong>Email:</strong> {{ personalInfo.Email }}
-        </div>
-        <div class="mb-3">
-          <strong>Telefone:</strong> {{ personalInfo.Phone }}
-        </div>
-        <div class="mb-3">
-          <strong>Resumo:</strong>
-          <p>{{ personalInfo.Description }}</p>
-        </div>
+  </div>
+  <div class="card-body-brutal">
+    <div class="form-brutal">
+      <!-- Nome do Projeto -->
+      <div class="form-group-brutal">
+        <label class="form-label-brutal">NOME</label>
+        <input 
+          type="text" 
+          class="form-control-brutal" 
+          [(ngModel)]="filters.Name"
+          (keyup.enter)="applyFilters()"
+          placeholder="Filtrar por nome...">
       </div>
-        <div *ngIf="!personalInfo" class="text-center">
-        <p>Nenhum currículo encontrado.</p>
-        <button class="btn btn-primary" (click)="openCurriculumModal('personal')">Adicionar Currículo</button>
+      
+      <!-- Categoria -->
+      <div class="form-group-brutal">
+        <label class="form-label-brutal">CATEGORIA</label>
+        <select class="form-select-brutal" [(ngModel)]="filters.Category" (change)="applyFilters()">
+          <option value="">Todas</option>
+          <option *ngFor="let category of projectCategories" [value]="category">
+            {{ category }}
+          </option>
+        </select>
+      </div>
+      
+      <!-- Status -->
+      <div class="form-group-brutal">
+        <label class="form-label-brutal">STATUS</label>
+        <select class="form-select-brutal" [(ngModel)]="filters.Status" (change)="applyFilters()">
+          <option value="">Todos</option>
+          <option *ngFor="let status of projectStatuses" [value]="status">
+            {{ status }}
+          </option>
+        </select>
+      </div>
+      
+      <!-- Destaque -->
+      <div class="form-group-brutal">
+        <label class="form-label-brutal">DESTAQUE</label>
+        <select class="form-select-brutal" [(ngModel)]="filters.IsFeatured" (change)="applyFilters()">
+          <option value="">Todos</option>
+          <option [value]="true">Sim</option>
+          <option [value]="false">Não</option>
+        </select>
+      </div>
+      
+      <!-- Botões de Ação -->
+      <div class="form-group-brutal">
+        <div class="d-flex gap-2">
+          <button class="btn-brutal btn-primary-brutal flex-fill" (click)="applyFilters()">
+            FILTRAR
+          </button>
+          <button class="btn-brutal btn-logout flex-fill" (click)="clearFilters()">
+            LIMPAR
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal de Projeto -->
+<!-- Lista de Projetos -->
+<div class="card-brutal">
+  <div class="card-header-brutal">
+    <h5 class="card-title">PROJETOS ({{ filteredProjects.length }})</h5>
+  </div>
+  <div class="card-body-brutal">
+    <!-- Tabela de Projetos -->
+    <div *ngIf="filteredProjects.length > 0" class="table-responsive">
+      <table class="table-brutal">
+        <thead>
+          <tr>
+            <th>NOME</th>
+            <th>CATEGORIA</th>
+            <th class="text-center">STATUS</th>
+            <th class="text-center">DESTAQUE</th>
+            <th class="text-center">ATIVO</th>
+            <th class="text-center">CRIADO</th>
+            <th class="text-center">AÇÕES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let project of filteredProjects; trackBy: trackByProjectId">
+            <td>
+              <div>
+                <strong>{{ project.Name }}</strong>
+                <br>
+                <small>{{ project.ShortDescription }}</small>
+              </div>
+            </td>
+            <td>
+              <span class="badge-brutal badge-category">{{ project.Category }}</span>
+            </td>
+            <td class="text-center">
+              <span class="badge-brutal" [ngClass]="getStatusClass(project.Status)">
+                {{ project.Status }}
+              </span>
+            </td>
+            <td class="text-center">
+              <button 
+                class="btn-icon" 
+                [ngClass]="project.IsFeatured ? 'btn-icon-featured' : 'btn-icon-unfeatured'"
+                (click)="toggleFeatured(project)">
+                <i class="fas" [ngClass]="project.IsFeatured ? 'fa-star' : 'fa-star'"></i>
+              </button>
+            </td>
+            <td class="text-center">
+              <button 
+                class="btn-icon" 
+                [ngClass]="project.IsActive ? 'btn-icon-active' : 'btn-icon-inactive'"
+                (click)="toggleStatus(project)">
+                <i class="fas" [ngClass]="project.IsActive ? 'fa-eye' : 'fa-eye-slash'"></i>
+              </button>
+            </td>
+            <td class="text-center">
+              <small>{{ project.DateCreated | date:'dd/MM/yyyy' }}</small>
+            </td>
+            <td class="text-center">
+              <div class="action-buttons">
+                <button 
+                  class="btn-icon btn-icon-view" 
+                  (click)="viewProject(project)">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button 
+                  class="btn-icon btn-icon-edit" 
+                  (click)="openEditModal(project)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button 
+                  class="btn-icon btn-icon-delete" 
+                  (click)="confirmDelete(project)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Estado vazio -->
+    <div *ngIf="filteredProjects.length === 0" class="empty-state">
+      <div class="empty-state-icon"><i class="fas fa-folder-open fa-3x"></i></div>
+      <h3 class="empty-state-title">NENHUM PROJETO ENCONTRADO</h3>
+      <p class="empty-state-text">
+        {{ projects.length === 0 ? 'Comece criando seu primeiro projeto!' : 'Tente ajustar os filtros de busca.' }}
+      </p>
+      <button *ngIf="projects.length === 0" class="btn-brutal btn-primary-brutal" (click)="openCreateModal()">
+        CRIAR PRIMEIRO PROJETO
+      </button>
+    </div>
+  </div>
+</div>
+
+</div>
+<!-- END PROJECTS TAB -->
+
+<!-- CURRICULUM TAB -->
+<div *ngIf="activeTab === 'curriculum'">
+
+<!-- Seções do Currículo -->
+<div class="curriculum-grid">
+
+  <!-- Informações Pessoais -->
+  <div class="curriculum-section">
+    <div class="card-brutal">
+      <div class="card-header-brutal">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title">
+            <i class="fas fa-user me-2"></i>INFORMAÇÕES PESSOAIS
+          </h5>
+          <button 
+            class="btn-brutal btn-sm-brutal btn-primary-brutal" 
+            (click)="openCurriculumModal('personal', personalInfo)">
+            {{ personalInfo ? 'EDITAR' : 'ADICIONAR' }}
+          </button>
+        </div>
+      </div>
+      <div class="card-body-brutal">
+        <div *ngIf="personalInfo; else noPersonalInfo" class="personal-info-grid">
+          <div class="info-group">
+            <div class="info-item">
+              <label class="info-label">NOME</label>
+              <span class="info-value">{{ personalInfo.Name }}</span>
+            </div>
+            <div class="info-item">
+              <label class="info-label">TÍTULO</label>
+              <span class="info-value">{{ personalInfo.Title }}</span>
+            </div>
+            <div class="info-item">
+              <label class="info-label">LOCALIZAÇÃO</label>
+              <span class="info-value">{{ personalInfo.Location }}</span>
+            </div>
+          </div>
+          <div class="info-group">
+            <div class="info-item">
+              <label class="info-label">EMAIL</label>
+              <span class="info-value">{{ personalInfo.Email }}</span>
+            </div>
+            <div class="info-item">
+              <label class="info-label">TELEFONE</label>
+              <span class="info-value">{{ personalInfo.Phone }}</span>
+            </div>
+            <div class="info-links">
+              <div class="link-item">
+                <label class="info-label">LINKEDIN</label>
+                <a *ngIf="personalInfo.LinkedInUrl" [href]="personalInfo.LinkedInUrl" target="_blank" class="link-brutal">
+                  Link
+                </a>
+                <span *ngIf="!personalInfo.LinkedInUrl" class="link-empty">Não informado</span>
+              </div>
+              <div class="link-item">
+                <label class="info-label">GITHUB</label>
+                <a *ngIf="personalInfo.GitHubUrl" [href]="personalInfo.GitHubUrl" target="_blank" class="link-brutal">
+                  Link
+                </a>
+                <span *ngIf="!personalInfo.GitHubUrl" class="link-empty">Não informado</span>
+              </div>
+              <div class="link-item">
+                <label class="info-label">PORTFOLIO</label>
+                <a *ngIf="personalInfo.PortfolioUrl" [href]="personalInfo.PortfolioUrl" target="_blank" class="link-brutal">
+                  Link
+                </a>
+                <span *ngIf="!personalInfo.PortfolioUrl" class="link-empty">Não informado</span>
+              </div>
+            </div>
+          </div>
+          <div class="description-section">
+            <label class="info-label">DESCRIÇÃO</label>
+            <p class="description-text">{{ personalInfo.Description }}</p>
+          </div>
+        </div>
+        <ng-template #noPersonalInfo>
+          <div class="empty-state">
+            <div class="empty-state-icon"><i class="fas fa-user-plus fa-2x"></i></div>
+            <h6 class="empty-state-title">NENHUMA INFORMAÇÃO CADASTRADA</h6>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Habilidades -->
+  <div class="curriculum-section">
+    <div class="card-brutal">
+      <div class="card-header-brutal">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title">
+            <i class="fas fa-code me-2"></i>HABILIDADES ({{ skills.length }})
+          </h5>
+          <button 
+            class="btn-brutal btn-sm-brutal btn-primary-brutal" 
+            (click)="openCurriculumModal('skill')">
+            ADICIONAR
+          </button>
+        </div>
+      </div>
+      <div class="card-body-brutal">
+        <div *ngIf="skills.length > 0; else noSkills" class="skills-list">
+          <div *ngFor="let skill of skills" class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">{{ skill.Name }}</span>
+              <div class="skill-actions">
+                <button 
+                  class="btn-icon btn-icon-edit" 
+                  (click)="openCurriculumModal('skill', skill)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button 
+                  class="btn-icon btn-icon-delete" 
+                  (click)="deleteCurriculumItem('skill', skill)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="skill-progress">
+              <div class="progress-brutal">
+                <div class="progress-bar-brutal" [style.width.%]="skill.Level">
+                  {{ skill.Level }}%
+                </div>
+              </div>
+            </div>
+            <small class="skill-category">{{ skill.Category }}</small>
+          </div>
+        </div>
+        <ng-template #noSkills>
+          <div class="empty-state">
+            <div class="empty-state-icon"><i class="fas fa-code fa-2x"></i></div>
+            <h6 class="empty-state-title">NENHUMA HABILIDADE CADASTRADA</h6>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Experiências -->
+  <div class="curriculum-section">
+    <div class="card-brutal">
+      <div class="card-header-brutal">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title">
+            <i class="fas fa-briefcase me-2"></i>EXPERIÊNCIAS ({{ experiences.length }})
+          </h5>
+          <button 
+            class="btn-brutal btn-sm-brutal btn-primary-brutal" 
+            (click)="openCurriculumModal('experience')">
+            ADICIONAR
+          </button>
+        </div>
+      </div>
+      <div class="card-body-brutal">
+        <div *ngIf="experiences.length > 0; else noExperiences" class="timeline-list">
+          <div *ngFor="let exp of experiences" class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <h6 class="timeline-title">{{ exp.Title }}</h6>
+                <div class="timeline-actions">
+                  <button 
+                    class="btn-icon btn-icon-edit" 
+                    (click)="openCurriculumModal('experience', exp)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button 
+                    class="btn-icon btn-icon-delete" 
+                    (click)="deleteCurriculumItem('experience', exp)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="timeline-company">{{ exp.Company }}</p>
+              <small class="timeline-period">
+                {{ exp.StartDate | date:'MM/yyyy' }} - 
+                {{ exp.EndDate ? (exp.EndDate | date:'MM/yyyy') : 'Atual' }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <ng-template #noExperiences>
+          <div class="empty-state">
+            <div class="empty-state-icon"><i class="fas fa-briefcase fa-2x"></i></div>
+            <h6 class="empty-state-title">NENHUMA EXPERIÊNCIA CADASTRADA</h6>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Educação -->
+  <div class="curriculum-section">
+    <div class="card-brutal">
+      <div class="card-header-brutal">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title">
+            <i class="fas fa-graduation-cap me-2"></i>EDUCAÇÃO ({{ education.length }})
+          </h5>
+          <button 
+            class="btn-brutal btn-sm-brutal btn-primary-brutal" 
+            (click)="openCurriculumModal('education')">
+            ADICIONAR
+          </button>
+        </div>
+      </div>
+      <div class="card-body-brutal">
+        <div *ngIf="education.length > 0; else noEducation" class="timeline-list">
+          <div *ngFor="let edu of education" class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <h6 class="timeline-title">{{ edu.Degree }}</h6>
+                <div class="timeline-actions">
+                  <button 
+                    class="btn-icon btn-icon-edit" 
+                    (click)="openCurriculumModal('education', edu)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button 
+                    class="btn-icon btn-icon-delete" 
+                    (click)="deleteCurriculumItem('education', edu)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="timeline-company">{{ edu.Institution }}</p>
+              <small class="timeline-period">
+                {{ edu.StartDate | date:'yyyy' }} - 
+                {{ edu.EndDate ? (edu.EndDate | date:'yyyy') : 'Em andamento' }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <ng-template #noEducation>
+          <div class="empty-state">
+            <div class="empty-state-icon"><i class="fas fa-graduation-cap fa-2x"></i></div>
+            <h6 class="empty-state-title">NENHUMA EDUCAÇÃO CADASTRADA</h6>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificações -->
+  <div class="curriculum-section">
+    <div class="card-brutal">
+      <div class="card-header-brutal">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title">
+            <i class="fas fa-certificate me-2"></i>CERTIFICAÇÕES ({{ certifications.length }})
+          </h5>
+          <button 
+            class="btn-brutal btn-sm-brutal btn-primary-brutal" 
+            (click)="openCurriculumModal('certification')">
+            ADICIONAR
+          </button>
+        </div>
+      </div>
+      <div class="card-body-brutal">
+        <div *ngIf="certifications.length > 0; else noCertifications" class="timeline-list">
+          <div *ngFor="let cert of certifications" class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <h6 class="timeline-title">{{ cert.Name }}</h6>
+                <div class="timeline-actions">
+                  <button 
+                    class="btn-icon btn-icon-edit" 
+                    (click)="openCurriculumModal('certification', cert)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button 
+                    class="btn-icon btn-icon-delete" 
+                    (click)="deleteCurriculumItem('certification', cert)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="timeline-company">{{ cert.Issuer }}</p>
+              <small class="timeline-period">
+                Emitida em {{ cert.IssueDate | date:'MM/yyyy' }}
+                <span *ngIf="cert.ExpiryDate"> - Expira em {{ cert.ExpiryDate | date:'MM/yyyy' }}</span>
+              </small>
+            </div>
+          </div>
+        </div>
+        <ng-template #noCertifications>
+          <div class="empty-state">
+            <div class="empty-state-icon"><i class="fas fa-certificate fa-2x"></i></div>
+            <h6 class="empty-state-title">NENHUMA CERTIFICAÇÃO CADASTRADA</h6>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Serviços -->
+  <div class="curriculum-section curriculum-section-full">
+    <div class="card-brutal">
+      <div class="card-header-brutal">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title">
+            <i class="fas fa-cogs me-2"></i>SERVIÇOS OFERECIDOS ({{ services.length }})
+          </h5>
+          <button 
+            class="btn-brutal btn-sm-brutal btn-primary-brutal" 
+            (click)="openCurriculumModal('service')">
+            ADICIONAR
+          </button>
+        </div>
+      </div>
+      <div class="card-body-brutal">
+        <div *ngIf="services.length > 0; else noServices" class="services-grid">
+          <div *ngFor="let service of services" class="service-card">
+            <div class="service-header">
+              <h6 class="service-title">{{ service.Title }}</h6>
+              <div class="service-actions">
+                <button 
+                  class="btn-icon btn-icon-edit" 
+                  (click)="openCurriculumModal('service', service)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button 
+                  class="btn-icon btn-icon-delete" 
+                  (click)="deleteCurriculumItem('service', service)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <p class="service-description">{{ service.Description }}</p>
+            <div class="service-footer">
+              <span class="service-price">
+                {{ service.Price | currency:'BRL':'symbol':'1.0-0' }}
+              </span>
+              <small class="service-duration">{{ service.Duration }}</small>
+            </div>
+          </div>
+        </div>
+        <ng-template #noServices>
+          <div class="empty-state">
+            <div class="empty-state-icon"><i class="fas fa-cogs fa-2x"></i></div>
+            <h6 class="empty-state-title">NENHUM SERVIÇO CADASTRADO</h6>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+<!-- END CURRICULUM TAB -->
+
+<!-- Componentes Modais -->
 <app-project-form-modal 
-[project]="selectedProject"
-[isEditMode]="isEditMode"
-[isViewMode]="isViewMode"
-[isVisible]="showProjectModal"
-(save)="saveProject($event)"
-(cancel)="closeProjectModal()">
+  [project]="selectedProject"
+  [isEditMode]="isEditMode"
+  [isViewMode]="isViewMode"
+  [isVisible]="showProjectModal"
+  (save)="saveProject($event)"
+  (cancel)="closeProjectModal()">
 </app-project-form-modal>
 
 <app-curriculum-form-modal 
-[type]="curriculumModalType"
-[item]="selectedCurriculumItem"
-[isEditMode]="isEditCurriculumMode"
-[isVisible]="showCurriculumModal"
-(save)="saveCurriculumItem($event)"
-(cancel)="closeCurriculumModal()">
+  [type]="curriculumModalType"
+  [item]="selectedCurriculumItem"
+  [isEditMode]="isEditCurriculumMode"
+  [isVisible]="showCurriculumModal"
+  (save)="saveCurriculumItem($event)"
+  (cancel)="closeCurriculumModal()">
 </app-curriculum-form-modal> 

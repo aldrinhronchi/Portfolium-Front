@@ -1,99 +1,101 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-12 text-center mb-4">
-      <h2>Testes de Integração</h2>
-      <p>Verificando conexão entre Frontend e Backend</p>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card mb-4">
-        <div class="card-header">
-          <h5>Controles</h5>
+<div class="integration-test-page">
+    <div class="container-fluid">
+      <div class="test-header">
+        <h1 class="test-title">INTEGRATION TEST</h1>
+        <p class="test-subtitle">Verificando conexão entre Frontend e Backend</p>
+      </div>
+      
+      <div class="test-container">
+        <div class="test-controls">
+          <div class="control-group">
+            <h2 class="control-title">CONTROLES PRINCIPAIS</h2>
+            <div class="btn-group-brutal">
+              <button class="btn-brutal btn-primary" (click)="runTests()">
+                EXECUTAR TODOS OS TESTES
+              </button>
+              <button class="btn-brutal btn-info" (click)="testLogin()">
+                TESTAR LOGIN
+              </button>
+              <button class="btn-brutal btn-warning" (click)="logout()">
+                LOGOUT
+              </button>
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <h2 class="control-title">TESTES ESPECÍFICOS</h2>
+            <div class="btn-group-brutal">
+              <button class="btn-brutal btn-success" (click)="testInterceptors()">
+                TESTAR INTERCEPTORS
+              </button>
+              <button class="btn-brutal btn-secondary" (click)="testSweetAlert()">
+                TESTAR SWEETALERT2
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="d-grid gap-2">
-            <button class="btn btn-primary" (click)="runTests()" [disabled]="loading">
-              {{ loading ? 'Testando...' : 'Executar Todos os Testes' }}
-            </button>
-            <button class="btn btn-info" (click)="testLogin()">
-              Testar Login
-            </button>
-            <button class="btn btn-warning" (click)="logout()">
-              Logout
-            </button>
-            <button class="btn btn-success" (click)="testInterceptors()">
-              Testar Interceptors
-            </button>
-            <button class="btn btn-secondary" (click)="testSweetAlert()">
-              Testar SweetAlert2
-            </button>
+  
+        <div class="test-results">
+          <h2 class="results-title">RESULTADOS DOS TESTES</h2>
+          <div class="results-table-container">
+            <div class="results-header">
+              <div class="header-item">TESTE</div>
+              <div class="header-item">STATUS</div>
+              <div class="header-item">DETALHES</div>
+              <div class="header-item">HORÁRIO</div>
+            </div>
+            <div class="results-body">
+              <div *ngFor="let result of testResults" 
+                   class="result-row"
+                   [class.success]="result.status === 'Sucesso'"
+                   [class.error]="result.status === 'Erro'"
+                   [class.info]="result.status === 'Autenticado'"
+                   [class.warning]="result.status === 'Não Autenticado' || result.status === 'Funcionando'">
+                <div class="result-item">{{ result.test }}</div>
+                <div class="result-item">
+                  <span class="status-badge" 
+                        [class.success]="result.status === 'Sucesso'"
+                        [class.error]="result.status === 'Erro'"
+                        [class.info]="result.status === 'Autenticado'"
+                        [class.warning]="result.status === 'Não Autenticado' || result.status === 'Funcionando'">
+                    {{ result.status }}
+                  </span>
+                </div>
+                <div class="result-item">{{ result.details }}</div>
+                <div class="result-item">{{ result.timestamp }}</div>
+              </div>
+            </div>
+          </div>
+  
+          <div *ngIf="testResults.length === 0" class="no-results">
+            <p>NENHUM TESTE EXECUTADO AINDA</p>
+            <p>Clique em "EXECUTAR TODOS OS TESTES" para começar</p>
+          </div>
+        </div>
+  
+        <div class="test-info">
+          <div class="info-card">
+            <h3 class="info-title">COMO TESTAR</h3>
+            <ol class="info-list">
+              <li>Certifique-se de que o backend está rodando na porta 7116</li>
+              <li>Execute "EXECUTAR TODOS OS TESTES" para verificar conexões básicas</li>
+              <li>Use "TESTAR LOGIN" com as credenciais do seu banco de dados</li>
+              <li>Verifique se não há erros de CORS no console do navegador</li>
+            </ol>
+          </div>
+  
+          <div class="info-card success">
+            <h3 class="info-title">INTERCEPTORS IMPLEMENTADOS</h3>
+            <ul class="info-list">
+              <li>✅ <strong>ErrorHandlerService</strong> - Intercepta erros e mostra SweetAlert2</li>
+              <li>✅ <strong>LoadingInterceptor</strong> - Mostra spinner durante requisições</li>
+              <li>✅ <strong>TokenInterceptorService</strong> - Adiciona JWT automaticamente</li>
+              <li>✅ <strong>SweetAlert2</strong> - Alertas modernos e responsivos</li>
+              <li>✅ <strong>LoadingService</strong> - Controle global de loading</li>
+              <li>✅ <strong>Página 404</strong> - Tratamento de rotas inexistentes</li>
+            </ul>
           </div>
         </div>
       </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h5>Informações</h5>
-        </div>
-        <div class="card-body">
-          <h6>Como testar:</h6>
-          <ol>
-            <li>Certifique-se que o backend está rodando na porta 7116</li>
-            <li>Execute "Executar Todos os Testes" para verificar conexões</li>
-            <li>Use "Testar Login" com as credenciais do banco</li>
-            <li>Verifique se não há erros de CORS no console</li>
-          </ol>
-        </div>
-      </div>
     </div>
-
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h5>Resultados</h5>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Teste</th>
-                  <th>Status</th>
-                  <th>Detalhes</th>
-                  <th>Horário</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let result of testResults" 
-                    [class.table-success]="result.status === 'Sucesso'"
-                    [class.table-danger]="result.status === 'Erro'"
-                    [class.table-info]="result.status === 'Autenticado'"
-                    [class.table-warning]="result.status === 'Não Autenticado' || result.status === 'Funcionando'">
-                  <td>{{ result.test }}</td>
-                  <td>
-                    <span class="badge"
-                          [class.bg-success]="result.status === 'Sucesso'"
-                          [class.bg-danger]="result.status === 'Erro'"
-                          [class.bg-info]="result.status === 'Autenticado'"
-                          [class.bg-warning]="result.status === 'Não Autenticado' || result.status === 'Funcionando'">
-                      {{ result.status }}
-                    </span>
-                  </td>
-                  <td>{{ result.details }}</td>
-                  <td>{{ result.timestamp }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div *ngIf="testResults.length === 0" class="text-center p-4">
-            <p class="mb-0">Nenhum teste executado ainda</p>
-            <small class="text-muted">Clique em "Executar Todos os Testes" para começar</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> 
+  </div> 

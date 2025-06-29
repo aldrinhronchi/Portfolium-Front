@@ -1,9 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap');
+
+.footer-menu {
+  background: var(--bg-secondary);
+  border-top: 3px solid var(--border-color);
+  padding: 2rem 0 1rem;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.hr {
+  border: 0;
+  height: 3px;
+  background: var(--border-color);
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.social-section {
+  margin-bottom: 1.5rem;
+}
+
+.social-icons {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.social-icons .list-inline-item {
+  margin: 0;
+}
+
+.social-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--text-muted);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-icons a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.social-icons a:hover::before {
+  left: 0;
+}
+
+.social-icons a:hover {
+  border-color: var(--accent-primary);
+  color: #ffffff;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px var(--shadow-color);
+}
+
+.social-icons a:active {
+  transform: translateY(0) scale(1);
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+/* Copyright text */
+.text-secondary {
+  color: var(--text-muted) !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .footer-menu {
+    padding: 1.5rem 0 1rem;
+  }
+  
+  .social-icons {
+    gap: 1rem;
+  }
+  
+  .social-icons a {
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+  }
+}
+
 .links a {
     text-decoration: none;
-    
+    color: var(--text-muted);
+    transition: all 0.3s ease;
 }
+
 .links a:hover, a:active  {
-    color: #663399 !important;
+    color: var(--accent-primary) !important;
 }
 
   

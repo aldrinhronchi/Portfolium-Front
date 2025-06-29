@@ -1,10 +1,24 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6 text-center">
-      <h1 class="display-1">404</h1>
-      <h2>Página não encontrada</h2>
-      <p class="lead">A página que você está procurando não existe ou foi movida.</p>
-      <a routerLink="/" class="btn btn-primary">Voltar para a página inicial</a>
+<div class="not-found-page">
+  <div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+    <div class="error-container">
+      <div class="error-content text-center">
+        <div class="error-number">404</div>
+        <h1 class="error-title">PÁGINA NÃO ENCONTRADA</h1>
+        <p class="error-description">
+          Parece que se perdeu no caminho. Não se preocupe... acontece aos melhores de
+          nós. Aqui está um pequeno atalho que pode ajudá-lo a voltar ao caminho
+          certo.
+        </p>
+        
+        <div class="error-actions">
+          <button class="btn-brutal btn-primary" (click)="goHome()">
+            VOLTAR AO INÍCIO
+          </button>
+          <button class="btn-brutal btn-secondary" (click)="goBack()">
+            VOLTAR
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div> 
